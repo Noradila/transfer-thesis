@@ -1,0 +1,42 @@
+\chapter{Literature Review}
+\label{literatureReview}
+
+\section{Wireless Sensor Networks}
+A WSN is a network of sensor nodes with the purpose of collecting sensor measurements from the target environment, and sending these measurements over the radio. One classic example is environmental monitoring, where sensor nodes are distributed over the area of interest measuring some properties there; such as temperature.
+Sensor nodes can be used for continuous sensing, event detection, location sensing and local control of actuators. 
+
+There are 5 types of WSNs \cite{wsnSurvey1}.
+Multimedia WSN \cite{wsnSurvey3}.
+
+\subsection{Overview (Application Scenarios for WSNs}
+The application can be categorised into 5; military, environment, health, home and other commercial areas \cite{wsnSurvey2}
+
+\section{Maximize Lifetime and Minimizing Energy}
+-through routing protocol (clustering), adjust transmission range, MAC sleep awake 
+-energy harvesting?
+
+\subsection{Energy Harvesting}
+Energy harvesting involves nodes replenishing its energy from an energy source. Potential energy sources include solar cells, vibration, fuel cells, acoustic noise and a mobile supplier. In terms of harvesting energy from the environment, solar cell is the current mature technique that harvest energy from light. There is also work in using mobile energy supplier such as a robot to replenish energy. The robots would be responsible in charging themselves with energy and then delivering energy to nodes \cite{wsnSurvey1}.
+
+Sparse sensor placement may result in long-range transmission and higher energy usage while dense sensor placement may result in short-range transmission and less energy consumption.
+\section{Multichannel Protocol (Data Link Layer)}
+\subsection{Introduction (Solutions)}
+Multichannel communication has potential benefits for wireless networks that possibly include improved resilience against external interference, reduced latency, enhanced reception rate and increased throughput. 
+There have been some proposals/solutions for multichannel. These approaches focus on (the mac layer) and depending on ().
+
+Radio duty cycling mechanisms can be classified into two categories; synchronous and asynchronous systems. A synchronous system is a system that requires a tight time synchronization between nodes. It uses time-scheduled communication where the network clock needs to be periodically synchronized in order for the nodes not to drift in time. Asynchronous system on the other hand, do not require synchronization but instead is a sender or receiver initiated communication. In asynchronous systems the nodes are able to self-configure without time synchronization and this can have advantages. There are many studies done in multichannel for both categories.
+
+\subsection{Synchronous Systems}
+
+\subsection{Asynchronous Systems}
+
+\subsection{Comparison and Discussion}
+
+\section{Routing Protocols (Network Layer Protocols)}
+The network layer is responsible in routing the data across the network from the source to the destination. Routing protocols in WSNs differs from traditional routing protocols depending on the Operating System.
+Contiki provides IP communication in both IPv4 and IPv6. However, as sensors have a small amount of memory, uIP, which is a small RFC-compliant TCP/IP stack that makes it possible to communicate over the Internet \cite{contikiDoc, contikiUIP}. uIP () to reduce the resources it requires.
+uIP implementation is designed to have only the absolute minimal set of features needed for a full TCP/IP stack \cite{contikiDoc, contikiUIP}.
+In order to maximize the use of multichannel in improving packet delivery, routing topology plays a big role in providing an optimized routing tree to the network that is scalable and energy efficient. 
+Routing protocol approaches can be classified into () types which are flat based and data centric, hierarchical, location based and network flow and quality of service (QoA) aware.
+
+\subsection{Classification of Routing Protocols}

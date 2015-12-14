@@ -1,0 +1,81 @@
+\chapter{Implementation}
+\label{implementation}
+
+MCRP is implemented on the TelosB mote platform. It uses Contiki operating system as the software development (platform?) with full support of the standard IPv6. The implementation of MCRP are describe, including changes that were done (undertaken) in addition to the default parameters and settings for Contiki.
+ 
+\section{Protocol Stack (changes at MAC, RT, NBR TB, BR etc.)}
+MCRP is a cross layer protocol implemented on Contiki version 2.7. (explain what is cross layer? why do cross layer? FIGURE OF STACKS)
+
+Contiki is a four layers network stack; network, MAC, radio duty cycling (RDC) and radio layers. The network layer includes support for TCP and UDP, IPv6, IPv4, 6lowpan and RPL (routing). Traditional TCP/IP implementations have required far too much resources which is impossible to fit in a sensor that has limited RAM capabilities (RAM is the most scarce resource). uIP is a small RFC-compliant TCP/IP stack that makes it possible for Contiki to communicate over the Internet. uIP implementation is designed to have only the absolute minimal set of features needed for a full TCP/IP stack such as IP, ICMP, UDP and TCP protocols. The uIP is mostly concerned with the TCP and IP protocols and upper layer protocols \cite{contikiDoc, contikiUIP}. 
+
+\begin{table}
+  \centering
+    \begin{tabular}{|c|c|c|}
+      \hline
+      Contiki & IoT/IP & Applications \\
+      \hline \hline
+      \multirow{4}{*}{Network} 
+        & Application & HTTP \\
+        \cline{2-3}
+        & Transport & TCP, UDP \\
+        \cline{2-3}
+        & Network, Routing & IPv6, IPv4, RPL \\
+        \cline{2-3}
+        & Adaptation & 6LoWPAN \\
+      \hline \hline
+      
+      MAC & MAC & CSMA/CA \\
+      \hline
+      RDC & Duty Cycling & ContikiMAC \\
+      \hline
+      Radio & Radio & IEEE 802.15.4 \\
+      \hline
+    \end{tabular}
+    \caption{Contiki Network Stack}
+    \label{table:1}
+\end{table}
+
+It uses (EXPLAIN CONTIKIMAC - refer to contikimac paper; why it's good, how it works). Also about retransmission and buffers. (maybe at next section???) The transmitting channel is set at the MAC layer as packets are not send immediately if there are packets being queued. The channel is reset to the transmitting channel before it tries to send and it is then reset to the listening channel to wait and listen to any packets that is being sent to the node. 
+
+The default ContikiMAC is a single channel protocol. It is modified to be able to work with multi channel nodes while (stick/hold/is) on the same principle of a low power ContikiMAC (minor changes to support multi channel without changing the main purpose of ContikiMAC).
+
+RPL border router is used as LPBR in order to move most processing decisions on a PC as it has more RAM and better processing capabilities than a sensor. (Explain BR-SR how it works!)
+TelosB has limited RAM and ROM of 10K bytes and 48K bytes of flash memory \cite{telosb-datasheet}. By using a border router, this allows channel changing to be decided in real time without draining the memory and battery on a sensor. The border router also acts as the root of the tree. The border router will setup the IPv6 prefix of the network and will initiate the creation of the RPL routing tree.
+It (tunslip6) sets up an interface on the Linux IP stack and connects this interface via a socket to the border router node.
+Border router is used to bridge the wireless IPv6 network to a PC via serial link which enables the IPv6 network traffic to reach outside network and the Internet.
+A node is used as a wireless interface (IEEE 802.15.4 to enable the serial socket server), a host machine as border router to bridge the wireless IPv6 network to outside network and the Internet.
+
+Serial Line Internet Protocol (SLIP) //need reference!!!] is used for the communication between the sink and the device which it connected to such as an embedded PC. SLIP is commonly used to encapsulate IP packets for transmission across the serial line of micro-controller devices. SLIP has a low complexity and small overhead. For the communication between the devices (embedded PCs), any reliable network can be used (e.g. Ethernet). The sinks are connected to an embedded PC which contains an Ethernet interface. The communication between the sink (sensor node) and the embedded PC makes use of SLIP. Contiki already provides support for SLIP communication and includes a tunslip tool (need reference!!!) which make it possible to communicate with devices using SLIP. The tool constructs a SLIP tunnel between a physical serial interface and a virtual network adaptor. By using tunslip the communication between the sink and the embedded PC is facilitated \cite{multipleSinks}.
+
+Tunslip is a too used to bridge IP traffic between a host and another network element, typically a border router, over a serial line. Tunslip creates a virtual network interface (tun) on the host side and uses SLIP (serial line internet protocol) to encapsulate and pass IP traffic to and from the other side of the serial line. The network element sitting on the other side of the line does a similar job with it's network interface. The tun interface can be used like any real network interface: routing, traffic forwarding etc \cite{tunslip}.
+
+RPL is used as the routing protocol. (explain how RPL works briefly since it's explained in LITERATURE REVIEW).
+
+We tailored RPL control messages to be able to accommodate MRCP proposal by enabling unicast to know neighbours and broadcast to detect new nodes to join the tree.  
+
+
+\section{MCRP Implementation}
+MCRP is implemented as an extension to the existing implementation of RPL with ContikiMAC; to enable multi channel.
+The protocol is implemented by tailoring existing code of ContikiMAC, network layer and RPL.
+
+\subsection{Application Layer}
+//separate into 2; setCh and xSetCh as LPBR is separated with BR and SR
+//access Network layer - Neighbour table, set channel
+
+\subsection{MAC Layer}
+As MCRP is a cross-layer protocol, packets that have not been transmitted are kept in the buffer. In order for the transmission to be on the correct channel, the neighbour table in the network layer is accessed and the channel is set to the transmitting channel. 
+
+ContikiMAC has retransmitted, collisions valued. These values are used in probing to decide on the channel condition. These values are passed to the application layer to decide on channel change. The packet can be retransmitted for () times before it is dropped. However, if the channel is busy, and the packet has not been sent (collisions before sending), it can stay in the loop for a long time.
+
+\subsection{Routing Layer - Neighbour Discovery}
+///net/rpl/rpl-icmp6.c and rpl-timers.c - the changes done!!
+
+////DIO UNICAST
+RPL sends the control messages as broadcast. However, as we are now dealing with multi channels, using broadcast for all channels would waste the bandwidth and costly as it would take a longer time to go through all channels. It would also cause congestion and the node to be on the broadcast channel and not ready on it's listening channel to be able to receive any incoming packets as it has not finish with the control message broadcast. RPL DIO message is able to deal with either broadcast or unicast. By default, broadcast was used as RPL is usually used with a single channel MAC. We enable the unicast DIO.
+
+////MULTI CHANNEL DIS
+If a new node tries to join the tree, it will send a DIS message on all channels until it finds the neighbours. 
+
+\section{Memory Footprint/Setup Overhead?}
+-how many packets more than usual?
+-memory consumption?
