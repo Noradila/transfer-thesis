@@ -19,6 +19,7 @@ The application can be categorised into 5; military, environment, health, home a
 Energy harvesting involves nodes replenishing its energy from an energy source. Potential energy sources include solar cells, vibration, fuel cells, acoustic noise and a mobile supplier. In terms of harvesting energy from the environment, solar cell is the current mature technique that harvest energy from light. There is also work in using mobile energy supplier such as a robot to replenish energy. The robots would be responsible in charging themselves with energy and then delivering energy to nodes \cite{wsnSurvey1}.
 
 Sparse sensor placement may result in long-range transmission and higher energy usage while dense sensor placement may result in short-range transmission and less energy consumption.
+
 \section{Multichannel Protocol (Data Link Layer)}
 \subsection{Introduction (Solutions)}
 Multichannel communication has potential benefits for wireless networks that possibly include improved resilience against external interference, reduced latency, enhanced reception rate and increased throughput. 
@@ -27,8 +28,48 @@ There have been some proposals/solutions for multichannel. These approaches focu
 Radio duty cycling mechanisms can be classified into two categories; synchronous and asynchronous systems. A synchronous system is a system that requires a tight time synchronization between nodes. It uses time-scheduled communication where the network clock needs to be periodically synchronized in order for the nodes not to drift in time. Asynchronous system on the other hand, do not require synchronization but instead is a sender or receiver initiated communication. In asynchronous systems the nodes are able to self-configure without time synchronization and this can have advantages. There are many studies done in multichannel for both categories.
 
 \subsection{Synchronous Systems}
+-TSCH, MC-LMAC, YMAC
+
+\subsubsection{TSCH}
+
+\subsubsection{MC-LMAC}
+
+\subsubsection{YMAC}
 
 \subsection{Asynchronous Systems}
+%-EM-MAC, MuChMAC, Chrysso, MiCMAC - ContikiMAC?
+Recent asynchronous multi channel MAC layers are Chrysso and MiCMAC. MiCMAC is built based on ContikiMAC, the default radio duty cycling in Contiki 2.7 that works in a single channel. The details of these are explained below.
+
+\subsubsection{ContikiMAC}
+ContikiMAC radio duty cycling mechanism is the default radio duty cycling mechanism in Contiki 2.7. It uses a power efficient wake up mechanism with a set of timing constraints to allow device to keep their transceivers off. The wireless transceiver consumes as much power when passively listening for transmissions from other devices as it does when actively transmitting, so the transceiver must be completely turned off to save power. ContikiMAC keep their radios turned off for roughly 99\% of the time.  ContikiMAC uses only asynchronous mechanisms, no signalling messages, and no additional packet headers. ContikiMAC packets are ordinary link layer messages. ContikiMAC uses a fast sleep optimization, to allow receivers to quickly detect false positive wake-ups (fast sleep optimization to allow receivers to quickly go to sleep when faced with spurious radio interference), and a transmission phase-lock optimization. The idea of periodic wake-ups has been used by many protocols, such as B-MAC, X-MAC and BoX-MAC. The phase-lock optimization has been previously suggested by WiseMAC and has since been used by other protocols as well. 
+
+ContikiMAC uses a fast sleep optimization, to allow receivers to quickly detect false-positive wake-up and a transmission phase-lock optimization, to allow run-time optimization of the energy-efficiency of transmissions. 
+
+ContikiMAC is a radio duty cycling protocol that uses periodical wake-ups to listen for packet transmissions from neighbors. If a packet transmission is detected during a wake-up, the receiver is kept on to be able to receive the packet. UNICAST - When the packet is successfully received, the receiver sends a link layer acknowledgement. To transmit a packet, a sender repeatedly sends its packet until it receives a link layer acknowledgement from the receiver. Acknowledgement transmission is done as part of the unicast packet reception. Packets that are sent as broadcasts do not result in link layer acknowledgements. Instead, the sender repeatedly sends the packet during the full wake-up interval to ensure that all neighbors have received it. Since a broadcast transmission does not expect any link layer acknowledgement, the transmitter can turn of its radio between each packet transmission to save power.
+
+ContikiMAC wake-up frequency of 8Hz which results in a wake-up interval of 125 ms. Radio duty cycle increase with the wake-up frequency; more wake-ups, the total power consumption of the network increase (channel check rate higher than 8Hz).
+
+ContikiMAC wake-ups use an inexpensive Clear Channel Assessment (CCA) mechanism that uses the Received Signal Strength Indicator (RSSI) of the radio transceiver to give an indication of radio activity on the channel. If the RSSI is below a given threshold, the CCA returns positive, indicating that the channel is clear. If the RSSI is above the threshold, the CCA returns negative, indicating that the channel is in use.
+
+\textbf{Detection - }
+ContikiMAC CCAs do not reliably detect packet transmission: they only detect that the radio signal strength is above a certain threshold. The detection of a radio signal may mean that a neighbor is transmitting a packet to the receiver, that a neighbor is transmitting to another receiver, or that some other device is radiating radio energy that is being detected by the CCA mechanism. ContikiMAC must be able to discern between these events and react properly.
+
+\textbf{Fast Sleep - }
+The fast sleep optimization lets potential receivers go to sleep earlier if the CCA woke up due to spurious radio noise. Specific pattern of ContikiMAC transmissions:
+	If CCA detects radio activity but the radio activity has a duration that is longer than the maximum packet length, the CCA has detected noise and can go back to sleep (if the activity period is not followed by a silence period).
+	If the radio activity is followed by a silence period that is longer than the interval between two successive transmissions, the receiver can go back to sleep.
+	If the activity period is followed by a silence period of the correct length, followed by activity but no start of packet could be detected, the receiver can go back to sleep.
+	
+\textbf{Transmission Phase-Lock - }
+A sender can learn of a receiver's wake-up phase by making note of the time at which it saw a link layer acknowledgement from the receiver. The sender can assume that the reception of a link layer acknowledgement means that the sender has successfully transmitted a packet within the receiver's wake-up window and thus the sender has found the receiver's wake-up phase. The sender can commence its successive transmissions to this receiver just before the receiver is expected to be awake. The transmission will be significantly shorter than a normal transmission, because it occurs just before the neighbor is expected to be awake. Reducing the length of the transmission thus reduces radio congestion.
+	The phase-lock mechanism is implemented as a separate module from ContikiMAC.
+	The phase-lock mechanism maintains a list of neighbors and their wake-up phases.
+	
+Fast sleep and phase-lock optimizations significantly reduce power consumption. This is because of a phase-locked transmission being shorter than non-phased-locked transmissions, leading both to less energy being spent on transmissions and to less radio congestion \cite{contikimac}.
+
+\subsubsection{MiCMAC}
+
+\subsubsection{Chrysso}
 
 \subsection{Comparison and Discussion}
 
@@ -40,3 +81,27 @@ In order to maximize the use of multichannel in improving packet delivery, routi
 Routing protocol approaches can be classified into () types which are flat based and data centric, hierarchical, location based and network flow and quality of service (QoA) aware.
 
 \subsection{Classification of Routing Protocols}
+
+\subsubsection{Flat based and Data Centric}
+
+\subsubsection{Location Based}
+
+\subsubsection{Network Flow and QoS-aware}
+
+\subsubsection{Hierarchical}
+\subsubsection*{CTP}
+2 principles for wireless routing protocols; datapath validation - data traffic quickly discovers and fixes routing inconsistencies; adaptive beaconing - extending the Trickle algorithm to routing control traffic reduces route repair latency and sends fewer beacons. CTP Neo - an implementation of CTP.
+Datapath validation actively uses data packets to validate the routing topology and detect loops. Each data packet contains the link-layer transmitter’s estimate of its distance. A node detects a possible routing loop when it receives a packet to forward from a node with a smaller or equal distance to the destination.
+CTP is a routing protocol that computes anycast routes to a single or a small number of designated sinks in a wireless sensor network. CTP may appear very simple. They provide best-effort, unreliable, anycast packet delivery to one of the data sinks in the network. 
+4 goals; reliability - a protocol should deliver at least 90% of end-to-end packets when a route exists. Robustness - should be able to operate without tuning or configuration in a wide range of network conditions, topologies, workloads and environments. Efficiency - should deliver packets with the minimum amount of transmissions. Hardware independence - without assuming specific radio chip features.
+Rapid topology changes necessitate distance-vector rather than link-state algorithms. Simple distance-vector protocols however suffer from routing loops and other problems that harm reliability and efficiency. Link topology changes may result in transient loops which causes packet drops. A collection protocol builds and maintains minimum cost trees to nodes that advertise themselves as tree roots. Collection is address-free; when there are multiple base stations, it sends to the one with the minimum cost without knowing its address.
+Every node maintains an estimate of the cost of its route to a collection point. ETX as the cost metric (any similar gradient metric can work just well). ETX does not effectively capture throughput. A node’s cost is the cost of its next hop plus the cost of its link to the next hop. The cost of a route is the sum of the costs of its links. Collection points advertise a cost of zero. Each data packet contains the transmitter’s local cost estimates. When a node receives a packet to forward, it compares the transmitter’s cost to its own. Cost must always decrease. 
+When a timer interval expires, Trickle doubles it, up to a maximum value. When Trickle hears a newer version number, it shrinks the timer interval to a small value. Trickle enables quick discovery of new nodes and recovery from failures, while at the same time enabling long beacon intervals when the network is stable \cite{ctp}. 
+
+CTP provides best effort anycast datagram communication to one of the collection roots in a network. A collection protocol delivers data to one of possibly several data sinks, providing many-to-one network layer. CTP uses routing frames to update and build collection tree in the network. CTP uses data frames to deliver application payload to the sink and to probe topology inconsistencies. 
+	CTP is a tree-based collection protocol. Some nodes advertise as tree roots. Nodes form a set of routing trees to these roots. CTP is address free in that a node does not send a packet to a particular root, instead, it implicitly chooses a root by choosing a next hop. Nodes generate routes to roots using a routing gradient. CTP assumes that it has link quality estimates of some number of nearby neighbors (ETX). These provides an estimate of the number of transmissions it takes for the node to send a unicast packet whose acknowledgement is successfully received. 
+CTP uses expected transmission (ETX) as its routing gradient. A root has an ETX of 0. ETX of a node is the ETX of its parent plus the ETX of its link to its parent. CTP should choose the one with the lowest ETX value. 
+Problem is routing loops; occur when a node choose a new route that has a significantly higher ETX than its old one. CTP tries to resolve the inconsistency by broadcasting a beacon frame. Packet duplication - when a node receives a data frame successfully and transmit an ACK but ACK is not received. Thus CTP keeps a small cache of packet signature for the packets it has seen to detect packet duplicates.CTP data frames has additional time has lived (THL) field which the routing layer increments on each hop. Link-layer retransmission has the same THL.
+If node’s ETX value changes significantly, CTP should transmit a broadcast frame to notify other nodes which might change their routes. A parent can detect when a child’s ETX is significantly below its own. When a parent hears a child advertise an ETX below its own, it must schedule a routing frame for transmission in the near future \cite{ctptep}.
+
+\subsubsection*{RPL}
