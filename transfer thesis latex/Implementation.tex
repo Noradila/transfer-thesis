@@ -58,11 +58,75 @@ We tailored RPL control messages to be able to accommodate MRCP proposal by enab
 MCRP is implemented as an extension to the existing implementation of RPL with ContikiMAC; to enable multi channel.
 The protocol is implemented by tailoring existing code of ContikiMAC, network layer and RPL.
 
-\subsection{Application Layer}
+%\subsection{Application Layer}
 //separate into 2; setCh and xSetCh as LPBR is separated with BR and SR
 //access Network layer - Neighbour table, set channel
 
-\subsection{MAC Layer}
+\subsection{Low Power Border Router}
+As sensors have limited memory, we decided to move most decision making (processing decisions) at LPBR to a PC as it more RAM and better processing capabilities. This enables us to have more thorough processes. As describes previously, the protocol stack is divided into two parts where the PC is responsible as the application, transport, network and routing layers while a sensor is set as the wireless interface to enable the PC to communicate with the other nodes. LPBR is a special case as channel changes at LPBR is not as direct as other sensor nodes due to this two parts. However, it works similar ways to the other nodes.
+
+////FIGURE OF BR AND SR
+
+LPBR main responsibility is to decide on the new channel selection. LPBR has no knowledge of all the channels condition at this point, thus, a channel is selected at random. LPBR keeps the results from the channel changes processes and based on it when selecting a new channel for the next node to ensure the new channel is at least two-hop away from another node using the same channel. This is done to ensure that the nearby nodes do not communicate of the same channel and risk interfering with each other.
+
+The pseudo-code of the two-hops colouring algorithm that we implemented in new channel selection is shown in Algorithm \ref{twohop_algo}
+
+\begin{algorithm}
+\caption{Pseudo-code for two-hop colouring algorithm}
+\label{twohop_algo}
+\begin{algorithmic}[]
+\\\textbf{Notations}
+\\$R$ is a node that is a Route
+\\$N$ is a node Neighbour
+\\$RN$ is the Route's Neighbour node
+\\$currentCh$ is the node current listening channel
+\\$newCh$ is the new channel the node will change to
+\\$rnCh$ is the route's neighbour channel
+\\\textbf{Pseudo-code}
+%\If{$R$ $=$ $R$ in $LPBR$ $nodesTable$}
+%	\State check $R$ $currentCh$
+	\If{$R$ $currentCh$ $\neq$ $newCh$}
+		\State succeed one-hop
+		\State check all $RN$ channels
+		\If{$RN$ $rnCh$ $\neq$ $newCh$}
+			\State succeed two-hop
+			\State confirm $newCh$
+		\EndIf
+	\Else
+		\State generate a new $newCh$
+		\State update the number of $newCh$ generated for $R$
+	\EndIf
+%\EndIf
+\end{algorithmic}
+\end{algorithm}
+
+\iffalse
+\begin{algorithm}
+\caption{Pseudo-code for two-hop colouring algorithm}
+\label{twohop_algo}
+\begin{algorithmic}[]
+\\\textbf{Notations}
+\\$R$ is a node that is a Route
+\\$currentCh$ is the node current listening channel
+\\$newCh$ is the new channel the node will change to
+\\\textbf{Pseudo-code}
+\If{$R$ is $LPBR$ neighbour}
+	\State check $LPBR$ $currentCh$
+	\If{$LPBR$ $currentCh$ $\neq$ $newCh$}
+		\State check all $LPBR$ neighbours channels
+		\If{$nbrCh$ $\neq$ $newCh$}
+			\State confirm $newCh$
+		\EndIf
+	\EndIf
+\Else
+\EndIf
+\Procedure{Two-hops}{}
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+\fi
+
+\subsection{Other Nodes (MAC Layer?)}
 As MCRP is a cross-layer protocol, packets that have not been transmitted are kept in the buffer. In order for the transmission to be on the correct channel, the neighbour table in the network layer is accessed and the channel is set to the transmitting channel. 
 
 ContikiMAC has retransmitted, collisions valued. These values are used in probing to decide on the channel condition. These values are passed to the application layer to decide on channel change. The packet can be retransmitted for () times before it is dropped. However, if the channel is busy, and the packet has not been sent (collisions before sending), it can stay in the loop for a long time.
