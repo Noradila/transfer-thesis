@@ -81,20 +81,21 @@ The pseudo-code of the two-hops colouring algorithm that we implemented in new c
 \\$RN$ is the Route's Neighbour node
 \\$currentCh$ is the node current listening channel
 \\$newCh$ is the new channel the node will change to
-\\$rnCh$ is the route's neighbour channel
+%\\$rnCh$ is the route's neighbour channel
 \\\textbf{Pseudo-code}
 %\If{$R$ $=$ $R$ in $LPBR$ $nodesTable$}
 %	\State check $R$ $currentCh$
 	\If{$R$ $currentCh$ $\neq$ $newCh$}
 		\State succeed one-hop
 		\State check all $RN$ channels
-		\If{$RN$ $rnCh$ $\neq$ $newCh$}
+		\If{$RN$ channel $\neq$ $newCh$}
 			\State succeed two-hop
 			\State confirm $newCh$
 		\EndIf
 	\Else
 		\State generate a new $newCh$
 		\State update the number of $newCh$ generated for $R$
+		\State use default channel 26 is all tries fail
 	\EndIf
 %\EndIf
 \end{algorithmic}
@@ -129,7 +130,7 @@ The pseudo-code of the two-hops colouring algorithm that we implemented in new c
 \subsection{Other Nodes (MAC Layer?)}
 As MCRP is a cross-layer protocol, packets that have not been transmitted are kept in the buffer. In order for the transmission to be on the correct channel, the neighbour table in the network layer is accessed and the channel is set to the transmitting channel. 
 
-ContikiMAC has retransmitted, collisions valued. These values are used in probing to decide on the channel condition. These values are passed to the application layer to decide on channel change. The packet can be retransmitted for () times before it is dropped. However, if the channel is busy, and the packet has not been sent (collisions before sending), it can stay in the loop for a long time.
+ContikiMAC has retransmitted, collisions valued. These values are used in probing to decide on the channel condition. These values are passed to the application layer to decide on channel change. The packet can be retransmitted for ( ) times before it is dropped. However, if the channel is busy, and the packet has not been sent (collisions before sending), it can stay in the loop for a long time.
 
 \subsection{Routing Layer - Neighbour Discovery}
 ///net/rpl/rpl-icmp6.c and rpl-timers.c - the changes done!!
