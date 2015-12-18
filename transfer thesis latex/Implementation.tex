@@ -6,7 +6,7 @@ MCRP is implemented on the TelosB mote platform. It uses Contiki operating syste
 \section{Protocol Stack (changes at MAC, RT, NBR TB, BR etc.)}
 MCRP is a cross layer protocol implemented on Contiki version 2.7. (explain what is cross layer? why do cross layer? FIGURE OF STACKS)
 
-Contiki is a four layers network stack; network, MAC, radio duty cycling (RDC) and radio layers. The network layer includes support for TCP and UDP, IPv6, IPv4, 6lowpan and RPL (routing). Traditional TCP/IP implementations have required far too much resources which is impossible to fit in a sensor that has limited RAM capabilities (RAM is the most scarce resource). uIP is a small RFC-compliant TCP/IP stack that makes it possible for Contiki to communicate over the Internet. uIP implementation is designed to have only the absolute minimal set of features needed for a full TCP/IP stack such as IP, ICMP, UDP and TCP protocols. The uIP is mostly concerned with the TCP and IP protocols and upper layer protocols \cite{contikiDoc, contikiUIP}. 
+Contiki is a four layers network stack; network, MAC, radio duty cycling (RDC) and radio layers. The network layer includes support for TCP and UDP, IPv6, IPv4, 6lowpan and RPL (routing). Traditional TCP/IP implementations have required far too much resources which is impossible to fit in a sensor that has limited RAM capabilities (RAM is the most scarce resource). uIP \cite{uip} is a small RFC-compliant TCP/IP stack that makes it possible for Contiki to communicate over the Internet. uIP implementation is designed to have only the absolute minimal set of features needed for a full TCP/IP stack such as IP, ICMP, UDP and TCP protocols. The uIP is mostly concerned with the TCP and IP protocols and upper layer protocols \cite{contikiDoc, contikiUIP}. 
 
 \begin{table}
   \centering
@@ -63,13 +63,20 @@ The protocol is implemented by tailoring existing code of ContikiMAC, network la
 //access Network layer - Neighbour table, set channel
 
 \subsection{Low Power Border Router}
-As sensors have limited memory, we decided to move most decision making (processing decisions) at LPBR to a PC as it more RAM and better processing capabilities. This enables us to have more thorough processes. As describes previously, the protocol stack is divided into two parts where the PC is responsible as the application, transport, network and routing layers while a sensor is set as the wireless interface to enable the PC to communicate with the other nodes. LPBR is a special case as channel changes at LPBR is not as direct as other sensor nodes due to this two parts. However, it works similar ways to the other nodes.
+As sensors have limited memory, we decided to move most decision making (processing decisions) at LPBR to a PC as it more RAM and better processing capabilities. This enables us to have more thorough processes. As describes previously, the protocol stack is divided into two main parts as shown is figure \ref{fig_lpbr} where the PC is responsible as the application, transport, network and routing layers while a sensor is set as the wireless interface to enable the PC to communicate with the other nodes. LPBR is a special case as channel changes at LPBR is not as direct as other sensor nodes due to this two parts. However, it works similar ways to the other nodes.
 
-////FIGURE OF BR AND SR
+\begin{figure}
+\centering
+\includegraphics[trim=2cm 2cm 3cm 2cm, clip=true, totalheight=0.45\textheight, angle=270]{BR2.pdf}
+\caption{Low power border router}
+\label{fig_lpbr}
+\end{figure}
+
+%trim top left
 
 LPBR main responsibility is to decide on the new channel selection. LPBR has no knowledge of all the channels condition at this point, thus, a channel is selected at random. LPBR keeps the results from the channel changes processes and based on it when selecting a new channel for the next node to ensure the new channel is at least two-hop away from another node using the same channel. This is done to ensure that the nearby nodes do not communicate of the same channel and risk interfering with each other.
 
-The pseudo-code of the two-hops colouring algorithm that we implemented in new channel selection is shown in Algorithm \ref{twohop_algo}
+The pseudo-code of the two-hops colouring algorithm that we implemented in new channel selection is shown in Algorithm \ref{twohop_algo}. When the new channel is selected, LPBR will send the value to the intended node.
 
 \begin{algorithm}
 \caption{Pseudo-code for two-hop colouring algorithm}
@@ -101,31 +108,29 @@ The pseudo-code of the two-hops colouring algorithm that we implemented in new c
 \end{algorithmic}
 \end{algorithm}
 
-\iffalse
-\begin{algorithm}
-\caption{Pseudo-code for two-hop colouring algorithm}
-\label{twohop_algo}
-\begin{algorithmic}[]
-\\\textbf{Notations}
-\\$R$ is a node that is a Route
-\\$currentCh$ is the node current listening channel
-\\$newCh$ is the new channel the node will change to
-\\\textbf{Pseudo-code}
-\If{$R$ is $LPBR$ neighbour}
-	\State check $LPBR$ $currentCh$
-	\If{$LPBR$ $currentCh$ $\neq$ $newCh$}
-		\State check all $LPBR$ neighbours channels
-		\If{$nbrCh$ $\neq$ $newCh$}
-			\State confirm $newCh$
-		\EndIf
-	\EndIf
-\Else
-\EndIf
-\Procedure{Two-hops}{}
-\EndProcedure
-\end{algorithmic}
-\end{algorithm}
-\fi
+All layers of the netstack operate on the packet buffer. One buffer holds a single packet. The packet buffer only holds the current packet.
+
+Before passing to slip-radio, the header from $uip\_buf$ is compress to $packetbuf$.  
+\cite{rime} introduces Chameleon, a communication architecture for sensor networks consists of Rime communication stack and a set of packet transformation modules. Rime communication stack provides a set of lightweight communication primitives ranging from best-effort anonymous local area broadcast to reliable network flooding. Protocols or applications running on top of Rime stack can implement additional protocols that are not in the Rime stack such as TCP/IP.
+
+Chameleon is a header construction. The parsing is done separately from the communication stack which allows the use of uIP or Rime communication stack that both are supported in Contiki.
+
+Application can use either, both or none communication stack. uIP can run over Rime. Rime can run over uIP. 
+ 
+Chameleon does not define any packet headers but instead uses $packet attributes$, an abstract representation of the information usually found in packet headers to allow applications to access low-level information without violating the layering principle. Packet headers are produced by separate header transformation modules that transform application data and packet attributes into packets with header and payload. The use of packet attributes makes it possible to adapt the output from the protocol stack to other communication protocols such as link and MAC layer protocols and TCP/IP.
+Chameleon architecture allows for sensor network protocols that are implemented on top of the architecture to take advantage of the features of underlying MAC and link layer protocols.
+
+In the buffer management of Chameleon architecture, all packets both outgoing and incoming are stored in a single buffer, called the Rime buffer. The Rime buffer contains both the application data and the packet attributes. All access to the Rime buffer is done at a single priority level so no locking mechanisms need to be used.
+
+Protocols that need to queue packets, such as MAC protocols that wait for the radio medium to be free, can allocate so-called queue buffers to hold the queued packet. Queue buffers are dynamically allocated from a pool of queue buffers. The contents of the Rime buffer, including the packet attributes, are copied into the queue buffer when it is allocated.
+
+The new channel is stored in the buffer before the data is sent over SLIP to the radio-chip (slip-radio). As the slip radio is unable to access the neighbour table where the next hop node channel is stored, the channel value is passed through the buffer. LPBR keeps the updated value of all it's neighbours channels in the neighbour channel. Slip radio that receives the packet buffer can access the channel value and kept the value is a simplified version of the neighbour table. This is done in order to ensure that the packet that is being queued or retransmitted are send on the correct channel. The packets destination, which in this case, the next hop node is first check before the packet is transmitted each time. The MAC layer sets the channel accordingly before sending. ContikiMAC can access the simplified neighbour table as it is on the slip radio. The simplified neighbour table only keeps the information of the node neighbours and neighbours channels which are the critical information in order to transmit packets correctly. The other information that is related to the neighbours conditions are monitored at the PC. 
+
+The slip-radio resets to it's listening channel after the packet is transmitted.
+
+-send to BR RDC, check nbr table for the currentCh. pass the value to s-r. save the chvalue in a simplified nbr table to allow retx/queue to send on correct ch.
+MAC set the channel accordingly before sending.
+Change to its listening channel after finish sending. 
 
 \subsection{Other Nodes (MAC Layer?)}
 As MCRP is a cross-layer protocol, packets that have not been transmitted are kept in the buffer. In order for the transmission to be on the correct channel, the neighbour table in the network layer is accessed and the channel is set to the transmitting channel. 
