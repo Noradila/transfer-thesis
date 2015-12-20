@@ -115,12 +115,12 @@ Before passing to slip-radio, the header from $uip\_buf$ is compress to $packetb
 
 Chameleon is a header construction. The parsing is done separately from the communication stack which allows the use of uIP or Rime communication stack that both are supported in Contiki.
 
-Application can use either, both or none communication stack. uIP can run over Rime. Rime can run over uIP. 
+Application can use either, both or none communication stack. uIP can run over Rime. Rime can run over uIP \cite{contikitutorial}. 
  
 Chameleon does not define any packet headers but instead uses $packet attributes$, an abstract representation of the information usually found in packet headers to allow applications to access low-level information without violating the layering principle. Packet headers are produced by separate header transformation modules that transform application data and packet attributes into packets with header and payload. The use of packet attributes makes it possible to adapt the output from the protocol stack to other communication protocols such as link and MAC layer protocols and TCP/IP.
 Chameleon architecture allows for sensor network protocols that are implemented on top of the architecture to take advantage of the features of underlying MAC and link layer protocols.
 
-In the buffer management of Chameleon architecture, all packets both outgoing and incoming are stored in a single buffer, called the Rime buffer. The Rime buffer contains both the application data and the packet attributes. All access to the Rime buffer is done at a single priority level so no locking mechanisms need to be used.
+In the buffer management of Chameleon architecture, all packets both outgoing and incoming are stored in a single buffer \cite{rimeposter}, called the Rime buffer. The Rime buffer contains both the application data and the packet attributes. All access to the Rime buffer is done at a single priority level so no locking mechanisms need to be used.
 
 Protocols that need to queue packets, such as MAC protocols that wait for the radio medium to be free, can allocate so-called queue buffers to hold the queued packet. Queue buffers are dynamically allocated from a pool of queue buffers. The contents of the Rime buffer, including the packet attributes, are copied into the queue buffer when it is allocated.
 
