@@ -47,11 +47,11 @@ The protocol ascertains that the channel change attempt will always result in a 
 \begin{figure}
 \centering
 \includegraphics[trim=2cm 2cm 3cm 2cm, clip=true, totalheight=0.6\textheight, angle=270]{channelSwitching.pdf}
-\caption{Low power border router}
-\label{fig_lpbr}
+\caption{Channel switching processes}
+\label{fig_mcrp}
 \end{figure}
 
-Figure \ref{fig_sim} shows the state machine for the channel switching protocol.
+Figure \ref{fig_mcrp} shows the state machine for the channel switching protocol.
 As explained in the previous section, a choice of a new channel by the channel selection protocol causes a change channel message to be sent to the appropriate node. 
 Upon receiving a channel change message, a node $N$ stores its current channel $C$ and communicates to all its neighbours the new channel $D$ that it wishes to change to. Those neighbours will update their neighbour tables to ensure that they now send to node $N$ on channel $D$.  The node $N$ begins the channel quality checking process with each neighbour in turn by sending them a probe request. If this process fails for any neighbour then the node reverts to channel $C$. If all channel quality checks succeed, the node $N$ will listens on channel $D$. In both cases, node $N$ informs its neighbours of the decision to channel $C$ or $D$ and informs the LPBR of the channel checking results. The channel checking process uses probe packets that might interfere with other transmissions temporarily. However, it is important to emphasise that the network remains fully functional and connected at all stages of this protocol.
 

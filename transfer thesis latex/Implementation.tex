@@ -108,7 +108,7 @@ The pseudo-code of the two-hops colouring algorithm that we implemented in new c
 \end{algorithmic}
 \end{algorithm}
 
-All layers of the netstack operate on the packet buffer. One buffer holds a single packet. The packet buffer only holds the current packet.
+All layers of the netstack operate on the packet buffer. One buffer holds a single packet. ***Uses a single buffer for both incoming and outgoing packets \cite{uip, rime, rimeposter}. The packet buffer only holds the current packet.
 
 Before passing to slip-radio, the header from $uip\_buf$ is compress to $packetbuf$.  
 \cite{rime} introduces Chameleon, a communication architecture for sensor networks consists of Rime communication stack and a set of packet transformation modules. Rime communication stack provides a set of lightweight communication primitives ranging from best-effort anonymous local area broadcast to reliable network flooding. Protocols or applications running on top of Rime stack can implement additional protocols that are not in the Rime stack such as TCP/IP.
@@ -126,7 +126,7 @@ Protocols that need to queue packets, such as MAC protocols that wait for the ra
 
 The new channel is stored in the buffer before the data is sent over SLIP to the radio-chip (slip-radio). As the slip radio is unable to access the neighbour table where the next hop node channel is stored, the channel value is passed through the buffer. LPBR keeps the updated value of all it's neighbours channels in the neighbour channel. Slip radio that receives the packet buffer can access the channel value and kept the value is a simplified version of the neighbour table. This is done in order to ensure that the packet that is being queued or retransmitted are send on the correct channel. The packets destination, which in this case, the next hop node is first check before the packet is transmitted each time. The MAC layer sets the channel accordingly before sending. ContikiMAC can access the simplified neighbour table as it is on the slip radio. The simplified neighbour table only keeps the information of the node neighbours and neighbours channels which are the critical information in order to transmit packets correctly. The other information that is related to the neighbours conditions are monitored at the PC. 
 
-The slip-radio resets to it's listening channel after the packet is transmitted.
+The slip-radio resets to it's listening channel after the packet is transmitted. LPBR will wait and listen to any incoming packets. *In the channel probing phase, LPBR does not take part in probing. However, LPBR is informed of the results of probing and kept a table of the probing results and channels to be able to use the information when deciding on a channel change based on the previous results of probing on the known channels.
 
 -send to BR RDC, check nbr table for the currentCh. pass the value to s-r. save the chvalue in a simplified nbr table to allow retx/queue to send on correct ch.
 MAC set the channel accordingly before sending.
