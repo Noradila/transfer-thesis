@@ -8,12 +8,16 @@ Sensor nodes can be used for continuous sensing, event detection, location sensi
 There are 5 types of WSNs \cite{wsnSurvey1}.
 Multimedia WSN \cite{wsnSurvey3}.
 
+The evolution of wireless sensor networks is largely driven by a set of emerging applications. The smart grid is intended to improve the electrical power grid and save considerable amounts of energy for society as a whole. Building and home automation improves the quality of indoor environments in terms of temperature, air quality, and lighting, while saving energy in the process. Industrial automation improves the quality of industrial processes. Smart cities allow new services inside increasingly populated cities such as automatic parking management and pollution monitoring. Wireless sensors are an integral part of all these applications \cite{beyondInteroperability}
+
 \subsection{Overview (Application Scenarios for WSNs}
 The application can be categorised into 5; military, environment, health, home and other commercial areas \cite{wsnSurvey2}
 
 \section{Maximize Lifetime and Minimizing Energy}
 -through routing protocol (clustering), adjust transmission range, MAC sleep awake 
 -energy harvesting?
+
+Wireless systems are often powered by batteries whereby the system's energy consumption determines its lifetime.
 
 \subsection{Energy Harvesting}
 Energy harvesting involves nodes replenishing its energy from an energy source. Potential energy sources include solar cells, vibration, fuel cells, acoustic noise and a mobile supplier. In terms of harvesting energy from the environment, solar cell is the current mature technique that harvest energy from light. There is also work in using mobile energy supplier such as a robot to replenish energy. The robots would be responsible in charging themselves with energy and then delivering energy to nodes \cite{wsnSurvey1}.
@@ -103,6 +107,9 @@ CTP provides best effort anycast datagram communication to one of the collection
 CTP uses expected transmission (ETX) as its routing gradient. A root has an ETX of 0. ETX of a node is the ETX of its parent plus the ETX of its link to its parent. CTP should choose the one with the lowest ETX value. 
 Problem is routing loops; occur when a node choose a new route that has a significantly higher ETX than its old one. CTP tries to resolve the inconsistency by broadcasting a beacon frame. Packet duplication - when a node receives a data frame successfully and transmit an ACK but ACK is not received. Thus CTP keeps a small cache of packet signature for the packets it has seen to detect packet duplicates.CTP data frames has additional time has lived (THL) field which the routing layer increments on each hop. Link-layer retransmission has the same THL.
 If node’s ETX value changes significantly, CTP should transmit a broadcast frame to notify other nodes which might change their routes. A parent can detect when a child’s ETX is significantly below its own. When a parent hears a child advertise an ETX below its own, it must schedule a routing frame for transmission in the near future \cite{ctptep}.
+
+**
+Contiki Collect protocol and CTP are state-of-the-art address-free data collection protocols that provide a way for nodes to send data packets towards a data sink. Nodes do not need to know the address of the sink. Use ETX finding paths that minimize the number of packet transmissions to reach the root. Neither CTP nor Contiki Collect are IPv6-based. Contiki Collect uses the Contiki Rime stack \cite{beyondInteroperability}.
 
 \subsubsection*{RPL}
 The protocol makes use of IPv6 and supports not only traffic in the upwards direction, but also traffic flowing from a gateway node to all other network participants.

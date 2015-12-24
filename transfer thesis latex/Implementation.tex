@@ -2,6 +2,8 @@
 \label{implementation}
 
 MCRP is implemented on the TelosB mote platform. It uses Contiki operating system as the software development (platform?) with full support of the standard IPv6. The implementation of MCRP are describe, including changes that were done (undertaken) in addition to the default parameters and settings for Contiki.
+
+Contiki is a lightweight operating system with support for dynamic loading and replacement of individual programs and services. The purpose of the Contiki design is to reduce size and complexity, as well as to preserve flexibility. A running Contiki system consists of the kernel, libraries, the program loader and a set of processes (may be either an application program or a service - functionality used by more than one application process e.g. includes communication protocol stacks, sensor device drivers) \cite{contiki}. 
  
 \section{Protocol Stack (changes at MAC, RT, NBR TB, BR etc.)}
 MCRP is a cross layer protocol implemented on Contiki version 2.7. (explain what is cross layer? why do cross layer? FIGURE OF STACKS)
@@ -110,12 +112,14 @@ The pseudo-code of the two-hops colouring algorithm that we implemented in new c
 \end{algorithmic}
 \end{algorithm}
 
-All layers of the netstack operate on the packet buffer. One buffer holds a single packet. ***Uses a single buffer for both incoming and outgoing packets \cite{uip, rime, rimeposter}. The packet buffer only holds the current packet.
+All layers of the netstack operate on the packet buffer. One buffer holds a single packet. ***Uses a single buffer for both incoming and outgoing packets \cite{uip, rime, rimeposter, contiki}. The packet buffer only holds the current packet.
 
 Before passing to slip-radio, the header from $uip\_buf$ is compress to $packetbuf$.  
 \cite{rime} introduces Chameleon, a communication architecture for sensor networks consists of Rime communication stack and a set of packet transformation modules. Rime communication stack provides a set of lightweight communication primitives ranging from best-effort anonymous local area broadcast to reliable network flooding. Protocols or applications running on top of Rime stack can implement additional protocols that are not in the Rime stack such as TCP/IP.
 
 Chameleon is a header construction. The parsing is done separately from the communication stack which allows the use of uIP or Rime communication stack that both are supported in Contiki.
+
+6LoWPAN working group specified header compression and fragmentation for IPv6 over IEEE 802.15.4 (///REFERENCE!!!) and the IETF RoLL working group designed the RPL protocol as a proposed standard for IPv6 routing in low-power and lossy networks (LLNs). Contiki implement the necessary parts of the IPv6 protocol, IPv6 header compression and fragmentation with the 6LoWPAN adaptation layer, routing over LLNs with the RPL protocol, as well as a set of protocols from the TCP/IP protocol suite \cite{beyondInteroperability}.
 
 Application can use either, both or none communication stack. uIP can run over Rime. Rime can run over uIP \cite{contikitutorial}. 
  
