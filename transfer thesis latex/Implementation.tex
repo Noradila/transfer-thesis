@@ -117,11 +117,15 @@ All layers of the netstack operate on the packet buffer. One buffer holds a sing
 Before passing to slip-radio, the header from $uip\_buf$ is compress to $packetbuf$.  
 \cite{rime} introduces Chameleon, a communication architecture for sensor networks consists of Rime communication stack and a set of packet transformation modules. Rime communication stack provides a set of lightweight communication primitives ranging from best-effort anonymous local area broadcast to reliable network flooding. Protocols or applications running on top of Rime stack can implement additional protocols that are not in the Rime stack such as TCP/IP.
 
+Rime draws heavily from communication abstractions for distributed programming where layers of simple abstractions are combined to form powerful high-level abstraction. The purpose of Rime is to simplify implementation of sensor network protocols and facilitate code reuse. The thin layers in Rime enable code reuse within the stack. An underlying MAC or link layer may chose to implement parts of the Rime stack \cite{rimeposter}.
+
 Chameleon is a header construction. The parsing is done separately from the communication stack which allows the use of uIP or Rime communication stack that both are supported in Contiki.
 
 6LoWPAN working group specified header compression and fragmentation for IPv6 over IEEE 802.15.4 (///REFERENCE!!!) and the IETF RoLL working group designed the RPL protocol as a proposed standard for IPv6 routing in low-power and lossy networks (LLNs). Contiki implement the necessary parts of the IPv6 protocol, IPv6 header compression and fragmentation with the 6LoWPAN adaptation layer, routing over LLNs with the RPL protocol, as well as a set of protocols from the TCP/IP protocol suite \cite{beyondInteroperability}.
 
 Application can use either, both or none communication stack. uIP can run over Rime. Rime can run over uIP \cite{contikitutorial}. 
+
+Buffer for uIP and Rime is the same. They use the same buffer.
  
 Chameleon does not define any packet headers but instead uses $packet attributes$, an abstract representation of the information usually found in packet headers to allow applications to access low-level information without violating the layering principle. Packet headers are produced by separate header transformation modules that transform application data and packet attributes into packets with header and payload. The use of packet attributes makes it possible to adapt the output from the protocol stack to other communication protocols such as link and MAC layer protocols and TCP/IP.
 Chameleon architecture allows for sensor network protocols that are implemented on top of the architecture to take advantage of the features of underlying MAC and link layer protocols.
