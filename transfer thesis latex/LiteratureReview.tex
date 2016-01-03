@@ -19,17 +19,40 @@ The application can be categorised into 5; military, environment, health, home a
 
 Wireless systems are often powered by batteries whereby the system's energy consumption determines its lifetime.
 
+1. MAC - multichannel
+2. Routing
+3. Transmit power control
+
+Main causes of energy consumption. Collisions - may happen when a node is within the transmission range of two or more nodes that are simultaneously transmitting so that it does not capture any frame. The energy drained in the transmission and reception of collided frames is just wasted. Overhearing - happens when a node drains energy receiving irrelevant packets or signals. Idle listening - when a node does not know when it will be the receiver of a frame; the node keeps its radio on while listening to the channel waiting for potential data frames. The amount of energy wasted whilst the radio is on is considerable even when it is neither receiving nor transmitting frames. Nodes waste considerable amounts of energy as they keep their radios on for large time intervals while listening to an idle channel. Energy-efficient MACs should make nodes sleep for long periods of time instead of enabling them to be permanently active. Put nodes to sleep as long as possible while avoiding deafness and reducing overhearing and overhead. In order to extend nodes lifetime, applications need to save more energy by lowering the duty cycle. Lowering the duty cycle implies putting nodes in sleep mode for larger periods, which means extending the check interval. \cite{macsurvey}
+
+A major problem is deploying WSNs in their dependence on limited battery power. A main design criterion is to extend the lifetime of the network without jeopardizing reliable and efficient communications from sensor nodes to the other nodes as well as data sinks. One solution is the medium access control (MAC). The prime role of the MAC is to coordinate access to and transmission over a medium common to several nodes. The common medium is the wireless channel. Since the radio is controlled by the MAC, the MAC is central in optimizing the WSN's lifetime. The aim of a WSN design is to guarantee its longevity under the given energy and complexity constraints. The MAC plays a central part in this design since it controls the active and sleeping state of each node. The MAC protocols hence needs to trade longevity, reliability, fairness, scalability and latency; throughput is rarely a primary design factor. \cite{macsurvey}
+
+Many energy-efficient MAC protocols have been proposed to improve the lifetime of sensor networks by reducing the energy consumed by idle listening and overhearing. The idle listening problem refers to a node listening to the channel even though there are no radio transmissions to receive. The overhearing problem refers to a node receiving a packet it is not intended to receive \cite{pwmac}. 
+
+\subsection{Transmit Power Control}
+Power control to improve energy efficiency of the wireless sensor network. Whilst it is a useful tool to control traffic flows, congestion and interference levels, the power savings due reduced transmission powers are negligible since the radio's power consumption is in the range of the transmit power levels typically employed for embedded WSN nodes. \cite{macsurvey}
+
 \subsection{Energy Harvesting}
 Energy harvesting involves nodes replenishing its energy from an energy source. Potential energy sources include solar cells, vibration, fuel cells, acoustic noise and a mobile supplier. In terms of harvesting energy from the environment, solar cell is the current mature technique that harvest energy from light. There is also work in using mobile energy supplier such as a robot to replenish energy. The robots would be responsible in charging themselves with energy and then delivering energy to nodes \cite{wsnSurvey1}.
 
 Sparse sensor placement may result in long-range transmission and higher energy usage while dense sensor placement may result in short-range transmission and less energy consumption.
 
+Note that different powering mechanisms are available, such as non-rechargeable battery; rechargeable battery with regular recharging (e.g. sunlight); rechargeable battery with irregular recharging (e.g. opportunistic energy scavenging); capacitive/inductive energy provision (e.g. RFPD); etc \cite{macsurvey}.
+
 \section{Multichannel Protocol (Data Link Layer)}
+In single-channel MAC protocols, all nodes are configured to use a single frequency all the time. Frequency-agile MAC protocols switch between multiple frequencies during run-time. Recent radio chips are able to switch between frequency channels fast (e.g. in less than 100$\mu$s). Multi-channel can be used to increase robustness against narrowband long-lasting and transient interference. \cite{macsurvey}
+
 \subsection{Introduction (Solutions)}
 Multichannel communication has potential benefits for wireless networks that possibly include improved resilience against external interference, reduced latency, enhanced reception rate and increased throughput. 
 There have been some proposals/solutions for multichannel. These approaches focus on (the mac layer) and depending on ().
 
+The duty cycling technique saves energy by switching nodes between awake and sleeping states. The duty cycling is an important mechanism for reducing energy consumption in sensor networks. Existing duty cycling energy-efficient MAC protocols can be categorized into two types; synchronous and asynchronous.
+
 Radio duty cycling mechanisms can be classified into two categories; synchronous and asynchronous systems. A synchronous system is a system that requires a tight time synchronization between nodes. It uses time-scheduled communication where the network clock needs to be periodically synchronized in order for the nodes not to drift in time. Asynchronous system on the other hand, do not require synchronization but instead is a sender or receiver initiated communication. In asynchronous systems the nodes are able to self-configure without time synchronization and this can have advantages. There are many studies done in multichannel for both categories.
+
+The sender-initiated approach, a sender transmits preamble before a packet transmission to notify the receiver of the upcoming packet. With receiver-initiated approach, in contrast, sender preambles are replaced with receiver wakeup beacons. Receiver-initiated wakeup beacons are used to avoid long sender-initiated preambles. However, a larger sender duty cycle due to idle listening until the receiver wakes up. In sender-initiated protocols, a sender often shows much larger duty cycle than a receiver, transmitting the preamble until the receiver wakes up \cite{pwmac}. To overcome this, many sender-initiated protocols use predictive wakeup in sensor network MAC protocols to enable reducing the preamble length (WiseMAC - fixing the node wakeup interval. PW-MAC - wake up according to independently generated pseudo-random scheduless).
+
+Two main approaches; reservation-based protocols (synchronous) where it requires the knowledge of the network topology to establish a schedule that allows each node to access the channel and communicate with other nodes. It needs dependency on network topology and time synchronization. Tight synchronization to ensure a common schedule among nodes. Both knowledge of topology and strict synchronization requires large overheads. Contention-based protocols - neither global synchronization nor topology knowledge is required. Nodes compete for the use of the wireless medium and only the winner of this competition is allowed to access to the channel and transmit. In CSMA for instantce, a node having a packet to transmit first senses the channel before actually transmitting. In the case that the node finds the channel busy, it postpones its transmission to avoid interfering with the ongoing transmission. Contention-based protocols suffer from degraded performance in terms of throughput when the traffic load increases. \cite{macsurvey}
 
 \subsection{Synchronous Systems}
 -TSCH, MC-LMAC, YMAC
@@ -83,6 +106,8 @@ Contiki provides IP communication in both IPv4 and IPv6. However, as sensors hav
 uIP implementation is designed to have only the absolute minimal set of features needed for a full TCP/IP stack \cite{contikiDoc, contikiUIP}.
 In order to maximize the use of multichannel in improving packet delivery, routing topology plays a big role in providing an optimized routing tree to the network that is scalable and energy efficient. 
 Routing protocol approaches can be classified into () types which are flat based and data centric, hierarchical, location based and network flow and quality of service (QoA) aware.
+
+%Nodes closer to the sink need to handle more traffic than nodes in the perimeters.
 
 \subsection{Classification of Routing Protocols}
 
