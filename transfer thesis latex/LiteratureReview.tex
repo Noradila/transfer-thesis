@@ -127,6 +127,25 @@ Fast sleep and phase-lock optimizations significantly reduce power consumption. 
 \subsubsection{MiCMAC}
 
 \subsubsection{Chrysso}
+//inner, outer, scan
+Chrysso is a multi-channel protocol extension, that leverages the channel diversity of sensor node radio. Chrysso mitigates the effect of external interference by switching only the affected nodes to a new set of channels effectively evading the interference source on spot. It is specifically tailored to data collection applications ($Collect$ routing protocol), and allocates channels for individual parent-children groups with the parent coordinating a channel switch upon detecting interference. For efficiency nodes normally operate on two channels only, one for incoming and one for outgoing traffic. We also present a novel scanning procedure probing all channels that can be used either at bootstrap or when losing contact with the parent. Chrysso maintains a pre-defined logical list of available channels so that a parent and children are consistent with their view on the next channel. Chrysso implementation uses five 802.15.4 channels: 26, 14, 20, 11 and 22 in the specified order. 
+
+The core of Chrysso is the set of control loops that manages whether a parent-children pair should stay on the same channel or switch to a new channel.
+
+The inner loop is responsible for coordinated channel switching between a parent and its children as soon as external interference is detected. When interference completely block any communication, a coordinated channel switch cannot be performed. For this case, Chrysso uses the outer loop, a watchdog mechanism that initiates an autonomous channel switch.
+
+Inner loop - A child node periodically collects data from the channel quality monitor and piggybacks that onto the data packet. A child node responds to channel switching requests from its parent. Parent uses protocol-stack specific policies to determine whether or not the current measured channel quality indicates external interference. The parent computes an average over the backoff values (congestion backoffs as a measure of interference) and checks whether it exceeds a predetermined threshold. If this is the case, having notified all its children, the parent node switches to the next logical inchannel. 
+
+Outer loop - The outer loop functions as a watchdog for case of severe interference that disrupt the operation of the inner loop. A node (in child and parent role) decides independently to switch channels based on the protocol-specific policies. The decisions involve no explicit coordination between nodes. For detecting severe interference, a child node monitors the number of failed transmissions (messages that were never sent) and switches its outchannel if the failure ratio exceeds a threshold. Autonomous channel switches should only be performed when the inner loop fails to trigger a channel switch for an extended duration. Likewise, the parent switches to the next inchannel when the ratio of received packets drops below a pre-set value.
+Child node, if the number of failed transmissions exceeds a certain fraction of the total transmission attempts, then the child node switches its outchannel instantly and autonomously. Likewise, a parent node keeps a record of the number of packet received. If the fraction of received over expected packets falls below a threshold, the parent switches its inchannel instantly and autonomously. 
+
+For a child node, both channel switches and routing switches necessitate a reset of its collected channel quality statistics. The child node also clears its routing entries. The watchdog initiates the scan mode if the node does not find a parent available on the new channel.
+
+Scan mode is invoked at network bootstrap or whenever a sensor node loses connectivity to its parent and has no other entry in its neighbor table (following a channel switch by the outer loop). During scan mode, a sensor node sweeps across the list of channels. The previously used outchannel is blacklisted for that period.
+
+***Fundamental problem of multi-channel protocols: channel deafness (not hearing a packet on a different channel). \cite{chrysso}
+
+Neighbour discovery - Because neighboring nodes operate of different channels, topology information available at a child node is only partial, and also subject to change, as neighbours may switch channel during network operation. Chrysso employs a special neighborhood discovery phase, called $scan mode$ to find a new parent. Scan mode is only triggered on demand as it incurs additional overhead on processing and energy consumption. A node performing neighborhood discovery scans through the list of available channels to search for a new parent. 
 
 \subsection{Comparison and Discussion}
 
