@@ -224,24 +224,81 @@ Scan mode is invoked at network bootstrap or whenever a sensor node loses connec
 Neighbour discovery - Because neighboring nodes operate of different channels, topology information available at a child node is only partial, and also subject to change, as neighbours may switch channel during network operation. Chrysso employs a special neighborhood discovery phase, called $scan mode$ to find a new parent. Scan mode is only triggered on demand as it incurs additional overhead on processing and energy consumption. A node performing neighborhood discovery scans through the list of available channels to search for a new parent. 
 
 \subsection{Comparison and Discussion}
-MC-LMAC
-Broadcast support Y
-Partitions N
-Medium access SCHEDULED
-Channel assignment SENDERS
-Channel switching ONCE PER TIME SLOT
-Joining network ANYTIME
+The main features of the presented MAC protocols are summarised in table \ref{table:macProtocol} Existing MAC protocols suffer from several issues:
 
-Y-MAC
-Broadcast Y
-Partitions N
-Medium access SCHEDULED
-Channel assignment DYNAMIC (SENDERS, RECEIVERS)
-Channel switching ONCE PER TIME SLOT
-Joining network ANYTIME
+\begin{enumerate}
+\item Synchronous vs asynchronous design \\
+Both
+\item Sender vs receiver initiated design
+\item Channel hopping design
+\item Broadcast support
+\end{enumerate}
 
-TSCH
-Broadcast 
+\begin{table}
+\centering
+\begin{tabular}{|C{2cm}|C{2cm}|C{2.4cm}|C{2cm}|C{2cm}|C{1.8cm}|}
+\hline
+Protocol & Medium Access & Channel Assignment & Channel Switching & Common Period & Broadcast \\
+\hline \hline
+MC-LMAC & TDMA & Senders & Once per time slot & CF & Yes \\
+\hline
+Y-MAC & TDMA + collision window & Dynamic & Once per time slot & CP + CFs & Yes
+\\
+\hline
+TSCH & TDMA + collision window & & & &
+\\
+\hline
+MiCMAC & MiCMAC & Dynamic & One per wake up time & Yes & Yes\\
+\hline
+Chrysso & Operates over ContikiMAC & Dynamic & Change channel when bad & No & No\\
+\hline 
+\end{tabular}
+\caption{Comparison of studied MAC protocols}
+\label{table:macProtocol}
+\end{table}
+
+%MC-LMAC
+%Medium access TDMA
+%Broadcast support Y (COMMON CHANNEL?)
+%Common Period YES CF
+%Partitions N
+%Medium access SCHEDULED
+%Channel assignment SENDERS
+%Channel switching ONCE PER TIME SLOT
+%Joining network ANYTIME
+
+%Y-MAC
+%Medium access TDMA + collision window
+%Broadcast Y (COMMON CHANNEL)
+%Common Period Y CP \& CF
+%Partitions N
+%Medium access SCHEDULED
+%Channel assignment DYNAMIC (SENDERS, RECEIVERS)
+%Channel switching ONCE PER TIME SLOT
+%Joining network ANYTIME
+
+%TSCH
+%Broadcast 
+
+%MiCMAC
+%Medium access MICMAC
+%Broadcast Y (COMMON CHANNEL)
+%Common Period Y (BROADCAST)
+%Partitions N
+%Medium access MICMAC
+%Channel assignment ONCE PER WAKE UP TIME
+%Channel switching ONCE PER WAKE UP TIME
+%Joining network ANYTIME (COMPATIBLE WITH RPL)
+
+%Chrysso
+%Medium access OPERATES OVER MAC
+%Broadcast N
+%Common Period N
+%Partitions N
+%Medium access OPERATES OVER MAC
+%Channel assignment DYNAMIC (SENDERS? RECEIVERS?)
+%Channel switching CHANGE CHANNEL WHEN BAD
+%Joining network ANYTIME (COLLECT-TREE)
 
 \section{Routing Protocols (Network Layer Protocols)}
 The network layer is responsible in routing the data across the network from the source to the destination. Routing protocols in WSNs differs from traditional routing protocols depending on the Operating System.
