@@ -367,7 +367,17 @@ Data centric - all communication is neighbor-to-neighbor (no need addressing mec
 
 SPIN \cite{spin} is the first data-centric protocol, which considers data negotiation between nodes in order to eliminate redundant data and save energy.
 
-Later, Directed Diffusion \cite{directeddiffusion} has been developed and has become a breakthrough in data-centric routing. There are many other protocols that have been proposed either based on Directed Diffusion (Rumor Routing \cite{rumorrouting}, GBR \cite{schurgers2001energy}, CADR \cite{cadr})or following a similar concept (TEEN \cite{teen}, ACQUIRE \cite{acquire}).
+Later, Directed Diffusion \cite{directeddiffusion} has been developed and has become a breakthrough in data-centric routing. There are many other protocols that have been proposed either based on Directed Diffusion (Rumor Routing \cite{rumorrouting}, GBR \cite{schurgers2001energy}, CADR \cite{cadr})or following a similar concept (TEEN \cite{teen} which is also a hierarchical-based, ACQUIRE \cite{acquire}).
+
+SPIN - the idea behind SPIN is to name the data using high-level descriptors or meta-data. Before transmission, meta-data are exchanged among sensors via a data advertisement mechanism, which is the key feature of SPIN. Each node upon receiving new data advertises it to its neighbors and interested neighbors (sensors advertise the availability of data allowing interested nodes to query that data). 
+Difference: In SPIN, sensors advertise the availability of data allowing interested nodes to query that data. (sensor asks others if they want its data)
+Advantages: of SPIN is that topological changes are localized since each node needs to know only its single-hop neighbors. 
+Disadvantage: SPIN's data advertisement mechanism cannot guarantee the delivery of data. If the nodes that are interested in the data are far away from the source node and the nodes between the source and destination are not interested in that data, such data will not be delivered to the destination at all. 
+
+Directed Diffusion - is an important milestone in the data-centric routing research of sensor networks. The idea aims at diffusing data through sensor nodes by using naming scheme for the data. Direct Diffusion suggests the use of attribute-value pairs for the data and queries the sensors in an on demand basis by using those pairs. The interest is broadcast by a sink through its neighbors. Each node receiving the interest can do caching for later use. The interests in the caches are then used to compare the received data with the values in the interests. A gradient is a reply link to a neighbor from which the interest was received. By utilizing interest and gradients, paths are established between sink and sources. Several paths can be established so that one of them is selected by reinforcement. The sink resends the original interest message through the selected path with a smaller interval. When a path between a source and the sink fails, a new or alternative path should be identified. Directed Diffusion search among other paths which are sending data in lower rates. 
+Difference: In Directed Diffusion, the sink queries the sensor nodes if a specific data is available by flooding some tasks. (sink to nodes)
+Advantages: Caching is a big advantage in term of energy efficiency and delay. Energy efficient since it is on demand and there is no need for maintaining global network topology.
+Disadvantages: Cannot be applied to all sensor network applications since it is based on a query-driven data delivery model.
 
 \subsubsection{Location Based}
 
