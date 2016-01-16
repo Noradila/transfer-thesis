@@ -396,6 +396,12 @@ Advantages: less power consumption than the minimum-energy metric algorithm whic
 Disadvantages: the protocol suffers from the overhead of maintaining the tables and states at each sensor node especially when the number of nodes is huge.
 
 \subsubsection{Hierarchical}
+Scalability is one of the major design attributes to sensor networks. A single-tier network can cause the gateway to overload with the increase in sensor density. The single-gateway architecture is not scalable for a larger set on sensors covering wider area of interest. The aim of hierarchical routing is to efficiently maintain the energy consumption of sensor nodes by involving them in multi-hop communication within a particular cluster and by performing data aggregation and fusion in order to decrease the number of transmitted messages to the sink. 
+
+Low-energy adaptive clustering hierarchy LEACH \cite{lifetimedef2} is one of the first hierarchical routing approaches for sensor networks. The idea proposed in LEACH has been an inspiration for many hierarchical routing protocols, TEEN \cite{teen}, APTEEN \cite{apteen}, PEGASIS \cite{pegasis}, Hierarchical-PEGASIS \cite{hpegasis} and HEED \cite{heed}. LEACH is one of the most popular hierarchical routing algorithms for sensor networks. The idea is to form clusters of the sensor nodes based on the received signal strength and use local cluster heads as routers to the sink. All the data processing such as data fusion and aggregation are local to the cluster. LEACH uses a load balancing mechanism that periodically rotates the role of cluterhead nodes. Cluster heads change randomly over time in order to balance the energy dissipation of nodes. The nodes die randomly and dynamic clustering increases lifetime of the system. LEACH is completely distributed and requires no global knowledge of network. However, LEACH uses single-hop routing where each node can transmit directly to the cluster-head and the sink. Therefore, it is not applicable to networks deployed in large regions.
+Disadvantages: dynamic clustering brings extra overhead (head changes, advertisements). Cluster heads consumes a larger amount of energy (do data aggregation and fusion tasks to reduce the number of data transmissions) when they are located further away from the sink.
+
+RPL/////
 
 \subsubsection{Hybrid Based}
 \subsubsection*{CTP}
@@ -418,7 +424,12 @@ Contiki Collect protocol and CTP are state-of-the-art address-free data collecti
 
 The data collection is an address-free protocol that sends messages towards a sink node somewhere in the network. The protocol is address-free in the sense that the originating nodes do not send their messages to a specific addressed node. Instead, the nodes send their messages towards the nearest sink in the network. The protocol does two things. It first builds a tree that originates at the sink nodes. The nodes build the tree by sending periodic announcements containing the number of hops away from the sink. After having built the tree, the nodes start sending messages towards the root of the tree. The protocol sends the messages using hop-by-hop reliable unicast \cite{rime}. 
 
-\subsection*{RPL}
+\subsection{RPL Routing Protocol}
+
+\subsubsection{Graph Building Process}
+\subsubsection{Types of RPL Messages}
+\subsubsection{Objective Function}
+\subsubsection{Trickle Timer}
 The protocol makes use of IPv6 and supports not only traffic in the upwards direction, but also traffic flowing from a gateway node to all other network participants.
 	RPL is a distance vector routing protocol that makes use of IPv6. A Destination Oriented Directed Acyclic Graph (DODAG) which is routed at a single destination is built. 
 	The graph is constructed by the use of an Objective Function (OF) which defines how the routing metric is computed. OF specifies how routing constraints and other functions are taken into account during topology construction. The protocol tries to avoid routing loops by computing a node’s position relative to other nodes with respect to the DODAG root, called Rank and increases if nodes move away from the root and decreases when nodes move in the other direction. 
@@ -454,4 +465,4 @@ Dynamically adjusting transmission windows allows Trickle to spread new informat
 
 To save energy the DIOs are sent periodically controlled by the trickle timer whose duration is doubled each time it is fired. The value of trickle timer starts from the lowest possible value lmin and is doubled each time it is transmitted until it reaches its maximum possible value of lmax \cite{trickle}.
 
-\subsubsection{Comparison and Discussion}
+\subsection{Comparison and Discussion}
