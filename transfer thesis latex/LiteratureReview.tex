@@ -387,6 +387,13 @@ GEAR \cite{gear}- Geographic and Energy-Aware Routing is an energy efficient rou
 GAF \cite{gaf} - Geographic adaptive fidelity (GAF) is an energy-aware location-based routing algorithm. GAF conserves energy by turning off unnecessary nodes in the network without affecting the level of routing fidelity. It forms a virtual grid for the covered area. Each node uses its GPS-indicated location to associate itself with a point in the virtual grid. Nodes associated with the same point on the grid are considered equivalent in terms of the cost of packet routing. Such equivalent is exploited in keeping some nodes located in a particular grid area in sleeping state in order to save energy. Before the leaving time of the active node expires, sleeping nodes wake up and one of them becomes active. GAF keeps a representative node always in active mode for each region on its virtual grid. Increases the lifetime of the network by saving energy.
 
 \subsubsection{Network Flow and QoS-aware}
+Network flow - route setup is modeled and solved as a network flow problem. QoS-aware protocols consider end-to-end delay requirements while setting up paths un the sensor network. 
+
+\cite{maxlifetimechang} Maximum lifetime energy routing solution - the main objective of the approach is to maximize the network lifetime by carefully defining link cost as a function of node remaining energy and the required transmission energy using that link. Use Bellman-Ford shortest path algorithm to find the least cost paths to the destination (are found).
+
+Sequential assignment routing (SAR) \cite{sar} - is the first protocol for sensor networks that includes the notion of QoS in its routing decisions. It is a table-driven multi-path approach. The SAR protocol creates tree rooted at one-hop neighbors of the sink by taking QoS metric, energy resource on each path and priority level of each packet into consideration. One of these paths is selected according to the energy resources and QoS on the path. 
+Advantages: less power consumption than the minimum-energy metric algorithm which only focuses the energy consumption of each packet without considering its priority. SAR maintains multiple paths from nodes to sink - ensure fault-tolerance and easy recovery.
+Disadvantages: the protocol suffers from the overhead of maintaining the tables and states at each sensor node especially when the number of nodes is huge.
 
 \subsubsection{Hierarchical}
 
