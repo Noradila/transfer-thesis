@@ -184,6 +184,16 @@ RPL sends the control messages as broadcast. However, as we are now dealing with
 ////MULTI CHANNEL DIS
 If a new node tries to join the tree, it will send a DIS message on all channels until it finds the neighbours. 
 
+Two main changes that were done to RPL routing protocol is at the DIS (which is sent by a new node to make it possible for a node to require DIO messages from a reachable neighbor) and DIO (the main source of routing control information) control messages.
+
+As we are dealing with multi-channel, a new node that would like to join an existing tree needs to send the DIS control message to the reachable neighbors. However, as the reachable neighbors could be on different channel than it were initially during start up, the new node needs to send the DIS message on all channels available. 
+
+The neighbors that receive the DIS message will reply with a DIO message and a packet that tells the new node of it's channel to communicate on. The new node updated the neighbor table and has successfully join the tree. 
+
+If the neighbors do not receive the DIS from the new node before it is due to send the DIO message, the neighbors send a broadcast DIO on the default channel. The new node upon receiving the DIO will join the tree and updates the neighbor table. All neighbors send a broadcast on the default channel and a unicast for channels that the neighbors are listening on. 
+
+One of the main reasons for this is because broadcasting on all channels would require more energy and it would take a longer time before all reachable nodes receive the control message. This could delay changes that might happen in the tree, i.e. changing of parent node. Secondly, we assumed that all nodes by default will switched on to the same default channel as that is how setup the nodes. While this is true in our simulation, this might not be the case in the real world where the nodes could start at any channel. We are looking into ways to overcome this problem.
+
 \section{Memory Footprint/Setup Overhead?}
 -how many packets more than usual?
 -memory consumption?
