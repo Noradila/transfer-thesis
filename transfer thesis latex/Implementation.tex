@@ -162,11 +162,10 @@ All nodes keep the neighbours channel in the neighbour table. Unlike LPBR, other
 \centering
 \includegraphics[trim=2cm 2cm 2.5cm 2cm, clip=true, totalheight=0.58\textheight, angle=270]{otherNodes.pdf}
 \caption{Nodes channel change processes}
-\label{fig_lpbr}
+\label{fig_otherNodes}
 \end{figure}
 
-
-When LPBR sends a channel change message to the destination node, the destination node will send a packet to acknowledge the channel change message. If LPBR does not receive the message, the channel change message is retransmitted. LPBR is then wait and listens for any incoming packets. At this point, channel changes processes will take place between the node and its neighbours.
+Figure \ref{fig_otherNodes} shows the processes that the node takes in the channel change. When LPBR sends a channel change message to the destination node, the destination node will send a packet to acknowledge the channel change message. If LPBR does not receive the message, the channel change message is retransmitted. LPBR is then wait and listens for any incoming packets. At this point, channel changes processes will take place between the node and its neighbours.
 
 The node sends the new channel to all the neighbours. At this point, the new channel is not check. However, all neighbours need to know the new channel as the node will be listening on the new channel. Otherwise, packets cannot be received by the node. The neighbours that receive the node channel will update their neighbour table at the application layer. As this is an important step in order to reduce the number of packet loss due to sending on the wrong channel, neighbours will send an acknowledgement of the new channel. Otherwise, it will be retransmitted. 
 

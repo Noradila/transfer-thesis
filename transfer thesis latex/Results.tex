@@ -6,38 +6,72 @@
 The testbed provides the ability to validate performance in real wireless channel environments. However, relying solely on testbed results complicates the task of examining the network's behaviour and diagnosing the root causes of performance degradations. For this purpose, while simulators lack the realism of testbeds, we leverage their ability to provide repeatability and full control over the parameter space. Furthermore, unlike a testbed setup, which is by necessity confined both in time and in space, a simulation can be made arbitrary complex (introduce interference**. Although simulators cannot be expected to fully mimic the behaviour of real wireless channels, they are effective in discovering the root causes underlying the performance degradations caused from implementation-specific design choices \cite{beyondInteroperability}.
 
 \section{Experimental Setup}
-We evaluate the protocol in the  Cooja simulated environment with emulation of TMote sky nodes that feature the CC2420 transceiver, a 802.15.4 radio. The nodes run on IPv6, using UDP with standard RPL and 6LoWPAN protocols. The network consists of 31 nodes which are used to run the simulation where we have 1 border router node, 16 interference nodes, and 14 duty cycled nodes that act as UDP clients to send packets to LPBR spanning over 20-30 metres between each node. RPL border router is used as LPBR in order to move most processing decisions on a PC as it has more RAM and better processing capabilities than a sensor. TelosB has limited RAM and ROM of 10K bytes and 48K bytes of flash memory \cite{telosb-datasheet}. By using a border router, this allows channel changing to be decided in real time without draining the memory and battery on a sensor. The border router also acts as the root of the tree.
+We evaluate the protocol in Cooja simulated environment and FlockLab \cite{flocklab} testbed.
 
-We simulated a controlled interference node that generates semi-periodic bursty interference to resemble a simplified Wi-Fi or Bluetooth transmitter on several channels at random. We use the interference model proposed in \cite{Boano:2010:MSM:2127940.2127963}. The interference has two states, a clear state and an interference state. 
-In the interference state, the interference node generates packets for a time that is uniformly distributed between $9/16$ seconds and $15/16$ seconds. In the clear state the interferer produces no packets and stays in this state for between $3/4 * \emph{clear\textunderscore time}$ and $5/4 * \emph{clear\textunderscore time}$ where \emph{clear\textunderscore time} refers to the rate of interference.
+%We use an end-to-end packet delivery performance metric to evaluate MCRP. The transmission success rate is calculated from the sender to the receiver over multiple hops. 
+
+%The simulations are repeated ten times. In all plots, the mean value of the ten simulations is plotted with error bars corresponding to one standard deviation in either deviation to give a measure of repeatability. The plots are of the proportion of received packets (from 0\% to 100\%) against time where the loss is measured over the previous time period.  The x-value is shifted slightly left and right to prevent error bars overlapping.
+
+\subsection{Simulation}
+We evaluate the protocol in the Cooja simulated environment with emulation of TMote sky nodes that feature the CC2420 transceiver, a 802.15.4 radio. The nodes run on IPv6, using UDP with standard RPL and 6LoWPAN protocols. The network consists of 31 nodes which are used to run the simulation where we have 1 border router node, 16 interference nodes, and 14 duty cycled nodes that act as UDP clients to send packets to LPBR spanning over 20-30 metres between each node. RPL border router is used as LPBR in order to move most processing decisions on a PC as it has more RAM and better processing capabilities than a sensor. TelosB has limited RAM and ROM of 10K bytes and 48K bytes of flash memory \cite{telosb-datasheet}. By using a border router, this allows channel changing to be decided in real time without draining the memory and battery on a sensor. The border router also acts as the root of the tree.
+%We evaluate the protocol in the Cooja simulated environment with emulation of TMote sky nodes that feature the CC2420 transceiver, a 802.15.4 radio and on Flocklab \cite{flocklab} testbed. The nodes run on IPv6, using UDP with standard RPL and 6LoWPAN protocols. In Cooja, the network consists of 31 nodes which are used to run the simulation where we have 1 border router node, 16 interference nodes, and 14 duty cycled nodes that act as UDP clients to send packets to LPBR spanning over 20-30 metres between each node. On testbed, the network consists of 26 nodes; 1 border router node and 25 duty cycled nodes. The nodes are distributed in offices, hallways and storerooms across one floor in an office building. We do not introduce interference nodes as the testbed has external interference from the surrounding (e.g. from the co-located Wi-Fi or limited connectivity) to see the effect on MCRP. The link qualities estimation information of the tesbed is displayed on the Flocklab website. The link qualities and routing change throughout the day as the noise level on all channels and frequency bands are tested during testbed idle times. RPL border router is used as LPBR in order to move most processing decisions on a PC as it has more RAM and better processing capabilities than a sensor. TelosB has limited RAM and ROM of 10K bytes and 48K bytes of flash memory \cite{telosb-datasheet}. By using a border router, this allows channel changing to be decided in real time without draining the memory and battery on a sensor. The border router also acts as the root of the tree.
+
+\begin{figure}
+\centering
+\includegraphics[trim=2cm 2cm 8cm 2cm, clip=true, totalheight=0.33\textheight, angle=270]{interferenceModel.pdf}
+\caption{Low power border router}
+\label{fig_interferenceModel}
+\end{figure}
+
+We simulated a controlled interference node that generates semi-periodic bursty interference to resemble a simplified Wi-Fi or Bluetooth transmitter on several channels at random. We use the interference model proposed in \cite{interferenceModel}. The interference has two states, a clear state and an interference state. 
+In the interference state, the interference node generates packets for a time that is uniformly distributed between $9/16$ seconds and $15/16$ seconds. In the clear state the interferer produces no packets and stays in this state for between $3/4 * \emph{clear\textunderscore time}$ and $5/4 * \emph{clear\textunderscore time}$ where \emph{clear\textunderscore time} refers to the rate of interference. The model is illustration in Figure \ref{fig_interferenceModel}.
 We use multiple channels interference in our simulation to show our hypothesis that our multichannel protocol can help avoid interference. We consider the scenario where ContikiMAC with RPL system is subject to interference on its channel after set up has successfully completed so the RPL set up is allowed to complete before interference begins.
 
-We use an end-to-end packet delivery performance metric to evaluate MCRP. The transmission success rate is calculated from the sender to the receiver over multiple hops. We also look at the loss over time to observe the protocol performance in the presence of interference. We considered two multiple channels interference scenarios; (1) extreme and no interference rate on 8 channels each and (2) extreme, moderate, mild and no interference rate on 4 channels each. The interference channels are randomly chosen from the available 16 channels and the same interference channels and rates are used throughout the experiments. However, channel 26 is kept clear from interference in order to ensure RPL set up is unaffected. In scenario 1, we fixed the interference rate to extreme and no interference to observe the effect it has on channel changing decisions. In scenario 2, we vary the interference rate to observe how MCRP copes in deciding a channel when there is more interference than scenario 1 but with less interference intensity. 
+%We use an end-to-end packet delivery performance metric to evaluate MCRP. The transmission success rate is calculated from the sender to the receiver over multiple hops. 
+We also look at the loss over time to observe the protocol performance in the presence of interference. We considered two multiple channels interference scenarios; (1) extreme and no interference rate on 8 channels each and (2) extreme, moderate, mild and no interference rate on 4 channels each. The interference channels are randomly chosen from the available 16 channels and the same interference channels and rates are used throughout the experiments. However, channel 26 is kept clear from interference in order to ensure RPL set up is unaffected. In scenario 1, we fixed the interference rate to extreme and no interference to observe the effect it has on channel changing decisions. In scenario 2, we vary the interference rate to observe how MCRP copes in deciding a channel when there is more interference than scenario 1 but with less interference intensity. 
 
 We run the simulation for a duration of 45-60 minutes to send 210-560 packets. When the nodes are switched on for the first time, all nodes are initialised to channel 26, the default channel for Contiki MAC layer. RPL is allowed five minutes to set up (which is ample time). RPL topology is formed in a minute. We wait for another five minutes to allow trickle timer to double the interval length so that RPL control messages are not being sent frequently. We then let our multichannel protocol runs for 25 minutes. In our 15 nodes simulation, our protocol takes 20-25 minutes to run the channel change set up. We allow another 5 minutes wait time if retransmissions happen. 
 In a single channel simulation, all the nodes are changed to channel 22 after 5 minutes of RPL set up time. This allows RPL to have enough time to discover all nodes to form an optimised topology. The topology formation does not form completely if the interference node interferes from the beginning. The interference node starts sending packets to interfere after 3 minutes the system is switched on so that the interference channel is involve in the channel changes decision. We proved that our protocol tries to avoid changing to the interference channel through time out and probing failures. After 30 minutes, the client nodes will send a normal packet periodically every 30-60 seconds to LPBR. This is done in order to avoid collision of the nodes sending at the same time. 
 
-The simulations are repeated ten times. In all plots, the mean value of the ten simulations is plotted with error bars corresponding to one standard deviation in either deviation to give a measure of repeatability. The plots are of the proportion of received packets (from 0\% to 100\%) against time where the loss is measured over the previous time period.  The x-value is shifted slightly left and right to prevent error bars overlapping.
+%The simulations are repeated ten times. In all plots, the mean value of the ten simulations is plotted with error bars corresponding to one standard deviation in either deviation to give a measure of repeatability. The plots are of the proportion of received packets (from 0\% to 100\%) against time where the loss is measured over the previous time period.  The x-value is shifted slightly left and right to prevent error bars overlapping.
+
+\subsection{Testbed}
+
+\begin{figure}
+\centering
+\includegraphics[trim=0cm 0cm 0cm 0cm, clip=true, totalheight=0.33\textheight]
+{flocklabLayout.pdf}
+\caption{Layout of FlockLab deployment including information about link qualities and noise}
+\label{fig_flocklab}
+\end{figure}
+
+Similar to the simulation settings, the nodes run on IPv6, using UDP with standard RPL and 6LoWPAN protocols. the network consists of 26 nodes; 1 border router node and 25 duty cycled nodes. The nodes are distributed in offices, hallways and storerooms across one floor in an office building. We do not introduce interference nodes as the testbed has external interference from the surrounding (e.g. from the co-located Wi-Fi or limited connectivity) to see the effect on MCRP. The link qualities estimation information of the tesbed is displayed on the FlockLab website. The link qualities and routing change throughout the day as the noise level on all channels and frequency bands are tested during testbed idle times.
+
+///CHANGE We run the simulation for a duration of 45-60 minutes to send 210-560 packets. When the nodes are switched on for the first time, all nodes are initialised to channel 26, the default channel for Contiki MAC layer. RPL is allowed five minutes to set up (which is ample time). RPL topology is formed in a minute. We wait for another five minutes to allow trickle timer to double the interval length so that RPL control messages are not being sent frequently. We then let our multichannel protocol runs for 25 minutes. In our 15 nodes simulation, our protocol takes 20-25 minutes to run the channel change set up. We allow another 5 minutes wait time if retransmissions happen. 
 
 \section{Evaluation}
 The performance of MCRP is compared against the standard ContikiMAC with RPL. We analyse MCRP using an end-to-end packet delivery performance metric.
 
-\subsection{Packet loss rates with single channel RPL versus multi-channel}
+We use an end-to-end packet delivery performance metric to evaluate MCRP. The transmission success rate is calculated from the sender to the receiver over multiple hops. 
+
+The simulations are repeated ten times. In all plots, the mean value of the ten simulations is plotted with error bars corresponding to one standard deviation in either deviation to give a measure of repeatability. The plots are of the proportion of received packets (from 0\% to 100\%) against time where the loss is measured over the previous time period.  The x-value is shifted slightly left and right to prevent error bars overlapping.
+
+\subsection{Packet Loss Rates}
 The performance obtained in ContikiMAC with RPL (single channel) is compared with our protocol in terms of packet loss rate.
-As described previously, levels of interference used (referred to as \emph{clear\textunderscore time} in \cite{Boano:2010:MSM:2127940.2127963})
+As described previously, levels of interference used (referred to as \emph{clear\textunderscore time} in \cite{interferenceModel})
 vary between 100\% (no interference), 75\% (mild), 50\% (moderate) and 25\% (extreme) where the percentage is the ratio of the time the channel is clear for transmission.  All our tests have a common format: the RPL procedure is allowed to set up without interference in order not to bias subsequent tests.
 Then the interferers begin to operate with a constant level (none, mild, moderate or extreme).
 
 \begin{figure}
 \centering
-\includegraphics[width=0.45\textwidth]{single_channel.pdf}
+\includegraphics[width=0.78\textwidth]{single_channel.pdf}
 \caption{Level of packet loss for mild, moderate and extreme interference levels using single channel}
 \label{fig:interference}
 \end{figure}
 
 \begin{figure}
 \centering
-\includegraphics[width=0.45\textwidth]{multi_channel.pdf}
+\includegraphics[width=0.78\textwidth]{multi_channel.pdf}
 \caption{Level of packet loss for scenario 1 and scenario 2 using multi channel}
 \label{fig:multi_interference}
 \end{figure}
