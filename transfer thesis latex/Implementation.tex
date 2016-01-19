@@ -1,11 +1,12 @@
 \chapter{Implementation}
 \label{implementation}
 
-MCRP is implemented on the TelosB mote platform. It uses Contiki operating system as the software development (platform?) with full support of the standard IPv6. The implementation of MCRP are describe, including changes that were done (undertaken) in addition to the default parameters and settings for Contiki.
+MCRP is implemented on the TelosB mote platform. It uses Contiki, a lightweight operating system as the software development platform that supports the standard IPv6. The implementations of MCRP across the layers in Contiki are described in details, specifying the changes that were introduced and undertaken in addition to the default parameters and settings in Contiki.
 
-Contiki is a lightweight operating system with support for dynamic loading and replacement of individual programs and services. The purpose of the Contiki design is to reduce size and complexity, as well as to preserve flexibility. A running Contiki system consists of the kernel, libraries, the program loader and a set of processes (may be either an application program or a service - functionality used by more than one application process e.g. includes communication protocol stacks, sensor device drivers) \cite{contiki}. 
+%Contiki is a lightweight operating system with support for dynamic loading and replacement of individual programs and services. The purpose of the Contiki design is to reduce size and complexity, as well as to preserve flexibility. A running Contiki system consists of the kernel, libraries, the program loader and a set of processes (may be either an application program or a service - functionality used by more than one application process e.g. includes communication protocol stacks, sensor device drivers) \cite{contiki}. 
  
-\section{Protocol Stack (changes at MAC, RT, NBR TB, BR etc.)}
+%\section{Contiki Protocol Stack (changes at MAC, RT, NBR TB, BR etc.)}
+\section{Contiki}
 MCRP is a cross layer protocol implemented on Contiki version 2.7. (explain what is cross layer? why do cross layer? FIGURE OF STACKS)
 
 Contiki is a four layers network stack; network, MAC, radio duty cycling (RDC) and radio layers. The network layer includes support for TCP and UDP, IPv6, IPv4, 6lowpan and RPL (routing). Traditional TCP/IP implementations have required far too much resources which is impossible to fit in a sensor that has limited RAM capabilities (RAM is the most scarce resource). uIP \cite{uip} is a small RFC-compliant TCP/IP stack that makes it possible for Contiki to communicate over the Internet. uIP implementation is designed to have only the absolute minimal set of features needed for a full TCP/IP stack such as IP, ICMP, UDP and TCP protocols. The uIP is mostly concerned with the TCP and IP protocols and upper layer protocols \cite{contikiDoc, contikiUIP}. 
