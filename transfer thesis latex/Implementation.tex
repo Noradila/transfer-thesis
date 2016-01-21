@@ -140,7 +140,6 @@ The protocol implementation is separated into two types of nodes: i) the central
 %//access Network layer - Neighbour table, set channel
 
 \subsection{Low Power Border Router}
-As sensors have limited memory, we decided to move most decision making (processing decisions) at LPBR to a PC as it more RAM and better processing capabilities. This enables us to have more thorough processes. As describes previously, the protocol stack is divided into two main parts as shown is figure \ref{fig_lpbr} where the PC is responsible as the application, transport, network and routing layers while a sensor is set as the wireless interface to enable the PC to communicate with the other nodes. LPBR is a special case as channel changes at LPBR is not as direct as other sensor nodes due to this two parts. However, it works similar ways to the other nodes.
 
 \begin{figure}
 \centering
@@ -149,11 +148,17 @@ As sensors have limited memory, we decided to move most decision making (process
 \label{fig_lpbr}
 \end{figure}
 
+As sensors have limited memory, most processing decisions at LPBR are transferred to a PC as it has more RAM and better processing capabilities. This enables MCRP to have more thorough processes and to run in real time without draining the memory and battery on a sensor. LPBR is divided into two main parts as shown in Figure \ref{fig_lpbr} where the PC is responsible as the application, transport, network and routing layers while a sensor (labelled slip radio) is set as the wireless interface to enable the PC to communicate with the other nodes via Contiki tunslip tool. 
+
+The LPBR acts as the tree root in RPL where it will initiate the creation of the RPL routing tree. LPBR is a special case as channel changes at LPBR is not as direct as other sensor nodes due to this two parts. However, it works similar ways to the other nodes.
+
+%It (tunslip6) sets up an interface on the Linux IP stack and connects this interface via a socket to the border router node.
+%Border router is used to bridge the wireless IPv6 network to a PC via serial link which enables the IPv6 network traffic to reach outside network and the Internet.
+%A node is used as a wireless interface (IEEE 802.15.4 to enable the serial socket server), a host machine as border router to bridge the wireless IPv6 network to outside network and the Internet.
+
 %trim top left
 
 LPBR main responsibility is to decide on the new channel selection. LPBR has no knowledge of all the channels condition at this point, thus, a channel is selected at random. LPBR keeps the results from the channel changes processes and based on it when selecting a new channel for the next node to ensure the new channel is at least two-hop away from another node using the same channel. This is done to ensure that the nearby nodes do not communicate of the same channel and risk interfering with each other.
-
-The pseudo-code of the two-hops colouring algorithm that we implemented in new channel selection is shown in Algorithm \ref{twohop_algo}. When the new channel is selected, LPBR will send the value to the intended node.
 
 \begin{algorithm}
 \caption{Pseudo-code for two-hop colouring algorithm}
@@ -185,13 +190,13 @@ The pseudo-code of the two-hops colouring algorithm that we implemented in new c
 \end{algorithmic}
 \end{algorithm}
 
-/////RPL border router is used as LPBR in order to move most processing decisions on a PC as it has more RAM and better processing capabilities than a sensor. (Explain BR-SR how it works!)
-TelosB has limited RAM and ROM of 10K bytes and 48K bytes of flash memory \cite{telosb-datasheet}. By using a border router, this allows channel changing to be decided in real time without draining the memory and battery on a sensor. The border router also acts as the root of the tree. The border router will setup the IPv6 prefix of the network and will initiate the creation of the RPL routing tree.
-It (tunslip6) sets up an interface on the Linux IP stack and connects this interface via a socket to the border router node.
-Border router is used to bridge the wireless IPv6 network to a PC via serial link which enables the IPv6 network traffic to reach outside network and the Internet.
-A node is used as a wireless interface (IEEE 802.15.4 to enable the serial socket server), a host machine as border router to bridge the wireless IPv6 network to outside network and the Internet./////
+The pseudo-code of the implemented two-hops colouring algorithm for new channel selection is shown in Algorithm \ref{twohop_algo}. When the new channel is selected, LPBR will send the value to the intended node.
 
-The new channel is stored in the buffer before the data is sent over SLIP to the radio-chip (slip-radio). As the slip radio is unable to access the neighbour table where the next hop node channel is stored, the channel value is passed through the buffer. LPBR keeps the updated value of all it's neighbours channels in the neighbour channel. Slip radio that receives the packet buffer can access the channel value and kept the value is a simplified version of the neighbour table. This is done in order to ensure that the packet that is being queued or retransmitted are send on the correct channel. The packets destination, which in this case, the next hop node is first check before the packet is transmitted each time. The MAC layer sets the channel accordingly before sending. ContikiMAC can access the simplified neighbour table as it is on the slip radio. The simplified neighbour table only keeps the information of the node neighbours and neighbours channels which are the critical information in order to transmit packets correctly. The other information that is related to the neighbours conditions are monitored at the PC. 
+%/////RPL border router is used as LPBR in order to move most processing decisions on a PC as it has more RAM and better processing capabilities than a sensor. (Explain BR-SR how it works!)
+%TelosB has limited RAM and ROM of 10K bytes and 48K bytes of flash memory \cite{telosb-datasheet}. By using a border router, this allows channel changing to be decided in real time without draining the memory and battery on a sensor. The border router also acts as the root of the tree. The border router will setup the IPv6 prefix of the network and will initiate the creation of the RPL routing tree.
+%It (tunslip6) sets up an interface on the Linux IP stack and connects this interface via a socket to the border router node.
+%Border router is used to bridge the wireless IPv6 network to a PC via serial link which enables the IPv6 network traffic to reach outside network and the Internet.
+%A node is used as a wireless interface (IEEE 802.15.4 to enable the serial socket server), a host machine as border router to bridge the wireless IPv6 network to outside network and the Internet./////
 
 \begin{figure}
 \centering
@@ -201,25 +206,18 @@ The new channel is stored in the buffer before the data is sent over SLIP to the
 \end{figure}
 %top, left, bottom, right
 
-LPBR processes are shown in \ref{lpbrProcess}.
-The slip-radio resets to it's listening channel after the packet is transmitted. LPBR will wait and listen to any incoming packets. *In the channel probing phase, LPBR does not take part in probing. However, LPBR is informed of the results of probing and kept a table of the probing results and channels to be able to use the information when deciding on a channel change based on the previous results of probing on the known channels.
+The new channel is stored in the buffer before the data is sent over SLIP to the radio-chip (slip-radio). As the slip radio is unable to access the neighbour table where the next hop node channel is stored, the channel value is passed through the buffer. LPBR keeps the updated value of all it's neighbours channels in the neighbour channel. Slip radio that receives the packet buffer can access the channel value and kept the value is a simplified version of the neighbour table. This is done in order to ensure that the packet that is being queued or retransmitted are send on the correct channel. The packets destination, which in this case, the next hop node is first check before the packet is transmitted each time. The MAC layer sets the channel accordingly before sending. ContikiMAC can access the simplified neighbour table as it is on the slip radio. The simplified neighbour table only keeps the information of the node neighbours and neighbours channels which are the critical information in order to transmit packets correctly. The other information that is related to the neighbours conditions are monitored at the PC. 
 
-Before passing to slip-radio, the header from $uip\_buf$ is compress to $packetbuf$. From $packetbuf$ to $uip\_buf$ is it decompress to access the data from the upper layers.  
+LPBR processes are shown in Figure \ref{lpbrProcess}.
+The slip-radio resets to it's listening channel after the packet is transmitted. LPBR will wait and listen to any incoming packets. In the channel probing phase, LPBR does not take part in probing. However, LPBR is informed of the results of probing and kept a table of the probing results and channels to be able to use the information when deciding on a channel change based on the previous results of probing on the known channels.
 
--send to BR RDC, check nbr table for the currentCh. pass the value to s-r. save the chvalue in a simplified nbr table to allow retx/queue to send on correct ch.
-MAC set the channel accordingly before sending.
-Change to its listening channel after finish sending. 
+%Before passing to slip-radio, the header from $uip\_buf$ is compress to $packetbuf$. From $packetbuf$ to $uip\_buf$ is it decompress to access the data from the upper layers.  
+
+%-send to BR RDC, check nbr table for the currentCh. pass the value to s-r. save the chvalue in a simplified nbr table to allow retx/queue to send on correct ch.
+%MAC set the channel accordingly before sending.
+%Change to its listening channel after finish sending. 
 
 \subsection{Other Nodes (MAC Layer?)}
-As MCRP is a cross-layer protocol, packets that have not been transmitted are kept in the buffer. In order for the transmission to be on the correct channel, the neighbour table in the network layer is accessed and the channel is set to the transmitting channel. 
-
-ContikiMAC has retransmitted, collisions valued. These values are used in probing to decide on the channel condition. These values are passed to the application layer to decide on channel change. The packet can be retransmitted for ( ) times before it is dropped. However, if the channel is busy, and the packet has not been sent (collisions before sending), it can stay in the loop for a long time.
-
-//////It uses (EXPLAIN CONTIKIMAC - refer to contikimac paper; why it's good, how it works). Also about retransmission and buffers. (maybe at next section???) The transmitting channel is set at the MAC layer as packets are not send immediately if there are packets being queued. The channel is reset to the transmitting channel before it tries to send and it is then reset to the listening channel to wait and listen to any packets that is being sent to the node. 
-
-The default ContikiMAC is a single channel protocol. It is modified to be able to work with multi channel nodes while (stick/hold/is) on the same principle of a low power ContikiMAC (minor changes to support multi channel without changing the main purpose of ContikiMAC).//////
-
-All nodes keep the neighbours channel in the neighbour table. Unlike LPBR, other nodes have all the layers within the node. This makes change changes less complicated, however, the nodes are being limited by the number of RAM is has which resulted in results of probing to be kept by the centralised LPBR. The node however, keep probing results temporarily before deciding on the channel. The node is cross-layer as it can access information at any layer.
 
 \begin{figure}
 \centering
@@ -228,13 +226,25 @@ All nodes keep the neighbours channel in the neighbour table. Unlike LPBR, other
 \label{fig_otherNodes}
 \end{figure}
 
+The new channel from LPBR that is received by the destination node is saved. 
 Figure \ref{fig_otherNodes} shows the processes that the node takes in the channel change. When LPBR sends a channel change message to the destination node, the destination node will send a packet to acknowledge the channel change message. If LPBR does not receive the message, the channel change message is retransmitted. LPBR is then wait and listens for any incoming packets. At this point, channel changes processes will take place between the node and its neighbours.
+
+All nodes keep the neighbours channel in the neighbour table. Unlike LPBR, other nodes have all the layers within the node. This makes change changes less complicated, however, the nodes are being limited by the number of RAM is has which resulted in results of probing to be kept by the centralised LPBR. The node however, keep probing results temporarily before deciding on the channel. The node is cross-layer as it can access information at any layer.
 
 The node sends the new channel to all the neighbours. At this point, the new channel is not check. However, all neighbours need to know the new channel as the node will be listening on the new channel. Otherwise, packets cannot be received by the node. The neighbours that receive the node channel will update their neighbour table at the application layer. As this is an important step in order to reduce the number of packet loss due to sending on the wrong channel, neighbours will send an acknowledgement of the new channel. Otherwise, it will be retransmitted. 
 
 The node will then send a message to the neighbour that is a route node to start sending probing messages on the new channel. Not all neighbours are used routes. The neighbours are chosen as route based on RPL (//describe RPL briefly how if choose route). The node will listens on the new channel and wait for the probe message. The route node starts sending probing messages every 3 seconds to allow retransmission or collision that could happen due to the channel being busy (////what is retransmission? what is collision??? how it happens? how long? collision has no time out!). As the we are sending a small number of probing, to increase the channel reliability of the probing, we also take into account the number of retransmission and collision that happen. As the retransmission and collision is a link layer process, the values are kept in a table and is sent in the next probe message. This is because the value is only valid for that run. It gets reset each time a new packet is sent or received. The table is accessed at the application layer before the next probing message is sent. The probing message includes the number of tries the previous packet had taken before it is received. These values are used to decide if the channel is better than the current channel by giving a good probing result, meaning less retransmission.
 
 The node keeps the value of probing messages it receives. It sends all the probing results to LPBR. LPBR could use the information to decide on a channel or blacklist bad channels. It then use the values to decide whether the new channel is better than the previous channel by setting a threshold. The node then send the channel that it confirms to be listening on to all neighbours. The channel can be the new channel or reverting to the previous channel. The neighbours will send an acknowledgement back to the node. This is also important to ensure that all neighbours could communicate with the node on the correct channel. The neighbours will update their neighbour table of the node channel. 
+
+As MCRP is a cross-layer protocol, packets that have not been transmitted are kept in the buffer. In order for the transmission to be on the correct channel, the neighbour table in the network layer is accessed and the channel is set to the transmitting channel. 
+
+ContikiMAC has retransmitted, collisions valued. These values are used in probing to decide on the channel condition. These values are passed to the application layer to decide on channel change. The packet can be retransmitted for ( ) times before it is dropped. However, if the channel is busy, and the packet has not been sent (collisions before sending), it can stay in the loop for a long time.
+
+//////It uses (EXPLAIN CONTIKIMAC - refer to contikimac paper; why it's good, how it works). Also about retransmission and buffers. (maybe at next section???) The transmitting channel is set at the MAC layer as packets are not send immediately if there are packets being queued. The channel is reset to the transmitting channel before it tries to send and it is then reset to the listening channel to wait and listen to any packets that is being sent to the node. 
+
+The default ContikiMAC is a single channel protocol. It is modified to be able to work with multi channel nodes while (stick/hold/is) on the same principle of a low power ContikiMAC (minor changes to support multi channel without changing the main purpose of ContikiMAC).//////
+
 
 
 \subsection{Routing Layer - Neighbour Discovery}
