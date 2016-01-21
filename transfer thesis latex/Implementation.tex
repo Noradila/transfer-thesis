@@ -64,8 +64,6 @@ Applications in Contiki can decide to use one of the communication stacks availa
 \subsection{Buffer Management}
 Chameleon \cite{rime} is a communication architecture in Contiki that consists of Rime communication stack and a set of packet transformation modules. It uses an abstract representation of the information which allows access to the low-level features of the underlying MAC and link layer protocol from the applications and layers implemented on top of the Chameleon architecture. It also allows the output from the protocol stack to be adapted by other communication protocols. In Chameleon architecture, the parsing of its header is separated from the communication stack. This allows uIP or Rime communication stack to be used as described in Section \ref{commstack}. Chameleon architecture enables the layers to access information without violating the layering principle. 
 
-
-
 %other communication protocols such as link and MAC layer protocols and TCP/IP. -input output?
 
 %It allows access to the features of underlying MAC and link layer protocols for the implemented protocols on top of the architecture. 
@@ -108,16 +106,17 @@ Protocols that need to queue packets allocate the queue buffer dynamically. Queu
 %The default ContikiMAC is a single channel protocol. It is modified to be able to work with multi channel nodes while (stick/hold/is) on the same principle of a low power ContikiMAC (minor changes to support multi channel without changing the main purpose of ContikiMAC).
 
 \subsection{SLIP}
-RPL border router is used as LPBR in order to move most processing decisions on a PC as it has more RAM and better processing capabilities than a sensor. (Explain BR-SR how it works!)
-TelosB has limited RAM and ROM of 10K bytes and 48K bytes of flash memory \cite{telosb-datasheet}. By using a border router, this allows channel changing to be decided in real time without draining the memory and battery on a sensor. The border router also acts as the root of the tree. The border router will setup the IPv6 prefix of the network and will initiate the creation of the RPL routing tree.
-It (tunslip6) sets up an interface on the Linux IP stack and connects this interface via a socket to the border router node.
-Border router is used to bridge the wireless IPv6 network to a PC via serial link which enables the IPv6 network traffic to reach outside network and the Internet.
-A node is used as a wireless interface (IEEE 802.15.4 to enable the serial socket server), a host machine as border router to bridge the wireless IPv6 network to outside network and the Internet.
+Serial Line Internet Protocol (SLIP) \cite{slip} is a protocol that has a low complexity and small overhead commonly used to encapsulate IP packets for point-to-point communication between the sink (LPBR) and the device connected such as an embedded PC across the serial connections. The communication between the devices can take place on any reliable network such as the Ethernet where the sinks can be connected to an embedded PC which contain an Ethernet interface.
+%which the interface is available in the embedded PC.
 
-Serial Line Internet Protocol (SLIP) //need reference!!!] is used for the communication between the sink and the device which it connected to such as an embedded PC. SLIP is commonly used to encapsulate IP packets for transmission across the serial line of micro-controller devices. SLIP has a low complexity and small overhead. For the communication between the devices (embedded PCs), any reliable network can be used (e.g. Ethernet). The sinks are connected to an embedded PC which contains an Ethernet interface. The communication between the sink (sensor node) and the embedded PC makes use of SLIP. Contiki already provides support for SLIP communication and includes a tunslip tool (need reference!!!) which make it possible to communicate with devices using SLIP. The tool constructs a SLIP tunnel between a physical serial interface and a virtual network adaptor. By using tunslip the communication between the sink and the embedded PC is facilitated \cite{multipleSinks}.
+%Serial Line Internet Protocol (SLIP) //need reference!!!] is used for the communication between the sink and the device which it connected to such as an embedded PC. 
+%SLIP is commonly used to encapsulate IP packets for transmission across the serial line of micro-controller devices. 
+%SLIP has a low complexity and small overhead. 
+%For the communication between the devices (embedded PCs), any reliable network can be used (e.g. Ethernet). 
+%The sinks are connected to an embedded PC which contains an Ethernet interface. The communication between the sink (sensor node) and the embedded PC makes use of SLIP. 
+Contiki already provides support for SLIP communication and includes a tunslip tool (need reference!!!) which make it possible to communicate with devices using SLIP. The tool constructs a SLIP tunnel between a physical serial interface and a virtual network adaptor. By using tunslip the communication between the sink and the embedded PC is facilitated \cite{multipleSinks}.
 
 Tunslip is a too used to bridge IP traffic between a host and another network element, typically a border router, over a serial line. Tunslip creates a virtual network interface (tun) on the host side and uses SLIP (serial line internet protocol) to encapsulate and pass IP traffic to and from the other side of the serial line. The network element sitting on the other side of the line does a similar job with it's network interface. The tun interface can be used like any real network interface: routing, traffic forwarding etc \cite{tunslip}.
-
 
 
 \section{MCRP Implementation}
@@ -173,6 +172,12 @@ The pseudo-code of the two-hops colouring algorithm that we implemented in new c
 %\EndIf
 \end{algorithmic}
 \end{algorithm}
+
+/////RPL border router is used as LPBR in order to move most processing decisions on a PC as it has more RAM and better processing capabilities than a sensor. (Explain BR-SR how it works!)
+TelosB has limited RAM and ROM of 10K bytes and 48K bytes of flash memory \cite{telosb-datasheet}. By using a border router, this allows channel changing to be decided in real time without draining the memory and battery on a sensor. The border router also acts as the root of the tree. The border router will setup the IPv6 prefix of the network and will initiate the creation of the RPL routing tree.
+It (tunslip6) sets up an interface on the Linux IP stack and connects this interface via a socket to the border router node.
+Border router is used to bridge the wireless IPv6 network to a PC via serial link which enables the IPv6 network traffic to reach outside network and the Internet.
+A node is used as a wireless interface (IEEE 802.15.4 to enable the serial socket server), a host machine as border router to bridge the wireless IPv6 network to outside network and the Internet./////
 
 The new channel is stored in the buffer before the data is sent over SLIP to the radio-chip (slip-radio). As the slip radio is unable to access the neighbour table where the next hop node channel is stored, the channel value is passed through the buffer. LPBR keeps the updated value of all it's neighbours channels in the neighbour channel. Slip radio that receives the packet buffer can access the channel value and kept the value is a simplified version of the neighbour table. This is done in order to ensure that the packet that is being queued or retransmitted are send on the correct channel. The packets destination, which in this case, the next hop node is first check before the packet is transmitted each time. The MAC layer sets the channel accordingly before sending. ContikiMAC can access the simplified neighbour table as it is on the slip radio. The simplified neighbour table only keeps the information of the node neighbours and neighbours channels which are the critical information in order to transmit packets correctly. The other information that is related to the neighbours conditions are monitored at the PC. 
 
