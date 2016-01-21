@@ -45,6 +45,7 @@ Contiki's configuration options for communications, buffer management and interf
 %///RPL does not rely on any particular features of a specific link-layer technology.  RPL is designed to be able to operate over a variety of different link layers, including ones that are constrained, potentially lossy, or typically utilized in conjunction with highly constrained host or router devices, such as but not limited to, low-power wireless or PLC (Power Line Communication) technologies.\cite{winter2012rpl}
 
 \subsection{Communication Stacks}
+\label{commstack}
 Contiki contains two communication stacks, uIP and Rime.
 uIP \cite{uip} is a small RFC-compliant TCP/IP stack that is designed to contain only the essential (required/necessary) features to provide Contiki with TCP/IP networking support to allow Contiki to communicate over the Internet compared to the traditional TCP/IP that requires (high) resources to fit in a limited RAM capabilities of a sensor. The minimal set of features includes IP, ICMP, UDP and TCP protocols compared to the traditional TCP/IP that requires (high) resources that could not be supported in the limited RAM capabilities sensor. The uIP is mostly concerned with the TCP and IP protocols and upper layer protocols \cite{contikiDoc, contikiUIP}. 
 
@@ -61,10 +62,9 @@ Applications in Contiki can decide to use one of the communication stacks availa
 %Traditional TCP/IP implementations have required far too much resources which is impossible to fit in a sensor that has limited RAM capabilities (RAM is the most scarce resource). uIP \cite{uip} is a small RFC-compliant TCP/IP stack that makes it possible for Contiki to communicate over the Internet. uIP implementation is designed to have only the absolute minimal set of features needed for a full TCP/IP stack such as IP, ICMP, UDP and TCP protocols. The uIP is mostly concerned with the TCP and IP protocols and upper layer protocols \cite{contikiDoc, contikiUIP}. 
 
 \subsection{Buffer Management}
-Chameleon \cite{rime} is a communication architecture in Contiki that consists of Rime communication stack and a set of packet transformation modules. 
+Chameleon \cite{rime} is a communication architecture in Contiki that consists of Rime communication stack and a set of packet transformation modules. It uses an abstract representation of the information which allows access to the low-level features of the underlying MAC and link layer protocol from the applications and layers implemented on top of the Chameleon architecture. It also allows the output from the protocol stack to be adapted by other communication protocols. In Chameleon architecture, the parsing of its header is separated from the communication stack. This allows uIP or Rime communication stack to be used as described in Section \ref{commstack}. Chameleon architecture enables the layers to access information without violating the layering principle. 
 
-It uses an abstract representation of the information which allows access to the low-level features of the underlying MAC and link layer protocol from the applications and layers implemented on top of the Chameleon architecture without violating the layering principle. It also allows the output from the protocol stack to be adapted by the low-level protocols.
-Chameleon architecture enables the access to and from low-level information without violating the layering principle. 
+
 
 %other communication protocols such as link and MAC layer protocols and TCP/IP. -input output?
 
@@ -72,31 +72,40 @@ Chameleon architecture enables the access to and from low-level information with
 
 %The use of packet attributes makes it possible to adapt the output from the protocol stack to other communication protocols such as link and MAC layer protocols and TCP/IP.
 
-Chameleon is a header construction. The parsing is done separately from the communication stack which allows the use of uIP or Rime communication stack that both are supported in Contiki.
+%Chameleon is a header construction. The parsing is done separately from the communication stack which allows the use of uIP or Rime communication stack that both are supported in Contiki.
 
 %\cite{rime} introduces Chameleon, a communication architecture for sensor networks consists of Rime communication stack and a set of packet transformation modules. Rime communication stack provides a set of lightweight communication primitives ranging from best-effort anonymous local area broadcast to reliable network flooding. Protocols or applications running on top of Rime stack can implement additional protocols that are not in the Rime stack such as TCP/IP.
 
 %Chameleon does not define any packet headers but instead uses $packet attributes$, an abstract representation of the information usually found in packet headers to allow applications to access low-level information without violating the layering principle. Packet headers are produced by separate header transformation modules that transform application data and packet attributes into packets with header and payload. The use of packet attributes makes it possible to adapt the output from the protocol stack to other communication protocols such as link and MAC layer protocols and TCP/IP.
 %Chameleon architecture allows for sensor network protocols that are implemented on top of the architecture to take advantage of the features of underlying MAC and link layer protocols.
 
-In the buffer management of Chameleon architecture, all packets both outgoing and incoming are stored in a single buffer \cite{rimeposter}, called the Rime buffer. The Rime buffer contains both the application data and the packet attributes. All access to the Rime buffer is done at a single priority level so no locking mechanisms need to be used.
+In buffer management module of Chameleon architecture, all incoming and outgoing packets from the applications and packet attributes are stored in a single buffer called the Rime buffer \cite{uip, rime, rimeposter, contiki}. All layers of Contiki's network stack including uIP, Rime and the underlying link layer operate on the same packet buffer for the buffer management. The Rime buffer has no locking mechanisms as it is a single priority level buffer. The buffer only holds the current packet.
 
-Protocols that need to queue packets, such as MAC protocols that wait for the radio medium to be free, can allocate so-called queue buffers to hold the queued packet. Queue buffers are dynamically allocated from a pool of queue buffers. The contents of the Rime buffer, including the packet attributes, are copied into the queue buffer when it is allocated.
+Protocols that need to queue packets allocate the queue buffer dynamically. Queue buffer is used to hold the queued packets such as for MAC protocols that have high rate of incoming and outgoing messages before it can send or process the receiving packets; or when the radio is busy and the MAC protocol has to wait for the radio medium to be free before proceeding with transmissions. Queue buffer is used to avoid the risk of the packet overwritten by the newer packet. The Rime buffer contents are copied into the queue buffer when there is a queue buffer allocated.
 
-Rime's buffer management module is used by the underlying link layer for buffer management.
-////BUFFER MANAGEMENT - since it's related to uIP (Chameleon, Rime etc)
+%Protocols that need to queue packets, such as MAC protocols that wait for the radio medium to be free, can allocate so-called queue buffers to hold the queued packet. Queue buffers are dynamically allocated from a pool of queue buffers. The contents of the Rime buffer, including the packet attributes, are copied into the queue buffer when it is allocated.
 
-All layers of the netstack operate on the packet buffer. One buffer holds a single packet. ***Uses a single buffer for both incoming and outgoing packets \cite{uip, rime, rimeposter, contiki}. The packet buffer only holds the current packet.
+%All layers of the netstack operate on the packet buffer. 
+%Rime's buffer management module is used by the underlying link layer for buffer management.
+%The packet buffer only holds the current packet.
 
-Before passing to slip-radio, the header from $uip\_buf$ is compress to $packetbuf$.  
+%Even though it is called a Rime buffer, both uIP and Rime uses the same buffer.
 
-Buffer for uIP and Rime is the same. They use the same buffer.
- 
+%In the buffer management of Chameleon architecture, all packets both outgoing and incoming are stored in a single buffer \cite{rimeposter}, called the Rime buffer. 
+%The Rime buffer contains both the application data and the packet attributes. All access to the Rime buffer is done at a single priority level so no locking mechanisms need to be used.
+
+%Rime's buffer management module is used by the underlying link layer for buffer management.
+%////BUFFER MANAGEMENT - since it's related to uIP (Chameleon, Rime etc)
+
+%All layers of the netstack operate on the packet buffer. One buffer holds a single packet. ***Uses a single buffer for both incoming and outgoing packets \cite{uip, rime, rimeposter, contiki}. The packet buffer only holds the current packet.
+
+%Buffer for uIP and Rime is the same. They use the same buffer.
+%\subsection{Retransmission} 
 
 
-It uses (EXPLAIN CONTIKIMAC - refer to contikimac paper; why it's good, how it works). Also about retransmission and buffers. (maybe at next section???) The transmitting channel is set at the MAC layer as packets are not send immediately if there are packets being queued. The channel is reset to the transmitting channel before it tries to send and it is then reset to the listening channel to wait and listen to any packets that is being sent to the node. 
+%It uses (EXPLAIN CONTIKIMAC - refer to contikimac paper; why it's good, how it works). Also about retransmission and buffers. (maybe at next section???) The transmitting channel is set at the MAC layer as packets are not send immediately if there are packets being queued. The channel is reset to the transmitting channel before it tries to send and it is then reset to the listening channel to wait and listen to any packets that is being sent to the node. 
 
-The default ContikiMAC is a single channel protocol. It is modified to be able to work with multi channel nodes while (stick/hold/is) on the same principle of a low power ContikiMAC (minor changes to support multi channel without changing the main purpose of ContikiMAC).
+%The default ContikiMAC is a single channel protocol. It is modified to be able to work with multi channel nodes while (stick/hold/is) on the same principle of a low power ContikiMAC (minor changes to support multi channel without changing the main purpose of ContikiMAC).
 
 \subsection{SLIP}
 RPL border router is used as LPBR in order to move most processing decisions on a PC as it has more RAM and better processing capabilities than a sensor. (Explain BR-SR how it works!)
@@ -109,9 +118,6 @@ Serial Line Internet Protocol (SLIP) //need reference!!!] is used for the commun
 
 Tunslip is a too used to bridge IP traffic between a host and another network element, typically a border router, over a serial line. Tunslip creates a virtual network interface (tun) on the host side and uses SLIP (serial line internet protocol) to encapsulate and pass IP traffic to and from the other side of the serial line. The network element sitting on the other side of the line does a similar job with it's network interface. The tun interface can be used like any real network interface: routing, traffic forwarding etc \cite{tunslip}.
 
-RPL is used as the routing protocol. (explain how RPL works briefly since it's explained in LITERATURE REVIEW).
-
-We tailored RPL control messages to be able to accommodate MRCP proposal by enabling unicast to know neighbours and broadcast to detect new nodes to join the tree.  
 
 
 \section{MCRP Implementation}
@@ -181,6 +187,8 @@ The new channel is stored in the buffer before the data is sent over SLIP to the
 LPBR processes are shown in \ref{lpbrProcess}.
 The slip-radio resets to it's listening channel after the packet is transmitted. LPBR will wait and listen to any incoming packets. *In the channel probing phase, LPBR does not take part in probing. However, LPBR is informed of the results of probing and kept a table of the probing results and channels to be able to use the information when deciding on a channel change based on the previous results of probing on the known channels.
 
+Before passing to slip-radio, the header from $uip\_buf$ is compress to $packetbuf$. From $packetbuf$ to $uip\_buf$ is it decompress to access the data from the upper layers.  
+
 -send to BR RDC, check nbr table for the currentCh. pass the value to s-r. save the chvalue in a simplified nbr table to allow retx/queue to send on correct ch.
 MAC set the channel accordingly before sending.
 Change to its listening channel after finish sending. 
@@ -189,6 +197,10 @@ Change to its listening channel after finish sending.
 As MCRP is a cross-layer protocol, packets that have not been transmitted are kept in the buffer. In order for the transmission to be on the correct channel, the neighbour table in the network layer is accessed and the channel is set to the transmitting channel. 
 
 ContikiMAC has retransmitted, collisions valued. These values are used in probing to decide on the channel condition. These values are passed to the application layer to decide on channel change. The packet can be retransmitted for ( ) times before it is dropped. However, if the channel is busy, and the packet has not been sent (collisions before sending), it can stay in the loop for a long time.
+
+//////It uses (EXPLAIN CONTIKIMAC - refer to contikimac paper; why it's good, how it works). Also about retransmission and buffers. (maybe at next section???) The transmitting channel is set at the MAC layer as packets are not send immediately if there are packets being queued. The channel is reset to the transmitting channel before it tries to send and it is then reset to the listening channel to wait and listen to any packets that is being sent to the node. 
+
+The default ContikiMAC is a single channel protocol. It is modified to be able to work with multi channel nodes while (stick/hold/is) on the same principle of a low power ContikiMAC (minor changes to support multi channel without changing the main purpose of ContikiMAC).//////
 
 All nodes keep the neighbours channel in the neighbour table. Unlike LPBR, other nodes have all the layers within the node. This makes change changes less complicated, however, the nodes are being limited by the number of RAM is has which resulted in results of probing to be kept by the centralised LPBR. The node however, keep probing results temporarily before deciding on the channel. The node is cross-layer as it can access information at any layer.
 
@@ -211,6 +223,10 @@ The node keeps the value of probing messages it receives. It sends all the probi
 \subsection{Routing Layer - Neighbour Discovery}
 ///net/rpl/rpl-icmp6.c and rpl-timers.c - the changes done!!
 
+RPL is used as the routing protocol. (explain how RPL works briefly since it's explained in LITERATURE REVIEW).
+
+We tailored RPL control messages to be able to accommodate MRCP proposal by enabling unicast to know neighbours and broadcast to detect new nodes to join the tree.  
+
 ////DIO UNICAST
 RPL sends the control messages as broadcast. However, as we are now dealing with multi channels, using broadcast for all channels would waste the bandwidth and costly as it would take a longer time to go through all channels. It would also cause congestion and the node to be on the broadcast channel and not ready on it's listening channel to be able to receive any incoming packets as it has not finish with the control message broadcast. RPL DIO message is able to deal with either broadcast or unicast. By default, broadcast was used as RPL is usually used with a single channel MAC. We enable the unicast DIO.
 
@@ -227,6 +243,6 @@ If the neighbors do not receive the DIS from the new node before it is due to se
 
 One of the main reasons for this is because broadcasting on all channels would require more energy and it would take a longer time before all reachable nodes receive the control message. This could delay changes that might happen in the tree, i.e. changing of parent node. Secondly, we assumed that all nodes by default will switched on to the same default channel as that is how setup the nodes. While this is true in our simulation, this might not be the case in the real world where the nodes could start at any channel. We are looking into ways to overcome this problem.
 
-\section{Memory Footprint/Setup Overhead?}
--how many packets more than usual?
--memory consumption?
+%\section{Memory Footprint/Setup Overhead?}
+%-how many packets more than usual?
+%-memory consumption?
