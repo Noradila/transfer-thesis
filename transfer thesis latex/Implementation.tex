@@ -128,12 +128,16 @@ Contiki provides support to communicate with devices using SLIP through its tuns
 
 
 \section{MCRP Implementation}
-MCRP is implemented as an extension to the existing implementation of RPL with ContikiMAC; to enable multi channel.
-The protocol is implemented by tailoring existing code of ContikiMAC, network layer and RPL.
+MCRP is implemented in Contiki and uses ContikiMAC as the MAC protocol, RPL as the routing protocol. ContikiMAC is modified to allow multi channel where the channel selection processes take place on the upper layers and the channels are kept in the network neighbour table to ensure the correct channel.
+
+The protocol implementation is separated into two types of nodes: i) the centralised LPBR where the bridging takes place between the border router on a PC to the nodes, and ii) the decentralised transmission nodes referred as other nodes. The implementation for both types are described below.
+
+%MCRP is implemented as an extension to the existing implementation of RPL with ContikiMAC; to enable multi channel.
+%The protocol is implemented by tailoring existing code of ContikiMAC, network layer and RPL.
 
 %\subsection{Application Layer}
-//separate into 2; setCh and xSetCh as LPBR is separated with BR and SR
-//access Network layer - Neighbour table, set channel
+%//separate into 2; setCh and xSetCh as LPBR is separated with BR and SR
+%//access Network layer - Neighbour table, set channel
 
 \subsection{Low Power Border Router}
 As sensors have limited memory, we decided to move most decision making (processing decisions) at LPBR to a PC as it more RAM and better processing capabilities. This enables us to have more thorough processes. As describes previously, the protocol stack is divided into two main parts as shown is figure \ref{fig_lpbr} where the PC is responsible as the application, transport, network and routing layers while a sensor is set as the wireless interface to enable the PC to communicate with the other nodes. LPBR is a special case as channel changes at LPBR is not as direct as other sensor nodes due to this two parts. However, it works similar ways to the other nodes.
