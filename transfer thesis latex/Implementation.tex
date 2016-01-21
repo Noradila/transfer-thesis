@@ -38,7 +38,7 @@ MCRP is implemented on the TelosB mote platform. It uses Contiki, a lightweight 
 
 Contiki is defined by four layers network stack: the network layer, the MAC layer, the radio duty cycling (RDC) layer and the radio layers. The network layer includes support for TCP, UDP, IPv6, IPv4, RPL routing protocol and 6LoWPAN. IPv6 over Low Power Wireless Personal Area Networks (6LoWPAN) is a header compression and fragmentation format for IPv6 packets delivery over IEEE 802.15.4 networks \cite{6lowpan}. Contiki implements the minimal set of IPv6 protocol required, 6LoWPAN adaptation layer for IPv6 header compression and fragmentation which is routed over the low power and lossy networks (LLN) in RPL.
 
-Contiki's configuration options for communications, buffer management and interface (bridging) are explained before looking into MCRP implementation for ease of reading.
+Contiki's configuration options for communications, buffer management and network interface are explained before looking into MCRP implementation for ease of reading.
 
 %6LoWPAN working group specified header compression and fragmentation for IPv6 over IEEE 802.15.4 (///REFERENCE!!!) and the IETF RoLL working group designed the RPL protocol as a proposed standard for IPv6 routing in low-power and lossy networks (LLNs). Contiki implement the necessary parts of the IPv6 protocol, IPv6 header compression and fragmentation with the 6LoWPAN adaptation layer, routing over LLNs with the RPL protocol, as well as a set of protocols from the TCP/IP protocol suite \cite{beyondInteroperability}.
 
@@ -105,8 +105,8 @@ Protocols that need to queue packets allocate the queue buffer dynamically. Queu
 
 %The default ContikiMAC is a single channel protocol. It is modified to be able to work with multi channel nodes while (stick/hold/is) on the same principle of a low power ContikiMAC (minor changes to support multi channel without changing the main purpose of ContikiMAC).
 
-\subsection{SLIP}
-Serial Line Internet Protocol (SLIP) \cite{slip} is a protocol that has a low complexity and small overhead commonly used to encapsulate IP packets for point-to-point communication between the sink (LPBR) and the device connected such as an embedded PC across the serial connections. The communication between the devices can take place on any reliable network such as the Ethernet where the sinks can be connected to an embedded PC which contain an Ethernet interface.
+\subsection{Tunslip}
+Serial Line Internet Protocol (SLIP) \cite{slip} is a protocol that has a low complexity and small overhead commonly used to encapsulate IP packets for point-to-point communication between the sink (LPBR) and the device connected such as an embedded PC across the serial connections. The communication between the devices can take place on any reliable network such as the Ethernet where the LPBR can be connected to an embedded PC which contain an Ethernet interface.
 %which the interface is available in the embedded PC.
 
 %Serial Line Internet Protocol (SLIP) //need reference!!!] is used for the communication between the sink and the device which it connected to such as an embedded PC. 
@@ -114,9 +114,17 @@ Serial Line Internet Protocol (SLIP) \cite{slip} is a protocol that has a low co
 %SLIP has a low complexity and small overhead. 
 %For the communication between the devices (embedded PCs), any reliable network can be used (e.g. Ethernet). 
 %The sinks are connected to an embedded PC which contains an Ethernet interface. The communication between the sink (sensor node) and the embedded PC makes use of SLIP. 
-Contiki already provides support for SLIP communication and includes a tunslip tool (need reference!!!) which make it possible to communicate with devices using SLIP. The tool constructs a SLIP tunnel between a physical serial interface and a virtual network adaptor. By using tunslip the communication between the sink and the embedded PC is facilitated \cite{multipleSinks}.
 
-Tunslip is a too used to bridge IP traffic between a host and another network element, typically a border router, over a serial line. Tunslip creates a virtual network interface (tun) on the host side and uses SLIP (serial line internet protocol) to encapsulate and pass IP traffic to and from the other side of the serial line. The network element sitting on the other side of the line does a similar job with it's network interface. The tun interface can be used like any real network interface: routing, traffic forwarding etc \cite{tunslip}.
+Contiki provides support to communicate with devices using SLIP through its tunslip tool. Tunslip is used to bridge the IP traffic between the LPBR and the embedded PC over a serial line. The other side of the serial line does a similar job to bridge the embedded PC to the LPBR using the network interface. It constructs a SLIP tunnel between a virtual network interface (tun) and SLIP, the physical serial interface to encapsulate and pass the IP traffic to and from the other side of the serial line. The tun interface is used as any real network interface such as for routing and traffic forwarding \cite{tunslip, multipleSinks}.
+
+%Contiki already provides support for SLIP communication and includes a tunslip tool (need reference!!!) which make it possible to communicate with devices using SLIP. 
+%The tool constructs a SLIP tunnel between a physical serial interface and a virtual network adaptor. 
+%By using tunslip the communication between the sink and the embedded PC is facilitated \cite{multipleSinks}.
+
+%Tunslip is a too used to bridge IP traffic between a host and another network element, typically a border router, over a serial line. 
+%Tunslip creates a virtual network interface (tun) on the host side and uses SLIP (serial line internet protocol) to encapsulate and pass IP traffic to and from the other side of the serial line. 
+%The network element sitting on the other side of the line does a similar job with it's network interface. 
+%The tun interface can be used like any real network interface: routing, traffic forwarding etc \cite{tunslip}.
 
 
 \section{MCRP Implementation}
