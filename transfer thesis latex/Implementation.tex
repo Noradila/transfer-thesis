@@ -62,6 +62,7 @@ Applications in Contiki can decide to use one of the communication stacks availa
 %Traditional TCP/IP implementations have required far too much resources which is impossible to fit in a sensor that has limited RAM capabilities (RAM is the most scarce resource). uIP \cite{uip} is a small RFC-compliant TCP/IP stack that makes it possible for Contiki to communicate over the Internet. uIP implementation is designed to have only the absolute minimal set of features needed for a full TCP/IP stack such as IP, ICMP, UDP and TCP protocols. The uIP is mostly concerned with the TCP and IP protocols and upper layer protocols \cite{contikiDoc, contikiUIP}. 
 
 \subsection{Buffer Management}
+\label{bufmgmt}
 Chameleon \cite{rime} is a communication architecture in Contiki that consists of Rime communication stack and a set of packet transformation modules. It uses an abstract representation of the information which allows access to the low-level features of the underlying MAC and link layer protocol from the applications and layers implemented on top of the Chameleon architecture. It also allows the output from the protocol stack to be adapted by other communication protocols. In Chameleon architecture, the parsing of its header is separated from the communication stack. This allows uIP or Rime communication stack to be used as described in Section \ref{commstack}. Chameleon architecture enables the layers to access information without violating the layering principle. 
 
 %other communication protocols such as link and MAC layer protocols and TCP/IP. -input output?
@@ -250,13 +251,21 @@ LPBR could use the information from the node's \textit{Probe Result} to decide o
 
 The node then use the values to decide whether the new channel is better than the previous channel by setting a threshold. The node then send \textit{Confirm Channel} message to all neighbours that the node confirms to be listening on. The channel can be the new channel or the node can revert to the previous channel depending on the \textit{Probe Result}. The neighbours will send an acknowledgement back to the node confirming the change. This is also important to ensure that all neighbours could communicate with the node on the correct channel. The neighbours will update their neighbour table of the node channel. 
 
-As MCRP is a cross-layer protocol, packets that have not been transmitted are kept in the buffer. In order for the transmission to be on the correct channel, the neighbour table in the network layer is accessed and the channel is set to the transmitting channel. 
+\subsection{MAC Protocol}
+%As MCRP is a cross-layer protocol, 
+As explained in Section \ref{bufmgmt}, packets that have not been transmitted are queued in the buffer. The transmitting channel is set at the MAC layer as packets are not send immediately if there are packets being queued. ContikiMAC is a single channel protocol. It is modified to support multi channel while complying to the same low power ContikiMAC principle. Each time the node goes to sleep, it will wakes up on its listening channel waiting for incoming packets. If the node has a packet to send, it needs to change to the transmitting channel.
+
+In order for the packet transmission or retransmission to be on the correct channel, the neighbour channel saved in the \textit{neighbour table} at the network layer is accessed from the MAC layer and the channel is set to the transmitting channel. The node resets the channel to its listening channel after the transmission succeeded and waits for incoming packets before it goes back to sleep.
+
+%If the node has a packet to send, it needs to access the neighbour channel to be able to transmit a packet on the correct channel. 
 
 %ContikiMAC has retransmitted, collisions valued. These values are used in probing to decide on the channel condition. These values are passed to the application layer to decide on channel change. The packet can be retransmitted for ( ) times before it is dropped. However, if the channel is busy, and the packet has not been sent (collisions before sending), it can stay in the loop for a long time.
 
-//////It uses (EXPLAIN CONTIKIMAC - refer to contikimac paper; why it's good, how it works). Also about retransmission and buffers. (maybe at next section???) The transmitting channel is set at the MAC layer as packets are not send immediately if there are packets being queued. The channel is reset to the transmitting channel before it tries to send and it is then reset to the listening channel to wait and listen to any packets that is being sent to the node. 
+%//////It uses (EXPLAIN CONTIKIMAC - refer to contikimac paper; why it's good, how it works). Also about retransmission and buffers. (maybe at next section???) 
+%The transmitting channel is set at the MAC layer as packets are not send immediately if there are packets being queued. 
+%The channel is reset to the transmitting channel before it tries to send and it is then reset to the listening channel to wait and listen to any packets that is being sent to the node. 
 
-The default ContikiMAC is a single channel protocol. It is modified to be able to work with multi channel nodes while (stick/hold/is) on the same principle of a low power ContikiMAC (minor changes to support multi channel without changing the main purpose of ContikiMAC).//////
+%The default ContikiMAC is a single channel protocol. It is modified to be able to work with multi channel nodes while (stick/hold/is) on the same principle of a low power ContikiMAC (minor changes to support multi channel without changing the main purpose of ContikiMAC).//////
 
 
 
