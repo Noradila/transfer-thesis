@@ -255,9 +255,16 @@ The node then use the values to decide whether the new channel is better than th
 %As MCRP is a cross-layer protocol, 
 As explained in Section \ref{bufmgmt}, packets that have not been transmitted are queued in the buffer. The transmitting channel is set at the MAC layer as packets are not send immediately if there are packets being queued. ContikiMAC is a single channel protocol. It is modified to support multi channel while complying to the same low power ContikiMAC principle. Each time the node goes to sleep, it will wakes up on its listening channel waiting for incoming packets. If the node has a packet to send, it needs to change to the transmitting channel.
 
-In order for the packet transmission or retransmission to be on the correct channel, the neighbour channel saved in the \textit{neighbour table} at the network layer is accessed from the MAC layer and the channel is set to the transmitting channel. The node resets the channel to its listening channel after the transmission succeeded and waits for incoming packets before it goes back to sleep.
+In order for the packet transmission or retransmission to be on the correct channel, the neighbour channel saved in the \textit{neighbour table} at the network layer is accessed from the MAC layer and the channel is set to the transmitting channel. The node resets the channel to its listening channel after the transmission succeeded and goes back to sleep.
 
-Figure //// shows an example of xxxxx.
+\begin{figure}
+\centering
+\includegraphics[trim=2cm 2cm 10cm 2cm, clip=true, totalheight=0.6\textheight, angle=270]{macExample2.pdf}
+\caption{Multi channel ContikiMAC multi hop packet transmission}
+\label{fig_mac}
+\end{figure}
+
+Figure \ref{fig_mac} shows an example of a multi hop packet transmission. At each hop, the node changes to the next hop listening channel before forwarding the packet. In the example, node 4 is sending a packet to node 1, the LPBR through node 3 and node 2. Node 4 wakes up and check for incoming packets on its channel. As it has a packet to be sent to node 1, it checks the next hop channel which is node 3 and changes the channel to node 3 listening channel. It checks if the channel is clear for transmission and proceed to send the packet to node 3. Node 3 detects the packet when it wakes up and receive the packet. Node 3 sends the link layer acknowledgement to node 4 so that node 4 stops sending the packet. Node 3 forwards the packet to node 2 on node 2 channel and node 2 to node 1, the LPBR which is the destination node. All nodes reset their channel after the transmission and wake up on their own listening channel. 
 
 %If the node has a packet to send, it needs to access the neighbour channel to be able to transmit a packet on the correct channel. 
 
