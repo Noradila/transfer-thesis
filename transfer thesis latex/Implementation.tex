@@ -49,7 +49,7 @@ Contiki's configuration options for communications, buffer management and networ
 Contiki contains two communication stacks, uIP and Rime.
 uIP \cite{uip} is a small RFC-compliant TCP/IP stack that is designed to contain only the essential (required/necessary) features to provide Contiki with TCP/IP networking support to allow Contiki to communicate over the Internet compared to the traditional TCP/IP that requires (high) resources to fit in a limited RAM capabilities of a sensor. The minimal set of features includes IP, ICMP, UDP and TCP protocols compared to the traditional TCP/IP that requires (high) resources that could not be supported in the limited RAM capabilities sensor. The uIP is mostly concerned with the TCP and IP protocols and upper layer protocols \cite{contikiDoc, contikiUIP}. 
 
-Rime is Contiki's lightweight communication stacks that aims to simplify the sensor network protocols implementation by reusing code in a layered manner \cite{rimeposter}. Rime combines layers of simple communication abstractions to form a powerful high-level abstraction ranging from best-effort anonymous broadcast to reliable network flooding. Parts of the Rime stack can be used by the underlying MAC or link layer. Additional protocols that are not in Rime can be implemented on top of the stack.
+Rime is Contiki's lightweight communication stack that aims to simplify the sensor network protocols implementation by reusing code in a layered manner \cite{rimeposter}. Rime combines layers of simple communication abstractions to form a powerful high-level abstraction ranging from best-effort anonymous broadcast to reliable network flooding. Parts of the Rime stack can be used by the underlying MAC or link layer. Additional protocols that are not in Rime can be implemented on top of the stack.
 
 Applications in Contiki can decide to use one of the communication stacks available, both or none at all. uIP can run over Rime and similarly, Rime can run over uIP \cite{contikitutorial}. 
 
@@ -107,7 +107,7 @@ Protocols that need to queue packets allocate the queue buffer dynamically. Queu
 %The default ContikiMAC is a single channel protocol. It is modified to be able to work with multi channel nodes while (stick/hold/is) on the same principle of a low power ContikiMAC (minor changes to support multi channel without changing the main purpose of ContikiMAC).
 
 \subsection{Tunslip}
-Serial Line Internet Protocol (SLIP) \cite{slip} is a protocol that has a low complexity and small overhead commonly used to encapsulate IP packets for point-to-point communication between the sink (LPBR) and the device connected such as an embedded PC across the serial connections. The communication between the devices can take place on any reliable network such as the Ethernet where the LPBR can be connected to an embedded PC which contain an Ethernet interface.
+Serial Line Internet Protocol (SLIP) \cite{slip} is a protocol that has a low complexity and small overhead commonly used to encapsulate IP packets for point-to-point communication between the sink (LPBR) and the device connected such as an embedded PC across the serial connections. The communication between the devices can take place on any reliable network such as the Ethernet where the LPBR can be connected to an embedded PC which contains an Ethernet interface.
 %which the interface is available in the embedded PC.
 
 %Serial Line Internet Protocol (SLIP) //need reference!!!] is used for the communication between the sink and the device which it connected to such as an embedded PC. 
@@ -131,7 +131,7 @@ Contiki provides support to communicate with devices using SLIP through its tuns
 \section{MCRP Implementation}
 MCRP is implemented in Contiki and uses ContikiMAC as the MAC protocol, RPL as the routing protocol. ContikiMAC is modified to allow multi channel where the channel selection processes take place on the upper layers and the channels are kept in the network neighbour table to ensure the correct channel.
 
-The protocol implementation is separated into two types of nodes: i) the centralised LPBR where the bridging takes place between the border router on a PC to the nodes, and ii) the decentralised transmission nodes referred as other nodes. The implementation for both types are described below.
+The protocol implementation is separated into two types of nodes: i) the centralised LPBR where the bridging takes place between the border router on a PC to the nodes, and ii) the decentralised transmission nodes referred as other nodes. The implementations for both types are described below.
 
 %MCRP is implemented as an extension to the existing implementation of RPL with ContikiMAC; to enable multi channel.
 %The protocol is implemented by tailoring existing code of ContikiMAC, network layer and RPL.
@@ -151,7 +151,7 @@ The protocol implementation is separated into two types of nodes: i) the central
 
 As sensors have limited memory, most processing decisions at LPBR are transferred to a PC as it has more RAM and better processing capabilities. This enables MCRP to have more thorough processes and to run in real time without draining the memory and battery on a sensor. LPBR is divided into two main parts as shown in Figure \ref{fig_lpbr} where the PC is responsible as the application, transport, network and routing layers while a sensor (labelled slip radio) is set as the wireless interface to enable the PC to communicate with the other nodes via Contiki tunslip tool. 
 
-The LPBR acts as the tree root in RPL where it will initiate the creation of the RPL routing tree. LPBR is a special case as channel changes at LPBR is not as direct as other sensor nodes due to this two parts. However, it works similar ways to the other nodes.
+The LPBR acts as the tree root in RPL where it will initiate the creation of the RPL routing tree. LPBR is a special case as channel changes at LPBR is not as direct as other sensor nodes due to these two parts. However, it works similar ways to the other nodes.
 
 %It (tunslip6) sets up an interface on the Linux IP stack and connects this interface via a socket to the border router node.
 %Border router is used to bridge the wireless IPv6 network to a PC via serial link which enables the IPv6 network traffic to reach outside network and the Internet.
@@ -207,10 +207,10 @@ The pseudo-code of the implemented two-hops colouring algorithm for new channel 
 \end{figure}
 %top, left, bottom, right
 
-The new channel is stored in the buffer before the data is sent over SLIP to the radio-chip (slip-radio). As the slip radio is unable to access the neighbour table where the next hop node channel is stored, the channel value is passed through the buffer. LPBR keeps the updated value of all it's neighbours channels in the neighbour channel. Slip radio that receives the packet buffer can access the channel value and kept the value is a simplified version of the neighbour table. This is done in order to ensure that the packet that is being queued or retransmitted are send on the correct channel. The packets destination, which in this case, the next hop node is first check before the packet is transmitted each time. The MAC layer sets the channel accordingly before sending. ContikiMAC can access the simplified neighbour table as it is on the slip radio. The simplified neighbour table only keeps the information of the node neighbours and neighbours channels which are the critical information in order to transmit packets correctly. The other information that is related to the neighbours conditions are monitored at the PC. 
+The new channel is stored in the buffer before the data is sent over SLIP to the radio-chip (slip-radio). As the slip radio is unable to access the neighbour table where the next hop node channel is stored, the channel value is passed through the buffer. LPBR keeps the updated value of all its neighbours channels in the neighbour channel. Slip radio that receives the packet buffer can access the channel value and kept the value is a simplified version of the neighbour table. This is done in order to ensure that the packet that is being queued or retransmitted is sent on the correct channel. The packets destination, which in this case, the next hop node is first check before the packet is transmitted each time. The MAC layer sets the channel accordingly before sending. ContikiMAC can access the simplified neighbour table as it is on the slip radio. The simplified neighbour table only keeps the information of the node neighbours and neighbours channels which are the critical information in order to transmit packets correctly. The other information that is related to the neighbours' conditions is monitored at the PC. 
 
 LPBR processes are shown in Figure \ref{lpbrProcess}.
-The slip-radio resets to it's listening channel after the packet is transmitted. LPBR will wait and listen to any incoming packets. In the channel probing phase, LPBR does not take part in probing. However, LPBR is informed of the results of probing and kept a table of the probing results and channels to be able to use the information when deciding on a channel change based on the previous results of probing on the known channels.
+The slip-radio resets to its listening channel after the packet is transmitted. LPBR will wait and listen to any incoming packets. In the channel probing phase, LPBR does not take part in probing. However, LPBR is informed of the results of probing and kept a table of the probing results and channels to be able to use the information when deciding on a channel change based on the previous results of probing on the known channels.
 
 %Before passing to slip-radio, the header from $uip\_buf$ is compress to $packetbuf$. From $packetbuf$ to $uip\_buf$ is it decompress to access the data from the upper layers.  
 
@@ -234,7 +234,7 @@ Figure \ref{fig_otherNodes} shows the processes that the node takes in the chann
 Unlike LPBR, other nodes have all the layers within the nodes themselves. This makes channel changes less complicated, however, the nodes are being limited by the number of RAM they have which resulted in probing values to be stored in the centralised LPBR. The nodes however, keep the probing results temporarily before the final decision of the channel is made. 
 %The nodes have cross-layer access. They can gain information from any layer when required.
 
-The node sends the \textit{Node New Channel} value to all of the node's neighbours. At this point, the new channel is not yet checked for it's validity. However, all neighbours need to know the new channel as the node will change its listening channel to the new channel. Otherwise, packets cannot be received by the node since the listening channel is different than it was previously. The neighbours that receive the node's channel will update their \textit{neighbour table} which is accessed from the application layer. 
+The node sends the \textit{Node New Channel} value to all of the node's neighbours. At this point, the new channel is not yet checked for its validity. However, all neighbours need to know the new channel as the node will change its listening channel to the new channel. Otherwise, packets cannot be received by the node since the listening channel is different than it was previously. The neighbours that receive the node's channel will update their \textit{neighbour table} which is accessed from the application layer. 
 Unlike LPBR, other nodes have all the layers within the nodes themselves. This makes channel changes less complicated as the nodes can access the information from any layer when required which in this case, accessing the neighbour table at the network layer from the application layer.
 In the neighbour table, a new entry is added to hold the channel value called \textit{nbrCh}. As this is an important step in order to reduce the number of packet loss due to sending on the wrong channel, neighbours will send an acknowledgement of the new channel. Otherwise, it will be retransmitted. 
 
@@ -249,11 +249,11 @@ The node keeps the value of all probing messages it receives. It sends the \text
 Unlike LPBR, the node has a limited RAM which resulted in past probing values to be stored in the centralised LPBR. The node however, keeps the probing results temporarily before the final decision of the channel is made. 
 LPBR could use the information from the node's \textit{Probe Result} to decide on a channel or blacklist bad channels. 
 
-The node then use the values to decide whether the new channel is better than the previous channel by setting a threshold. The node then send \textit{Confirm Channel} message to all neighbours that the node confirms to be listening on. The channel can be the new channel or the node can revert to the previous channel depending on the \textit{Probe Result}. The neighbours will send an acknowledgement back to the node confirming the change. This is also important to ensure that all neighbours could communicate with the node on the correct channel. The neighbours will update their neighbour table of the node channel. 
+The node then uses the values to decide whether the new channel is better than the previous channel by setting a threshold. The node then send \textit{Confirm Channel} message to all neighbours that the node confirms to be listening on. The channel can be the new channel or the node can revert to the previous channel depending on the \textit{Probe Result}. The neighbours will send an acknowledgement back to the node confirming the change. This is also important to ensure that all neighbours could communicate with the node on the correct channel. The neighbours will update their neighbour table of the node channel. 
 
 \subsection{MAC Protocol}
 %As MCRP is a cross-layer protocol, 
-As explained in Section \ref{bufmgmt}, packets that have not been transmitted are queued in the buffer. The transmitting channel is set at the MAC layer as packets are not send immediately if there are packets being queued. ContikiMAC is a single channel protocol. It is modified to support multi channel while complying to the same low power ContikiMAC principle. Each time the node goes to sleep, it will wakes up on its listening channel waiting for incoming packets. If the node has a packet to send, it needs to change to the transmitting channel.
+As explained in Section \ref{bufmgmt}, packets that have not been transmitted are queued in the buffer. The transmitting channel is set at the MAC layer as packets are not send immediately if there are packets being queued. ContikiMAC is a single channel protocol. It is modified to support multi channel while complying to the same low power ContikiMAC principle. Each time the node goes to sleep, it will wake up on its listening channel waiting for incoming packets. If the node has a packet to send, it needs to change to the transmitting channel.
 
 In order for the packet transmission or retransmission to be on the correct channel, the neighbour channel saved in the \textit{neighbour table} at the network layer is accessed from the MAC layer and the channel is set to the transmitting channel. The node resets the channel to its listening channel after the transmission succeeded and goes back to sleep.
 
@@ -264,7 +264,7 @@ In order for the packet transmission or retransmission to be on the correct chan
 \label{fig_mac}
 \end{figure}
 
-Figure \ref{fig_mac} shows an example of a multi hop packet transmission. At each hop, the node changes to the next hop listening channel before forwarding the packet. In the example, node 4 is sending a packet to node 1, the LPBR through node 3 and node 2. Node 4 wakes up and check for incoming packets on its channel. As it has a packet to be sent to node 1, it checks the next hop channel which is node 3 and changes the channel to node 3 listening channel. It checks if the channel is clear for transmission and proceed to send the packet to node 3. Node 3 detects the packet when it wakes up and receive the packet. Node 3 sends the link layer acknowledgement to node 4 so that node 4 stops sending the packet. Node 3 forwards the packet to node 2 on node 2 channel and node 2 to node 1, the LPBR which is the destination node. All nodes reset their channel after the transmission and wake up on their own listening channel. 
+Figure \ref{fig_mac} shows an example of a multi hop packet transmission in MCRP. The different colours represent different channels. Node 4's channel is represented by green, node 3 is blue, node 2 is yellow and node 1 is red. At each hop, the node changes to the next hop listening channel before forwarding the packet. In the example, node 4 is sending a packet to node 1, the LPBR through node 3 and node 2. Node 4 wakes up and checks for incoming packets on its channel. As it has a packet to be sent to node 1, it checks the next hop channel which is node 3 and changes the channel to node 3 listening channel. It checks if the channel is clear for transmission and proceed to send the packet to node 3. Node 3 detects the packet when it wakes up and receives the packet. Node 3 sends the link layer acknowledgement to node 4 so that node 4 stops sending the packet. Node 3 forwards the packet to node 2 on node 2 channel and node 2 to node 1, the LPBR which is the destination node. All nodes reset their channel after the transmission and wake up on their own listening channel. 
 
 %If the node has a packet to send, it needs to access the neighbour channel to be able to transmit a packet on the correct channel. 
 
@@ -277,29 +277,36 @@ Figure \ref{fig_mac} shows an example of a multi hop packet transmission. At eac
 %The default ContikiMAC is a single channel protocol. It is modified to be able to work with multi channel nodes while (stick/hold/is) on the same principle of a low power ContikiMAC (minor changes to support multi channel without changing the main purpose of ContikiMAC).//////
 
 \subsection{Routing Layer - Neighbour Discovery}
-///net/rpl/rpl-icmp6.c and rpl-timers.c - the changes done!!
+%///net/rpl/rpl-icmp6.c and rpl-timers.c - the changes done!!
 
-RPL is explained in Section \ref{rpl}. RPL control messages are tailored to accommodate MCRP proposal by enabling unicast to know the neighbours and broadcast to detect new nodes to join the tree.
+RPL is explained in Section \ref{rpl}. RPL control messages are tailored to accommodate MCRP proposal. Two main changes to RPL control messages are the DIS (which is sent by a new node to make it possible for a node to require DIO messages from a reachable neighbour) and DIO (the main source of routing control information) control messages. DIS and DIO control messages are usually sent using broadcast. However, DIS and DIO support unicast. MCRP sends RPL DIS control message in broadcast and DIO in both broadcast and unicast. 
+
+In MCRP, a new node that would like to join an existing tree needs to send the DIS control message to the reachable neighbours. However, as the reachable neighbours could be on different channel than it were initially during start up, the new node needs to send the DIS message on all channels available to be able to find the neighbours. 
+
+The neighbours that receive the DIS message will reply with a DIO message and a packet that tells the new node of its channel to communicate on. The new node updated the neighbour table and has successfully joined the tree. 
+
+If the neighbours do not receive the DIS from the new node before it is due to send the DIO message, the neighbours send a broadcast DIO on the default channel. The new node upon receiving the DIO will join the tree and updates the neighbour table. All neighbours send a DIO broadcast on the default channel and a DIO unicast for known neighbours on channels that the neighbours are listening on. 
+
+One of the main reasons for this is because broadcasting on all channels would require more energy and it would take a longer time before all reachable nodes receive the control message. This could delay changes that might happen in the tree, i.e. changing of parent node. Secondly, all nodes by default will switch on to the same default channel as that is how the nodes are being set up. 
+
+%Two RPL control messages that are changed are the DIO (which contains the routing control information) and DIS (to reach the neighbour) messages. 
+%DIO is usually sent using broadcast. However, it is able to support unicast. MCRP sends RPL DIO control message in both broadcast and unicast. The DIO is sent as a broadcast in the default channel, which in this experiment is channel 26. The DIO is also sent as a unicast to the known neighbours 
+
+
+%by enabling unicast to know the neighbours and broadcast to detect new nodes to join the tree.
 
 %RPL is used as the routing protocol. (explain how RPL works briefly since it's explained in LITERATURE REVIEW).
 
 %We tailored RPL control messages to be able to accommodate MRCP proposal by enabling unicast to know neighbours and broadcast to detect new nodes to join the tree.  
 
-////DIO UNICAST
-RPL sends the control messages as broadcast. However, as we are now dealing with multi channels, using broadcast for all channels would waste the bandwidth and costly as it would take a longer time to go through all channels. It would also cause congestion and the node to be on the broadcast channel and not ready on it's listening channel to be able to receive any incoming packets as it has not finish with the control message broadcast. RPL DIO message is able to deal with either broadcast or unicast. By default, broadcast was used as RPL is usually used with a single channel MAC. We enable the unicast DIO.
+%////DIO UNICAST
+%RPL sends the control messages as broadcast. However, as we are now dealing with multi channels, using broadcast for all channels would waste the bandwidth and costly as it would take a longer time to go through all channels. It would also cause congestion and the node to be on the broadcast channel and not ready on it's listening channel to be able to receive any incoming packets as it has not finish with the control message broadcast. RPL DIO message is able to deal with either broadcast or unicast. By default, broadcast was used as RPL is usually used with a single channel MAC. We enable the unicast DIO.
 
-////MULTI CHANNEL DIS
-If a new node tries to join the tree, it will send a DIS message on all channels until it finds the neighbours. 
+%////MULTI CHANNEL DIS
+%If a new node tries to join the tree, it will send a DIS message on all channels until it finds the neighbours. 
 
-Two main changes that were done to RPL routing protocol is at the DIS (which is sent by a new node to make it possible for a node to require DIO messages from a reachable neighbor) and DIO (the main source of routing control information) control messages.
-
-As we are dealing with multi-channel, a new node that would like to join an existing tree needs to send the DIS control message to the reachable neighbors. However, as the reachable neighbors could be on different channel than it were initially during start up, the new node needs to send the DIS message on all channels available. 
-
-The neighbors that receive the DIS message will reply with a DIO message and a packet that tells the new node of it's channel to communicate on. The new node updated the neighbor table and has successfully join the tree. 
-
-If the neighbors do not receive the DIS from the new node before it is due to send the DIO message, the neighbors send a broadcast DIO on the default channel. The new node upon receiving the DIO will join the tree and updates the neighbor table. All neighbors send a broadcast on the default channel and a unicast for channels that the neighbors are listening on. 
-
-One of the main reasons for this is because broadcasting on all channels would require more energy and it would take a longer time before all reachable nodes receive the control message. This could delay changes that might happen in the tree, i.e. changing of parent node. Secondly, we assumed that all nodes by default will switched on to the same default channel as that is how setup the nodes. While this is true in our simulation, this might not be the case in the real world where the nodes could start at any channel. We are looking into ways to overcome this problem.
+%While this is true in the experiment, this might not be the case in the real world where the nodes could start at any channel. 
+%We are looking into ways to overcome this problem.
 
 %\section{Memory Footprint/Setup Overhead?}
 %-how many packets more than usual?
