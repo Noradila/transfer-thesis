@@ -251,7 +251,7 @@ LPBR could use the information from the node's \textit{Probe Result} to decide o
 
 The node then uses the values to decide whether the new channel is better than the previous channel by setting a threshold. The node then send \textit{Confirm Channel} message to all neighbours that the node confirms to be listening on. The channel can be the new channel or the node can revert to the previous channel depending on the \textit{Probe Result}. The neighbours will send an acknowledgement back to the node confirming the change. This is also important to ensure that all neighbours could communicate with the node on the correct channel. The neighbours will update their neighbour table of the node channel. 
 
-\subsection{MAC Protocol}
+\subsection{MAC Layer}
 %As MCRP is a cross-layer protocol, 
 As explained in Section \ref{bufmgmt}, packets that have not been transmitted are queued in the buffer. The transmitting channel is set at the MAC layer as packets are not send immediately if there are packets being queued. ContikiMAC is a single channel protocol. It is modified to support multi channel while complying to the same low power ContikiMAC principle. Each time the node goes to sleep, it will wake up on its listening channel waiting for incoming packets. If the node has a packet to send, it needs to change to the transmitting channel.
 
@@ -276,7 +276,7 @@ Figure \ref{fig_mac} shows an example of a multi hop packet transmission in MCRP
 
 %The default ContikiMAC is a single channel protocol. It is modified to be able to work with multi channel nodes while (stick/hold/is) on the same principle of a low power ContikiMAC (minor changes to support multi channel without changing the main purpose of ContikiMAC).//////
 
-\subsection{Routing Layer - Neighbour Discovery}
+\subsection{Network Layer}
 %///net/rpl/rpl-icmp6.c and rpl-timers.c - the changes done!!
 
 RPL is explained in Section \ref{rpl}. RPL control messages are tailored to accommodate MCRP proposal. Two main changes to RPL control messages are the DIS (which is sent by a new node to make it possible for a node to require DIO messages from a reachable neighbour) and DIO (the main source of routing control information) control messages. DIS and DIO control messages are usually sent using broadcast. However, DIS and DIO support unicast. MCRP sends RPL DIS control message in broadcast and DIO in both broadcast and unicast. 
