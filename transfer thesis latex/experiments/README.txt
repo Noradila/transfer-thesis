@@ -30,3 +30,12 @@ epstopdf single_channel.pdf
 
 gnuplot multi_channel.gnu > multi_channel.eps
 epstopdf multi_channel.eps
+
+
+
+#### MCRP testbed
+
+./filterdata3.py test1.dat > test1.proc
+
+gnuplot multi_channel_testbed.gnu > mct.eps
+epstopdf mct.eps
