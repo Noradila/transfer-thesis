@@ -1,12 +1,20 @@
 \chapter{Results and Discussions}
 \label{results}
 
--include prelim results from testbed
+%-include prelim results from testbed
 
-The testbed provides the ability to validate performance in real wireless channel environments. However, relying solely on testbed results complicates the task of examining the network's behaviour and diagnosing the root causes of performance degradations. For this purpose, while simulators lack the realism of testbeds, we leverage their ability to provide repeatability and full control over the parameter space. Furthermore, unlike a testbed setup, which is by necessity confined both in time and in space, a simulation can be made arbitrary complex (introduce interference**. Although simulators cannot be expected to fully mimic the behaviour of real wireless channels, they are effective in discovering the root causes underlying the performance degradations caused from implementation-specific design choices \cite{beyondInteroperability}.
+This chapter presents the evaluation of MCRP. The experiment set up for Cooja simulation and FlockLab \cite{flocklab} testbed are explained below. In Cooja simulation, interference is introduced. MCRP is evaluated using an end-to-end packet delivery performance metric. The results from the experiments are presented and discussed. 
+
+%The testbed provides the ability to validate performance in real wireless channel environments. 
+%However, relying solely on testbed results complicates the task of examining the network's behaviour and diagnosing the root causes of performance degradations. 
+%For this purpose, while simulators lack the realism of testbeds, we leverage their ability to provide repeatability and full control over the parameter space. 
+%Furthermore, unlike a testbed setup, which is by necessity confined both in time and in space, a simulation can be made arbitrary complex (introduce interference**. 
+%Although simulators cannot be expected to fully mimic the behaviour of real wireless channels, they are effective in discovering the root causes underlying the performance degradations caused from implementation-specific design choices \cite{beyondInteroperability}.
 
 \section{Experimental Setup}
-We evaluate the protocol in Cooja simulated environment and FlockLab \cite{flocklab} testbed.
+MCRP is evaluated in Cooja simulated environment and FlockLab testbed. In Cooja simulation, an interference model is used as simulation allows full control over the test environment and the experiments are repeatable. Although the interference model does not fully mimic the behaviour of real world interference, it enables MCRP performance to be tested in various conditions when the channel performance degraded. Unlike simulation, testbed provides the ability to validate MCRP performance in the real wireless channel environments. However, the network's behaviour are complicated to examine, thus, comparing the testbed result with simulation results give a better understanding of the performance. 
+
+%We evaluate the protocol in Cooja simulated environment and FlockLab \cite{flocklab} testbed.
 
 %We use an end-to-end packet delivery performance metric to evaluate MCRP. The transmission success rate is calculated from the sender to the receiver over multiple hops. 
 
