@@ -123,9 +123,9 @@ These constraints have a major impact on the sensors performance. In order to pr
 %Thus considering multi-channel. \cite{singh2010routing}
 
 \section{Maximising Lifetime and Minimising Energy}
-In WSNs, it is necessary to estimate the nodes power consumption before they are deployed to enable accurate forecast of the energy consumption. The estimations are used to determine the nodes lifetime before maintenance and batteries replacements are required in order to have a functional network. Unfortunately, the node lifetime is very dependent on the radio environment that can be unstable, noisy and error prone which makes energy consumption to vary. The network lifetime, however, depends on various factors such as the network architecture and protocols, channel characteristics, energy consumption model and the network lifetime definition. 
+In WSNs, it is necessary to estimate the nodes power consumption before they are deployed to enable accurate forecast of the energy consumption. The estimations are used to determine the nodes lifetime before maintenance and batteries replacements are required in order to have a functional network. Unfortunately, the node lifetime is very dependent on the radio environment that can be unstable, noisy and error prone which makes energy consumption to vary \cite{alexlifetime}. The network lifetime, however, depends on various factors such as the network architecture and protocols, channel characteristics, energy consumption model and the network lifetime definition. 
 
-There are various definitions of network lifetime that have been used. These definitions are application-specific as some applications might tolerate a considerable number of loss nodes, while some applications require a higher number of nodes which any loss is considered critical to the network such as in a sparsely deployed nodes of an area. The various definitions are:
+There are various definitions of network lifetime that have been used. These definitions are application-specific as some applications might tolerate a considerable number of loss nodes, while some applications require a higher number of nodes which any loss is considered critical to the network such as in a sparsely deployed nodes of an area. The definitions impact the performance differently, depending on the applications. The various definitions are:
 
 \begin{itemize}
 \item \textbf{The first node to die} - The network lifetime is defined as the first node to fail in the network \cite{maxmin}. In \cite{lifetimedef1}, the simulation ends when a node reaches the energy level of zero.
@@ -144,7 +144,7 @@ There are various definitions of network lifetime that have been used. These def
 %Wireless systems are often powered by batteries whereby the system's energy consumption determines its lifetime.
 
 %It is necessary to estimate the network lifetime. It must be possible before network deployment to determine how long a network maintains operational before maintenance is required and batteries have to be replaces. 
-Unfortunately, node lifetime is very dependent on the radio environment in which the node is operated. \cite{alexlifetime}
+%Unfortunately, node lifetime is very dependent on the radio environment in which the node is operated. \cite{alexlifetime}
 
 -through routing protocol (clustering), adjust transmission range, MAC sleep awake 
 -energy harvesting?
@@ -153,7 +153,7 @@ Evaluate performance for energy efficient using duty-cycle as an indicator of en
 
 
 
-There are various definitions of network lifetime used by the authors. We review the definitions widely used in designing topology control algorithms. The implication of these definitions and their impact of the topology control performance. The various definitions of the terms:
+%There are various definitions of network lifetime used by the authors. We review the definitions widely used in designing topology control algorithms. The implication of these definitions and their impact of the topology control performance. The various definitions of the terms:
 %The first node to die. The first node which fails in the network if used to define the network lifetime. ///(If the energy level of one host becomes zero, the simulatio1n stops.//// \cite{lifetimedef1} The failed node is often called a critical node.
 %The number of alive nodes. The number of alive nodes as a function of time (over time) \cite{lifetimedef2, smecn} is taken as a measure of network lifetime. A higher number of alive nodes is used to describe a longer network lifetime. %\cite{smecn} also define network lifetime as the number of nodes still connected to the sink. ///The survival rate of the network is evaluated based on the number of nodes remaining connected to the base station.////
 %The fraction of alive nodes. The network lifetime is described by the fraction of surviving or alive nodes as a function of time. The network is alive while the fraction of surviving nodes remains above a target threshinold value. 
