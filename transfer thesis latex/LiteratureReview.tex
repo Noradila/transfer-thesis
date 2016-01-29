@@ -75,69 +75,49 @@ There are four ways that have been explored from many studies to maximise the ne
 
 The aim of the WSN design is to extend the network lifetime under the given energy and node constraints without jeopardizing reliability and communications efficiency of the network.
 
-%A main design criterion is to extend the lifetime of the network without jeopardizing reliable and efficient communications from sensor nodes to the other nodes as well as data sinks.
-
-%The aim of a WSN design is to guarantee its longevity under the given energy and complexity constraints. \cite{macsurvey}
-
 \subsection{MAC Protocols}
-%Radio module is the major energy consumer in WSNs. Nearly the same energy are used by the radio in all active operation modes such as the transmit, receive and idle modes. MAC protocol controls the radio which make the MAC protocol as the central in optimising the network lifetime. Many energy efficient MAC protocols have been proposed for this reason. 
-
 Many energy efficient MAC protocols have been proposed to prolong the network lifetime. The radio module that is controlled by the MAC protocol is the major energy consumer in WSNs. The radio uses nearly the same energy in all active operation modes such as the transmit, receive and idle modes \cite{alexlifetime}. Thus, it is important to reduce the radio usage to conserve the nodes energy.
 
-%Since the radio is controlled by the MAC, the MAC is central in optimizing the WSN's lifetime. 
-%Important to reduce radio usage as much as possible to conserve energy. 
-%WSN radios use nearly the same energy in all active modes of operation (send, receive, listen). \cite{alexlifetime}
-
-The main causes of energy consumption are nodes collision, overhearing and idle listening \cite{macsurvey, pwmac}. Collision happens when nodes that is within each other transmission range transmits simultaneously. The energy used in the collided transmissions is wasted as none of the nodes would receive the transmitted packet. Overhearing happens when a node receives irrelevant packets or signals that are not intended to the node. As the radio uses nearly the same energy for all operations, this drains the node energy unnecessarily. In idle listening, the node keeps its radio on while listening to the channel for potential packets. The node does not know when it will be the receiver of the packet. Considerable amounts of energy are wasted as the node keeps its radio on for a longer period listening to an idle channel when it does not receive or transmit packets. 
-
-%Main causes of energy consumption. Collisions - may happen when a node is within the transmission range of two or more nodes that are simultaneously transmitting so that it does not capture any frame. The energy drained in the transmission and reception of collided frames is just wasted. 
-%Overhearing - happens when a node drains energy receiving irrelevant packets or signals. 
-%Idle listening - when a node does not know when it will be the receiver of a frame; the node keeps its radio on while listening to the channel waiting for potential data frames. The amount of energy wasted whilst the radio is on is considerable even when it is neither receiving nor transmitting frames. Nodes waste considerable amounts of energy as they keep their radios on for large time intervals while listening to an idle channel. 
+The main causes of energy consumption are nodes collision, overhearing and idle listening \cite{macsurvey, pwmac}. Collision happens when nodes that is within each other transmission range transmits simultaneously. The energy used in the collided transmissions is wasted as none of the nodes would receive the transmitted packet. Multi channel is one of the solutions to overcome collision. Overhearing happens when a node receives irrelevant packets or signals that are not intended to the node. As the radio uses nearly the same energy for all operations, this drains the node energy unnecessarily. In idle listening, the node keeps its radio on while listening to the channel for potential packets. The node does not know when it will be the receiver of the packet. Considerable amounts of energy are wasted as the node keeps its radio on for a longer period listening to an idle channel when it does not receive or transmit packets. 
 
 A vast number of energy efficient MAC protocols have been developed to overcome these problems through \textit{duty cycling}. Duty cycled MAC protocols allow the node to periodically alters the sleep state and listen state. By lowering the duty cycle, the node sleeps for a longer period instead of being permanently active. However, the node needs to have frequent check interval to avoid deafness problem while keeping overhearing to a minimum. This reduces the energy consumed by idle listening and overhearing.
 
 Many MAC protocols such as YMAC \cite{y-mac} uses duty cycle as the indicator to evaluate the energy efficiency performance. This is because it is difficult to measure the nodes energy consumption. However, there are studies that managed to estimate the energy consumption. This is described in Chapter \ref{energyLoss}.
 
-%Evaluate performance for energy efficient using duty-cycle as an indicator of energy efficiency because accurately measuring the energy consumption of sensor nodes is difficult. \cite{y-mac}
-
-%Energy-efficient MACs should make nodes sleep for long periods of time instead of enabling them to be permanently active. Put nodes to sleep as long as possible while avoiding deafness and reducing overhearing and overhead. In order to extend nodes lifetime, applications need to save more energy by lowering the duty cycle. Lowering the duty cycle implies putting nodes in sleep mode for larger periods, which means extending the check interval. \cite{macsurvey}
-
-%The MAC plays a central part in this design since it controls the active and sleeping state of each node. The MAC protocols hence needs to trade longevity, reliability, fairness, scalability and latency; throughput is rarely a primary design factor. \cite{macsurvey}
-
-%A vast number of WSN communication protocols have been developed in recent years aiming at this goal through $duty cycling$. Duty-cycled Medium Access Control (MAC) protocols are employed and nodes periodically alter transceiver operation between an energy efficient sleep state and energy costly listen state. 
-
-%Many energy-efficient MAC protocols have been proposed to improve the lifetime of sensor networks by reducing the energy consumed by idle listening and overhearing. 
-%The idle listening problem refers to a node listening to the channel even though there are no radio transmissions to receive. The overhearing problem refers to a node receiving a packet it is not intended to receive \cite{pwmac}. 
-
-%-through routing protocol (clustering), adjust transmission range, MAC sleep awake 
-%-energy harvesting?
-
-%Evaluate performance for energy efficient using duty-cycle as an indicator of energy efficiency because accurately measuring the energy consumption of sensor nodes is difficult. \cite{y-mac}
-
-%The dominant energy consumer in most WSN nodes is the radio transceiver, so naturally it is important to reduce radio transceiver usage as much as possible in order to conserve energy. 
-%A vast number of WSN communication protocols have been developed in recent years aiming at this goal through $duty cycling$. Duty-cycled Medium Access Control (MAC) protocols are employed and nodes periodically alter transceiver operation between an energy efficient sleep state and energy costly listen state. 
-%Energy consumption of a node depends on the interference patterns. Developed a generic method for capturing interference characteristics and predicting a node's energy consumption. (energy consumption prediction based on interference measurement). 
-%WSN radios use nearly the same energy in all active modes of operation (send, receive, listen). \cite{alexlifetime}
-%Capture an interference pattern at a deployment site and use this pattern to estimate the energy consumption of a node deployed at this location in the future. \cite{alexlifetime}
-
-
-%Radio module is a major energy consumer in a sensor node, much research has been devoted to designing energy efficient MAC protocols.
-%Main causes of energy consumption. Collisions - may happen when a node is within the transmission range of two or more nodes that are simultaneously transmitting so that it does not capture any frame. The energy drained in the transmission and reception of collided frames is just wasted. Overhearing - happens when a node drains energy receiving irrelevant packets or signals. Idle listening - when a node does not know when it will be the receiver of a frame; the node keeps its radio on while listening to the channel waiting for potential data frames. The amount of energy wasted whilst the radio is on is considerable even when it is neither receiving nor transmitting frames. Nodes waste considerable amounts of energy as they keep their radios on for large time intervals while listening to an idle channel. Energy-efficient MACs should make nodes sleep for long periods of time instead of enabling them to be permanently active. Put nodes to sleep as long as possible while avoiding deafness and reducing overhearing and overhead. In order to extend nodes lifetime, applications need to save more energy by lowering the duty cycle. Lowering the duty cycle implies putting nodes in sleep mode for larger periods, which means extending the check interval. \cite{macsurvey}
-
-%A major problem is deploying WSNs in their dependence on limited battery power. %A main design criterion is to extend the lifetime of the network without jeopardizing reliable and efficient communications from sensor nodes to the other nodes as well as data sinks. 
-%One solution is the medium access control (MAC). The prime role of the MAC is to coordinate access to and transmission over a medium common to several nodes. The common medium is the wireless channel. 
-%Since the radio is controlled by the MAC, the MAC is central in optimizing the WSN's lifetime. 
-%The aim of a WSN design is to guarantee its longevity under the given energy and complexity constraints. 
-%The MAC plays a central part in this design since it controls the active and sleeping state of each node. The MAC protocols hence needs to trade longevity, reliability, fairness, scalability and latency; throughput is rarely a primary design factor. \cite{macsurvey}
-
 \subsection{Routing Protocols}
-ROUTING - Prolonging network lifetime and saving energy are two critical issues for WSNs. Routing protocols are needed in which data packets are transmitted via multi-hop manner to reach the sink or destination. Therefore, it is critical for a WSN to run effectively to design an energy-efficient routing algorithm in which battery energy is expended efficiently while the WSN has a longer lifetime. The best network lifetime could not be achieved by only considering the minimal remaining energy of all the nodes in the WSN. Combining the minimal remaining energy and total energy consumption plays a key role in prolonging network lifetime of a WSN \cite{erapl}.
+Various energy efficient routing protocols for WSNs have been proposed and developed to ensure efficient packet delivery to the destination. The strategies that are used in routing protocols should ensure minimum energy consumption in order to prolong the lifetime of the network. 
 
-Topology control can be implemented in three ways. Minimizing the power incurred during transmission by means of adjusting the transmission range of the wireless radio of sensor nodes is a common approach adopted. In addition, sensor nodes that are sitting idle, not participating in transmitting and receiving can turn-off their radios or they can transit to sleep mode. Finally, topology control can be performed through a clustering approach. \cite{azrinasurvey}
+A major issue in WSNs routing protocol is in finding and maintaining the optimal routes that are energy efficient. This is due to the energy constraints and unexpected changes in node status such as node failure or unreachable. This causes the topology to be altered frequently to adapt to the changes. Abrupt topology modification is important to avoid the network from being disconnected which leads to higher rate of packet loss at the involved nodes as the routes are not updated.
+%quickly updated. 
 
-A routing algorithm termed Energy-efficient Routing Algorithm to Prolong Lifetime (ERAPL) is proposed. A data gathering sequence (DGS) used to avoid and eliminate mutual transmission and loop transmission among nodes (node is only allowed to transmit to its neighboring node in forward direction only to avoid loop), is constructed and each node proportionally transmit traffic to the links confined in the DGS. The main task of the ERAPL is to determine the optimal outgoing traffic to maximize the network lifetime for a given WSN. In addition, a mathematical programming model, in which minimal remaining energy of nodes and total energy consumptions are included, is presented to optimized network lifetime. ERAPL is a centralised algorithm and runs at the sink; sink knows the topology of the WSN. Sink inform all the nodes in the WSN of a packet that contains the constructed DGS which guides all the nodes to transmit traffic to their respective neighbors so that mutual transmission among nodes and route loop is avoided and accordingly energy is saved. ERAPL can improve network lifetime while expending energy efficiently by constructing a DGS and finding the optimal outgoing traffic proportions for all the nodes to distribute packets to their respective neighbouring nodes \cite{erapl}. 
+%Overcome (different techniques/msg sent)
+
+There a several routing techniques such as flat, hierarchical and location-based routing protocols that are application dependent. Hierarchical structure, as an example, has a balanced energy structure as the packets are transmitted from the lower layer nodes to the upper layer nodes. These different techniques are explained in detail in Section \ref{routingProtocols}. The routes that are formed are based on the routing metric \cite{pantazis} that attempts to transmit the packet to the receiver by selecting the most efficient path that the protocols calculated. The path may be the shortest path, lowest expected transmission count path \cite{mrhof} or path that maximises the network lifetime by considering all nodes remaining energy. However, in order to achieve the best network lifetime, the total energy consumption of the network and the nodes minimal remaining energy should be combined for a better balance in the network \cite{erapl}.
+
+%%%The common practice in networks is to use the shortest routes to transfer the packets. This could result the death of the nodes along the shortest path. Since is a WSN every node has to act as a relay in order to forward the message, if some nodes die sooner, due to lack of energy, it is possible that other nodes will not be able to communicate any more. Hence, the network will get disconnected, the energy consumption is not balanced and the lifetime of the whole network is seriously affected. Therefore, a combination between the shortest path and the extension of the network lifetime is the most suitable routing metrics to be used in WSNs. 
+
+%The best network lifetime could not be achieved by only considering the minimal remaining energy of all the nodes in the WSN. Combining the minimal remaining energy and total energy consumption plays a key role in prolonging network lifetime of a WSN \cite{erapl}.
+
+%Thus, each energy efficient routing protocol may have specific characteristics depending on the application and network architecture.
+%Techniques (flat, hierarchical, location-based routing protocols) these protocols use in order to route messages, taking into consideration the energy they consume and how they achieve to minimize this consumption and extend the lifetime of the network.
+
+%Finding and maintaining routes in WSNs is a major issue since energy constraints and unexpected changes in node status (inefficiency or failure) give rise to frequent and foreseen topological alterations. Network disconnectivity is a problem where certain sections of the network can become unreachable. 
+%The way the nodes are connected and exerts and influence on the routing of the information. Example, in a hierarchical structure the lower level nodes transit the information to upper level nodes, resulting to a balanced energy structure of the network.
+%Route metric \cite{pantazis} refers to the form of routing which attempts to send packets of data over a network in such a way that the path taken from the sending node to the recipient node is the most efficient. The path may be the shortest path, which minimizes the energy consumed by nodes, or the path that maximizes the network's lifetime and takes into consideration the remaining energy of the nodes. 
+
+
+%The routing strategies is an important issue for the efficient delivery of the packets to their destination. Moreover, in such networks, the applied routing strategy should ensure the minimum of the energy consumption and hence maximization of the lifetime of the network.
+%Various energy efficient routing protocols have been designed and developed for WSNs in order to support efficient data delivery to their destination. 
+
+
+%ROUTING - Prolonging network lifetime and saving energy are two critical issues for WSNs. Routing protocols are needed in which data packets are transmitted via multi-hop manner to reach the sink or destination. Therefore, it is critical for a WSN to run effectively to design an energy-efficient routing algorithm in which battery energy is expended efficiently while the WSN has a longer lifetime. 
+%The best network lifetime could not be achieved by only considering the minimal remaining energy of all the nodes in the WSN. Combining the minimal remaining energy and total energy consumption plays a key role in prolonging network lifetime of a WSN \cite{erapl}.
+
+%%%A routing algorithm termed Energy-efficient Routing Algorithm to Prolong Lifetime (ERAPL) is proposed. A data gathering sequence (DGS) used to avoid and eliminate mutual transmission and loop transmission among nodes (node is only allowed to transmit to its neighboring node in forward direction only to avoid loop), is constructed and each node proportionally transmit traffic to the links confined in the DGS. The main task of the ERAPL is to determine the optimal outgoing traffic to maximize the network lifetime for a given WSN. In addition, a mathematical programming model, in which minimal remaining energy of nodes and total energy consumptions are included, is presented to optimized network lifetime. ERAPL is a centralised algorithm and runs at the sink; sink knows the topology of the WSN. Sink inform all the nodes in the WSN of a packet that contains the constructed DGS which guides all the nodes to transmit traffic to their respective neighbors so that mutual transmission among nodes and route loop is avoided and accordingly energy is saved. ERAPL can improve network lifetime while expending energy efficiently by constructing a DGS and finding the optimal outgoing traffic proportions for all the nodes to distribute packets to their respective neighbouring nodes \cite{erapl}. 
 
 \subsection{Transmit Power Control}
+Topology control can be implemented in three ways. Minimizing the power incurred during transmission by means of adjusting the transmission range of the wireless radio of sensor nodes is a common approach adopted. In addition, sensor nodes that are sitting idle, not participating in transmitting and receiving can turn-off their radios or they can transit to sleep mode. Finally, topology control can be performed through a clustering approach. \cite{azrinasurvey}
+
 POWER CONTROL - Topology control techniques for extending the lifetime of battery powered WSNs. Energy consumption and network lifetime are two commonly used evaluation metrics for measuring the impact of topology control algorithms on energy efficiency. The idea of topology control is to grant sensor nodes a sense of control over certain parameters such that these parameters can be manipulated in a way that benefit the network. \cite{azrinasurvey}
 
 Transmit power control - fix area coverage, thus fix the routing. The network might not be functional when node near the sink (which is heavily relied on many nodes) dysfunction. Cannot adapt unless the area coverage changes. However, it does not reduce power consumption as it is mostly dependant on the duty cycle. Transmit power control helps to reduce energy use by avoiding interference with other nodes.
@@ -386,6 +366,7 @@ Chrysso & Operates over ContikiMAC & Dynamic & Change channel when bad & No & No
 %Joining network ANYTIME (COLLECT-TREE)
 
 \section{Routing Protocols (Network Layer Protocols)}
+\label{routingProtocols}
 In WSN, the sensor nodes have a limited transmission range.
 The network layer is responsible in routing the data across the network from the source to the destination.
 Routing protocols for WSNs are responsible for maintaining the routes in the network and ensure reliable multi-hop communication.
