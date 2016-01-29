@@ -4,15 +4,10 @@
 \section{Wireless Sensor Networks}
 A WSN is a network of sensor nodes that are used to collect data from the target area over the radio. These data that the sensors send can be normal data packets or sensor measurements data such as the temperature and movement in the specific area where the sensors are located. The sensors can be used for continuous sensing, event detection, location sensing and local control of actuators to control different components in the sensing device, such as adjusting the sensor parameters or move the sensor if it is a mobile sensor.
 
-%with the purpose of collecting sensor measurements from the target environment, and sending these measurements over the radio. One classic example is environmental monitoring, where sensor nodes are distributed over the area of interest measuring some properties there; such as temperature.
-%Sensor nodes can be used for continuous sensing, event detection, location sensing and local control of actuators.
-
 This chapter describes the available WSN applications, challenges and known issues that occur in WSNs. Many previous studies were done in order to maximise the lifetime of sensor networks while keeping the energy to a minimum. This chapter also briefly describes the existing solutions for energy efficient multi channel at the MAC and network layers which prompted to the work of MCRP. 
 
 \subsection{Applications Overview}
 There are five types of deployed WSNs: terrestrial WSNs, underground WSNs, underwater WSNs, multimedia WSNs and mobile WSNs which cover different types of environment; to deploy on land, underground and water \cite{wsnSurvey1}. Unlike other sensor nodes, multimedia WSNs have the ability to monitor and track events in the form of video and audio as they are equipped with cameras and microphones for multi-media data which can enhance the existing WSN applications \cite{wsnSurvey3}. Mobile WSNs on the other hand, can be any type of sensors that have the capability to reposition and organise itself in the network.
- 
-%Current WSNs are deployed can five types of WSNs: terrestrial WSN (deployed in a given area on lands), underground WSN (sensor nodes deployed underground or in a cave of mine to monitor underground condition), underwater WSN (deployed into the ocean environment), multimedia WSN (equipped with camera and microphones to monitor and tracking of events in the form of multimedia such as video, audio and imaging. sensor devices that have the ability to store, process and retrieve multi-media data) and mobile WSN (nodes have the ability to reposition and organize itself in the network).\cite{wsnSurvey1}
 
 WSNs evolution is driven by a number of emerging applications that focuses on the importance of wireless sensors in applications such as smart grid, areas in smart cities, and automated home, building and industrial applications \cite{beyondInteroperability}. Smart grid could save considerable amounts of energy by improving the existing electrical grid power. Smart cities which includes automated home, building and industrial in populated cities can improve the environment quality by allowing automated services such as pollution monitoring and automated energy control (temperature and lighting) which increases the energy saving in the process. 
 
@@ -20,36 +15,10 @@ WSNs applications are important as sensor nodes can be easily deployed at all ty
 
 WSNs applications can be categorised into five main monitoring and tracking applications which are the environmental applications, health applications, home applications, military applications and other commercial applications \cite{wsnSurvey2}. These applications are briefly described in the next section with examples for each category. 
 
-%We categorise the applications into///
-%There are 5 main applications of WSNs in monitoring and tracking; environment, health, home, military and other commercial areas. \cite{wsnSurvey2}.
-
-%Wireless multimedia sensor networks will not only enhance existing sensor network applications but they will also enable several new applications such as///
-%Multimedia WSN \cite{wsnSurvey3}.
-
-%The evolution of wireless sensor networks is largely driven by a set of emerging applications. The smart grid is intended to improve the electrical power grid and save considerable amounts of energy for society as a whole. Building and home automation improves the quality of indoor environments in terms of temperature, air quality, and lighting, while saving energy in the process. Industrial automation improves the quality of industrial processes. Smart cities allow new services inside increasingly populated cities such as automatic parking management and pollution monitoring. 
-%Wireless sensors are an integral part of all these applications \cite{beyondInteroperability}
-
-%The application can be categorised into 5; military, environment, health, home and other commercial areas \cite{wsnSurvey2}
-
 \subsubsection{Environmental Applications}
 The environment applications can be divided into two types; tracking and monitoring. The tracking applications are used to record the movements of animals such as birds, insects and small animals at a certain area. Monitoring applications are used to monitor the environment conditions such as forest fire detection, flood detection, biocomplexity mapping \cite{Cerpahabitatmonitoring}, precision agriculture monitoring and volcanic monitoring \cite{volcano}.
 
 In forest fire detection, the sensor nodes are used to relay the exact originated location of the fire to the end users to control it from spreading. ALERT is an example of a flood detection system that is deployed in the United States. ALERT consists of several types of sensors such as rainfall, water level and weather sensors. In agriculture, the sensor nodes are used to monitor the level of pesticides in drinking water, soil erosion and air pollution in real time. In volcanic monitoring, the sensor nodes allow measurements to be taken from locations that are otherwise inaccessible. 
-
-%WSNs in the environmental applications are important as sensor nodes can be easily deployed, installed and require minimal maintenance for a period of time. The main challenges in these applications are in term of reliable event detection, securing high data rates for efficient data routing and sparse nodes deployment.
-
-%for a certain number of period which are usually at least within a few years.  as the sensor nodes are sparsely deployed. 
-
-
-
-%Other monitoring applications are biocomplexity mapping \cite{Cerpahabitatmonitoring} to observe the biocomplexity of the environment, flood detection, volcanic monitoring
-
-%Environment applications - Can be divided into 2; tracking the movements of birds, small animals and insects; monitoring environment conditions. 
-%Forest fire detection - sensor nodes can relay the exact origin of the fire to the end users before the fire is spread uncontrollable. 
-%Biocomplexity mapping of the environment \cite{Cerpahabitatmonitoring} observe the biocomplexity of the environment. 
-%Flood detection - ALERT system deployed in the US. Several types of sensors deployed in the ALERT system are rainfall, water level and weather sensors. 
-%Precision Agriculture - monitor the pesticides level in the drinking water, the level of soil erosion and the level of air pollution in real time. 
-%Volcanic monitoring \cite{volcano} with WSN can help accelerate the deployment, installation and maintenance process, WSN equipments are smaller, lighter and consume less power. The challenges of a WSN application for volcanic data collection include reliable event detection, efficient data collection, high data rates and sparse deployment of nodes. When an interesting event occurs, the node will route a message to the base station.
 
 \subsubsection{Health Applications}
 Sensor networks in health applications can be used to monitor human physiological data such as detecting elderly people's behaviour in case of a fall, drug administration \cite{telemonitoring} in hospitals to minimise incorrect prescription of medication to patients, and to monitor and track doctors and patients locations in a hospital. Examples of these are \textit{telecare} and \textit{telehealth} \cite{telehealth}.
@@ -58,35 +27,15 @@ Telecare is a system of wireless sensors that are placed around the house and ca
 
 Telehealth is a small equipment to monitor health from home. It can be used to measure the blood pressure, blood glucose levels, oxygen levels, weight or temperature. The measurements are automatically transmitted to a monitoring centre. The healthcare professional will be contacted if the information raised an alarm for actions to be taken. 
 
-
-%Health applications - Telemonitoring of human physiological data - can monitor and detect elderly people;s behaviour e.g. a fall; also allow doctors to identify pre-defined symptoms earlier; and facilitate a higher quality of life for the subjects compared to the treatment center; "Health Smart Home". Tracking and monitoring doctors and patients inside a hospital - one sensor may be detecting the heart rate while another is detecting the blood pressure; doctors may also carry a sensor node which allows other doctors to locate them within the hospital. 
-%Drug administration in hospitals \cite{telemonitoring} - sensor nodes can be attached to medication, the chances of getting and prescribing the wrong medication to patients can be minimized; patients have sensors that identify their allergies and required medications. 
-%Telecare is a system of wireless sensors placed around the home, which immediately detect risks such as fires, floods and falls. The moment a risk is detected an alert is sent to a telecare monitoring centre, summoning instant help 24 hours a day, 365 days a year. 
-%Telehealth is a small unit which enables you to take your vital signs from the comfort of your own home. You take readings such as blood pressure, oxygen levels, weight and temperature and they are automatically sent via telephone line to a monitoring centre. If your condition gets worse this will be picked up and your healthcare professional will be contacted to take appropriate action \cite{telehealth}. 
-%Telecare - a personal alarm where you raise the alert by pressing a button that you keep on you at all times. Usually, it's on a small wristband or a pendant that you wear around your neck. Motion sensors which make accidents and falls less likely by automatically switching on your bathroom or hallway lights at night when you get out of bed. Other sensors can raise the alarm that something is wrong, such as a pressure mat on your mattress that can tell if you've not made it back into bed, or a sensor on a door that senses if it's open or closed. Then, if you have a fall, or you haven't got back into bed after going to the toilet in the night, or you've forgotten to close the outside door, the sensor raises the alarm. 
-%Telehealth - there's also special telehealth equipment to monitor your health in your own home. It can be equipment to measure your blood pressure, blood glucose levels or your weight. This can reduce the number of visits you make to your GP and unplanned visits to the hospital. You're taught how to do the tests on yourself and the measurements are automatically transmitted to your doctor or nurse, who can then see the information without you having to leave home. They can let you know if they have any concerns.
-
 \subsubsection{Home Applications}
 In home automation \cite{homeautomation}, the smart sensor nodes and actuators can be buried in the appliances such as vacuum cleaners, microwave ovens and refrigerators which allows them to form an interaction through the Internet. Some of the recent home automation are \textit{Samsung SmartThings} and \textit{Nest Thermostat}.
 
 Samsung SmartThings allows devices at home to be monitored and controlled from a mobile phone such as controlling the thermostats and lighting. Nest Thermostat is a self-learning thermostat that is consists of activity sensors, temperature sensors, humidity sensor and a Wi-Fi radio. These sensors allow Nest to learn the heating and cooling habits which allows it to shuts down due to inactivity to conserve the energy. Nest is weather aware. It uses its Wi-Fi connection to get the weather condition and forecasts, and integrate the information to understand the affects of the outside temperature to the energy usage. Nest is also able to connect with other appliances that are Nest supported. The appliances can automatically start without any need to program it as it learns from other devices.
 
-%Home automation \cite{homeautomation} - smart sensor nodes and actuators can be buried in appliances such as vacuum cleaners, microwaves ovens, refrigerators; these sensor nodes inside the domestic devices can interact with each other and with the external network via the Internet or Satellite. 
-
-%Smart environment \cite{smartenvironment} - example is “Residential Laboratory” at Georgia Institute of Technology. 
-
-%Nest Thermostat - including activity sensors, a Wi-Fi radio, three temperature sensors and a humidity sensor. The activity sensors are used to activate the Auto Away feature which shuts down heating and cooling after an hour or two of inactivity to conserve energy. The Nest learns your heating and cooling habits over the first week of use and will create a schedule based on this usage. 
-%The near sensor detects motion near the Nest display. The far field activity sensor can detect motion up to 20 feet away. The sensors have 150 degree range. The sensors will detect whether anybody is actually in a room. The sensor will automatically brighten the LCD screen when the user approaches. If the sensors do not detect motion for two hours the unit will activate the away setting. 
-%The Nest Thermostat integrates information from its sensors and the outside weather. The activity sensors, humidity sensor which shows the indoor humidity and can manage your whole-home humidifier or dehumidifier, temperature sensors - there are three temperature sensors track your home's temperature and how quickly it changes, weather aware - Nest uses its Wi-Fi connection to keep an eye on current weather conditions and forecasts so it can understand how the outside temperature affects your energy use. 
-
 \subsubsection{Military Applications}
 WSNs are used in military applications to monitor friendly forces, equipments and ammunitions by attaching sensors which report the status back to the base station; battlefield surveillance by covering critical terrains, routes, paths and straits with sensors and reconnaissance the opposing forces; assess battle damage, and to detect nuclear, biological and chemical attack by deploying sensors to explore areas and serve as warning systems to avoid casualties.
-  
-%Military applications - Some of military applications of sensor networks are monitoring friendly forces, equipment and ammunition - attached with small sensors that report the status; battlefield surveillance - critical terrains, approach routes, paths and straits can be rapidly covered with sensor networks and closely watched for the activities of the opposing forces; reconnaissance of opposing forces and terrain; targeting; battle damage assessment; nuclear, biological and chemical (NBC) attack detection and reconnaissance (scouting/exploring) - used as a chemical or biological warning system can provide the friendly forces with critical reaction time which drops casualties drastically.
 
 An example of military application is \textit{PinPtr} \cite{Simonpinptr}. PinPtr is an experimental counter-sniper system. It was developed to detect and locate shooters by measuring shot time of arrival of the muzzle blasts and shock waves from the sensors that are densely deployed. The measurements are routed to the base station where the shooter's location is computed. PinPtr was demonstrated and evaluated in realistic urban environment from various US Army test facilities.
-
-%PinPtr \cite{Simonpinptr} is an experimental counter-sniper system developed to detect and locate shooters. The system utilizes a dense deployment of sensors to detect and measure the time of arrival of muzzle blasts and shock waves from a shot. Sensors route their measurements to a base station to compute the shooter's location. The system was demonstrated and evaluated in various US Army test facilities providing a realistic urban environment.
 
 \subsubsection{Other Commercial Applications}
 Other available commercial applications are environmental control in office buildings such as controlling the air flow and temperature for different part of the building; car thefts monitoring and detection within specific region; inventory control management to track and locate the inventories in the warehouses; machine diagnosis in order to predict equipment failure for maintenance through vibration signatures gathered by sensors \cite{industrialsensor}; and vehicle tracking and detection for parking purposes such as the \textit{Smart Parking} from \textit{Streetline} and \textit{SmartPark}. 
@@ -95,38 +44,13 @@ Smart Parking solutions are used in more than 40 cities and universities in Nort
 
 SmartPark is a parking solution in the UK, currently operating in Birmingham and in the central London Borough of Westminster. These applications enable drivers to find vacant space within the busy town and city centres quicker.
 
-%Other commercial applications - Environmental control in office buildings - a distributed wireless sensor network system can be installed to control the air flow and temperature in different parts of the room. 
-%Interactive museums - example is the San Francisco Exploratorium that features a combination of data measurements and cause-and-effect experiment. 
-%Detecting and monitoring car thefts. 
-%Managing inventory control - each item in a warehouse may have a sensor node attached, the end users can track and locate where the inventories are at all times. 
-%Vehicle tracking and detection.
-%Smart Parking solutions from Streetline - more than 40 cities and universities in North America and Europe use the technology. Offer true real-time vehicle detection, which is a balancing act of speed, caution and smarts so that detection is incredibly fast, but not so fast that the system gets confused and reports false information. A smart parking system accurately senses vehicle occupancy in real time. Guides residents and visitors to available parking. Simplifies the parking experience and adds value for parking stakeholders such as drivers and merchants. Enables intelligent decisions using data, including real-time status applications and historical analytical reports. *Complete parking solution to improve the entire parking ecosystem for all space types. Every arrival and departure is detected in real-time. Motorist is guided to available parking. Motorist pays by phone and activates timer or pay by meter. 
-%Officer is guided to unpaid violations, overstays, no parking and restricted zones. Staff receives web-based analytics for decision making. The sensors will be able to detect if a car is parked over it, and therefore determine whether or not the space is vacant. 
-%sSmart Parking in the UK - SmartPark is already operating in cities like Birmingham and in the central London Borough of Westminster.  SmartPark enables drivers to find a parking space quickly and simply within busy town and city centres. 
-%Semiconductor plants and oil tanker \cite{industrialsensor} application focus on preventive equipment maintenance using vibration signatures gathered by sensors to predict equipment failure.
-
 \subsection{WSN Challenges and Issues}
 WSNs are widely used in various kinds of applications. This is because sensor nodes can be densely deployed, easy to install and require minimal maintenance over a period of time. However, WSNs suffer from limited hardware resources which only allow limited computational functionalities to be performed. It also suffers from limited energy capacities as the sensors are battery powered and they will become faulty and not able to function once the certain threshold of energy level is reached. It also operates in an unreliable radio environment that is noisy and error prone which drain the sensors batteries at a higher rate.
-%use of energy the sensors battery drain. 
-%Sensors operate in a dynamic and unreliable environment that is noisy and error prone. 
-%This increases the battery drain from the sensors.
 
 These constraints have a major impact on the sensors performance. In order to prolong the sensors lifetime thus, the network lifetime, the sensors need to be able to cope with the limitations and be as energy-efficient as possible to guarantee good overall performance.
 
-%WSNs applications are important as sensor nodes can be easily deployed at all types of environment, installed and require minimal maintenance for a period of time. The main challenges in these applications are in term of reliable event detection, securing high data rates for efficient data routing and dense or sparse nodes deployment.
-
-%There are several constraints. WSNs suffer from limitation of several network resources. Limited energy capacity - sensor nodes are battery powered, limited energy capacity. When reach certain threshold, sensor will become faulty and will not be able to function properly. 
-%Major impact on the network performance. Should (do something) so that sensors be as energy-efficient as possible to extend their lifetime and prolong the network lifetime and guarantee good performance overall.
-%Limited hardware resources (node capabilities) - limited processing and storage capacities. Can only perform limited computational functionalities.
-%Network characteristics and unreliable environment - sensors operate in a dynamic and unreliable environment. Sensor nodes are linked by a wireless medium which is noisy, error prone and time varying. 
-
-%Thus considering multi-channel. \cite{singh2010routing}
-
 \section{Maximising Lifetime and Minimising Energy}
 In WSNs, it is necessary to estimate the nodes power consumption before they are deployed to enable accurate forecast of the energy consumption. The estimations are used to determine the nodes lifetime before maintenance and batteries replacements are required in order to have a functional network. Unfortunately, the node lifetime is very dependent on the radio environment that can be unstable, noisy and error prone which makes energy consumption to vary \cite{alexlifetime}. The network lifetime, however, depends on various factors such as the network architecture and protocols, channel characteristics, energy consumption model and the network lifetime definition. In order to increase the network lifetime, these information regarding the channel and residual energy of the sensors should be exploited.
-
-%In order to increase the network lifetime, the channel state, residual energy and the mac information should be exploited.
-%It indicates that lifetime maximizing protocols should exploit both the channel state information and the residual energy information of individual sensors.
 
 There are various definitions of network lifetime that have been used. These definitions are application-specific as some applications might tolerate a considerable number of loss nodes, while some applications require a higher number of nodes which any loss is considered critical to the network such as in sparsely deployed nodes of an area. The definitions impact the performance differently, depending on the applications. The various definitions are:
 
@@ -148,52 +72,6 @@ There are various definitions of network lifetime that have been used. These def
 Network lifetime is strongly related to the remaining energy of all nodes. However, maximising the minimal energy of all the nodes is not the best way to prolong the network lifetime as it will place heavy burden to the key nodes such that nodes that are close to the sink. These nodes drain their batteries quicker than other nodes which as a result, shorten the network lifetime.
 
 There are four ways that have been explored from many studies to maximise the network lifetime, which are by (i) introducing energy efficient MAC protocols, (ii) routing protocols, (iii) controlling the transmission power and (iv) using energy energy harvesting. These options are described in details in the next few sections, introducing the differences and advantages, and the existing proposed solutions.
-
-%Wireless systems are often powered by batteries whereby the system's energy consumption determines its lifetime.
-
-%It is necessary to estimate the network lifetime. It must be possible before network deployment to determine how long a network maintains operational before maintenance is required and batteries have to be replaces. 
-%Unfortunately, node lifetime is very dependent on the radio environment in which the node is operated. \cite{alexlifetime}
-
-%Although network lifetime is strongly related to minimal remaining energy of all the nodes, the best network lifetime could not be achieved by only maximized the minimal remaining energy of all the nodes. Usually place too heavy burden of forwarding data on a couple of key nodes so that these nodes drain out their batteries quickly which shortens lifetime of the WSN \cite{erapl}.
-
-%Two physical layer parameters are crucial to network lifetime: the channel state and the residual energy of sensors. It indicates that lifetime maximizing protocols should exploit both the channel state information and the residual energy information of individual sensors. Important network characteristics that affect network lifetime includes network architecture (routing topology), channel and energy consumption model - sensor sleeping, energy consumed in transmission, reception and possible channel acquisition; \cite{maxmin}
-
-%-through routing protocol (clustering), adjust transmission range, MAC sleep awake 
-%-energy harvesting?
-
-%Evaluate performance for energy efficient using duty-cycle as an indicator of energy efficiency because accurately measuring the energy consumption of sensor nodes is difficult. \cite{y-mac}
-
-
-
-%There are various definitions of network lifetime used by the authors. We review the definitions widely used in designing topology control algorithms. The implication of these definitions and their impact of the topology control performance. The various definitions of the terms:
-%The first node to die. The first node which fails in the network if used to define the network lifetime. ///(If the energy level of one host becomes zero, the simulatio1n stops.//// \cite{lifetimedef1} The failed node is often called a critical node.
-%The number of alive nodes. The number of alive nodes as a function of time (over time) \cite{lifetimedef2, smecn} is taken as a measure of network lifetime. A higher number of alive nodes is used to describe a longer network lifetime. %\cite{smecn} also define network lifetime as the number of nodes still connected to the sink. ///The survival rate of the network is evaluated based on the number of nodes remaining connected to the base station.////
-%The fraction of alive nodes. The network lifetime is described by the fraction of surviving or alive nodes as a function of time. The network is alive while the fraction of surviving nodes remains above a target threshinold value. 
-%1Also, another definition where definition evaluate the lifetime based on the time until the packet delivery ratio drops drastically. ///We measure network lifetime as the fraction of transit nodes with non-zero energy as a function of time. We demonstrate the node survivability by measuring node survival rates as a function of time. Also, in our simulation, the traffic keeps constant. If the monitored packet delivery ratio drops dramatically after time, we can say that the network lifetime ends at that time. \cite{gaf}///
-
-
-%Network lifetime depends on many factors including network architecture and protocols, data collection initiation, lifetime definition, channel characteristics and energy consumption model. 
-%Two physical layer parameters are crucial to network lifetime: the channel state and the residual energy of sensors. It indicates that lifetime maximizing protocols should exploit both the channel state information and the residual energy information of individual sensors. Important network characteristics that affect network lifetime includes network architecture (routing topology), channel and energy consumption model - sensor sleeping, energy consumed in transmission, reception and possible channel acquisition; \cite{maxmin}
-%lifetime definition - network lifetime is the time span from the deployment to the instant when the network is considered nonfunctional. When a network should be considered nonfunctional is however, application-specific. It can be for example, the instant when the first sensor dies, a percentage of sensors die, the network partitions, or the loss of coverage occurs. 
-%Define the network lifetime as the time span until any sensor in the network dies (the first death) or no sensor has enough energy for transmission during a data collection (the first failure in data collection), whichever occurs first \cite{maxmin}.
-
-%A precise definition of a WSN lifetime is application dependent: some application might tolerate a loss of considerable number of nodes, while for other applications a loss of even a node is critical. 
-%Network lifetime is defined as the length of time until the first battery expends its available energy. 
-%Although network lifetime is strongly related to minimal remaining energy of all the nodes, the best network lifetime could not be achieved by only maximized the minimal remaining energy of all the nodes. Usually place too heavy burden of forwarding data on a couple of key nodes so that these nodes drain out their batteries quickly which shortens lifetime of the WSN \cite{erapl}.
-
-%Wireless systems are often powered by batteries whereby the system's energy consumption determines its lifetime.
-
-%The dominant energy consumer in most WSN nodes is the radio transceiver, so naturally it is important to reduce radio transceiver usage as much as possible in order to conserve energy. A vast number of WSN communication protocols have been developed in recent years aiming at this goal through $duty cycling$. Duty-cycled Medium Access Control (MAC) protocols are employed and nodes periodically alter transceiver operation between an energy efficient sleep state and energy costly listen state. Energy consumption of a node depends on the interference patterns. Developed a generic method for capturing interference characteristics and predicting a node's energy consumption. (energy consumption prediction based on interference measurement). WSN radios use nearly the same energy in all active modes of operation (send, receive, listen). Capture an interference pattern at a deployment site and use this pattern to estimate the energy consumption of a node deployed at this location in the future. \cite{alexlifetime}
-
-%////citeSOFTWARE-BASED DUNKELS. implement an on-line energy estimation technique in Contiki. These approaches measure the state of components, such as radio, sensors and LEDS, to calculate consumption./////CHECK!
-
-%ROUTING - Prolonging network lifetime and saving energy are two critical issues for WSNs. Routing protocols are needed in which data packets are transmitted via multi-hop manner to reach the sink or destination. Therefore, it is critical for a WSN to run effectively to design an energy-efficient routing algorithm in which battery energy is expended efficiently while the WSN has a longer lifetime. The best network lifetime could not be achieved by only considering the minimal remaining energy of all the nodes in the WSN. Combining the minimal remaining energy and total energy consumption plays a key role in prolonging network lifetime of a WSN \cite{erapl}.
-
-%POWER CONTROL - Topology control techniques for extending the lifetime of battery powered WSNs. Energy consumption and network lifetime are two commonly used evaluation metrics for measuring the impact of topology control algorithms on energy efficiency. The idea of topology control is to grant sensor nodes a sense of control over certain parameters such that these parameters can be manipulated in a way that benefit the network. \cite{azrinasurvey}
-
-%1. MAC - multichannel
-%2. Routing
-%3. Transmit power control
 
 \subsection{MAC Protocols}
 -through routing protocol (clustering), adjust transmission range, MAC sleep awake 
@@ -244,6 +122,8 @@ Note that different powering mechanisms are available, such as non-rechargeable 
 
 \section{Multichannel Protocol (Data Link Layer)}
 In single-channel MAC protocols, all nodes are configured to use a single frequency all the time. Frequency-agile MAC protocols switch between multiple frequencies during run-time. Recent radio chips are able to switch between frequency channels fast (e.g. in less than 100$\mu$s). Multi-channel can be used to increase robustness against narrowband long-lasting and transient interference. \cite{macsurvey}
+
+%Thus considering multi-channel. \cite{singh2010routing}
 
 \subsection{Introduction (Solutions)}
 Multichannel communication has potential benefits for wireless networks that possibly include improved resilience against external interference, reduced latency, enhanced reception rate and increased throughput. 
