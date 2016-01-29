@@ -123,14 +123,17 @@ These constraints have a major impact on the sensors performance. In order to pr
 %Thus considering multi-channel. \cite{singh2010routing}
 
 \section{Maximising Lifetime and Minimising Energy}
-In WSNs, it is necessary to estimate the nodes power consumption before they are deployed to enable accurate forecast of the energy consumption. The estimations are used to determine the nodes lifetime before maintenance and batteries replacements are required in order to have a functional network. Unfortunately, the node lifetime is very dependent on the radio environment that can be unstable, noisy and error prone which makes energy consumption to vary \cite{alexlifetime}. The network lifetime, however, depends on various factors such as the network architecture and protocols, channel characteristics, energy consumption model and the network lifetime definition. 
+In WSNs, it is necessary to estimate the nodes power consumption before they are deployed to enable accurate forecast of the energy consumption. The estimations are used to determine the nodes lifetime before maintenance and batteries replacements are required in order to have a functional network. Unfortunately, the node lifetime is very dependent on the radio environment that can be unstable, noisy and error prone which makes energy consumption to vary \cite{alexlifetime}. The network lifetime, however, depends on various factors such as the network architecture and protocols, channel characteristics, energy consumption model and the network lifetime definition. In order to increase the network lifetime, these information regarding the channel and residual energy of the sensors should be exploited.
 
-There are various definitions of network lifetime that have been used. These definitions are application-specific as some applications might tolerate a considerable number of loss nodes, while some applications require a higher number of nodes which any loss is considered critical to the network such as in a sparsely deployed nodes of an area. The definitions impact the performance differently, depending on the applications. The various definitions are:
+%In order to increase the network lifetime, the channel state, residual energy and the mac information should be exploited.
+%It indicates that lifetime maximizing protocols should exploit both the channel state information and the residual energy information of individual sensors.
+
+There are various definitions of network lifetime that have been used. These definitions are application-specific as some applications might tolerate a considerable number of loss nodes, while some applications require a higher number of nodes which any loss is considered critical to the network such as in sparsely deployed nodes of an area. The definitions impact the performance differently, depending on the applications. The various definitions are:
 
 \begin{itemize}
-\item \textbf{The first node to die} - The network lifetime is defined as the first node to fail in the network \cite{maxmin}. In \cite{lifetimedef1}, the simulation ends when a node reaches the energy level of zero.
+\item \textbf{The first node to die} - The network lifetime is defined as the first node to fail in the network \cite{maxmin, erapl}. In \cite{lifetimedef1}, the simulation ends when a node reaches the energy level of zero.
 
-\item \textbf{The numbers of alive nodes} - The network lifetime is the number of remaining nodes as a function of time. The network has a longer lifetime with a higher number of remaining nodes \cite{lifetimedef2, smecn}.
+\item \textbf{The number of alive nodes} - The network lifetime is the number of remaining nodes as a function of time. The network has a longer lifetime with a higher number of remaining nodes \cite{lifetimedef2, smecn}.
 
 \item \textbf{The number of nodes still connected to the sink} - The network is alive based on the remaining number of nodes to have coverage to connect to the sink \cite{smecn}.
 
@@ -141,15 +144,24 @@ There are various definitions of network lifetime that have been used. These def
 \item \textbf{The first failure in data transmission} - The sensor does not have enough energy for transmission \cite{maxmin}.
 \end{itemize}
 
+
+Network lifetime is strongly related to the remaining energy of all nodes. However, maximising the minimal energy of all the nodes is not the best way to prolong the network lifetime as it will place heavy burden to the key nodes such that nodes that are close to the sink. These nodes drain their batteries quicker than other nodes which as a result, shorten the network lifetime.
+
+There are four ways that have been explored from many studies to maximise the network lifetime, which are by (i) introducing energy efficient MAC protocols, (ii) routing protocols, (iii) controlling the transmission power and (iv) using energy energy harvesting. These options are described in details in the next few sections, introducing the differences and advantages, and the existing proposed solutions.
+
 %Wireless systems are often powered by batteries whereby the system's energy consumption determines its lifetime.
 
 %It is necessary to estimate the network lifetime. It must be possible before network deployment to determine how long a network maintains operational before maintenance is required and batteries have to be replaces. 
 %Unfortunately, node lifetime is very dependent on the radio environment in which the node is operated. \cite{alexlifetime}
 
--through routing protocol (clustering), adjust transmission range, MAC sleep awake 
--energy harvesting?
+%Although network lifetime is strongly related to minimal remaining energy of all the nodes, the best network lifetime could not be achieved by only maximized the minimal remaining energy of all the nodes. Usually place too heavy burden of forwarding data on a couple of key nodes so that these nodes drain out their batteries quickly which shortens lifetime of the WSN \cite{erapl}.
 
-Evaluate performance for energy efficient using duty-cycle as an indicator of energy efficiency because accurately measuring the energy consumption of sensor nodes is difficult. \cite{y-mac}
+%Two physical layer parameters are crucial to network lifetime: the channel state and the residual energy of sensors. It indicates that lifetime maximizing protocols should exploit both the channel state information and the residual energy information of individual sensors. Important network characteristics that affect network lifetime includes network architecture (routing topology), channel and energy consumption model - sensor sleeping, energy consumed in transmission, reception and possible channel acquisition; \cite{maxmin}
+
+%-through routing protocol (clustering), adjust transmission range, MAC sleep awake 
+%-energy harvesting?
+
+%Evaluate performance for energy efficient using duty-cycle as an indicator of energy efficiency because accurately measuring the energy consumption of sensor nodes is difficult. \cite{y-mac}
 
 
 
@@ -161,28 +173,37 @@ Evaluate performance for energy efficient using duty-cycle as an indicator of en
 
 
 %Network lifetime depends on many factors including network architecture and protocols, data collection initiation, lifetime definition, channel characteristics and energy consumption model. 
-Two physical layer parameters are crucial to network lifetime: the channel state and the residual energy of sensors. It indicates that lifetime maximizing protocols should exploit both the channel state information and the residual energy information of individual sensors. Important network characteristics that affect network lifetime includes network architecture (routing topology), channel and energy consumption model - sensor sleeping, energy consumed in transmission, reception and possible channel acquisition; 
+%Two physical layer parameters are crucial to network lifetime: the channel state and the residual energy of sensors. It indicates that lifetime maximizing protocols should exploit both the channel state information and the residual energy information of individual sensors. Important network characteristics that affect network lifetime includes network architecture (routing topology), channel and energy consumption model - sensor sleeping, energy consumed in transmission, reception and possible channel acquisition; \cite{maxmin}
 %lifetime definition - network lifetime is the time span from the deployment to the instant when the network is considered nonfunctional. When a network should be considered nonfunctional is however, application-specific. It can be for example, the instant when the first sensor dies, a percentage of sensors die, the network partitions, or the loss of coverage occurs. 
 %Define the network lifetime as the time span until any sensor in the network dies (the first death) or no sensor has enough energy for transmission during a data collection (the first failure in data collection), whichever occurs first \cite{maxmin}.
 
 %A precise definition of a WSN lifetime is application dependent: some application might tolerate a loss of considerable number of nodes, while for other applications a loss of even a node is critical. 
-Network lifetime is defined as the length of time until the first battery expends its available energy. Although network lifetime is strongly related to minimal remaining energy of all the nodes, the best network lifetime could not be achieved by only maximized the minimal remaining energy of all the nodes. Usually place too heavy burden of forwarding data on a couple of key nodes so that these nodes drain out their batteries quickly which shortens lifetime of the WSN \cite{erapl}.
+%Network lifetime is defined as the length of time until the first battery expends its available energy. 
+%Although network lifetime is strongly related to minimal remaining energy of all the nodes, the best network lifetime could not be achieved by only maximized the minimal remaining energy of all the nodes. Usually place too heavy burden of forwarding data on a couple of key nodes so that these nodes drain out their batteries quickly which shortens lifetime of the WSN \cite{erapl}.
 
 %Wireless systems are often powered by batteries whereby the system's energy consumption determines its lifetime.
 
-The dominant energy consumer in most WSN nodes is the radio transceiver, so naturally it is important to reduce radio transceiver usage as much as possible in order to conserve energy. A vast number of WSN communication protocols have been developed in recent years aiming at this goal through $duty cycling$. Duty-cycled Medium Access Control (MAC) protocols are employed and nodes periodically alter transceiver operation between an energy efficient sleep state and energy costly listen state. Energy consumption of a node depends on the interference patterns. Developed a generic method for capturing interference characteristics and predicting a node's energy consumption. (energy consumption prediction based on interference measurement). WSN radios use nearly the same energy in all active modes of operation (send, receive, listen). Capture an interference pattern at a deployment site and use this pattern to estimate the energy consumption of a node deployed at this location in the future. \cite{alexlifetime}
+%The dominant energy consumer in most WSN nodes is the radio transceiver, so naturally it is important to reduce radio transceiver usage as much as possible in order to conserve energy. A vast number of WSN communication protocols have been developed in recent years aiming at this goal through $duty cycling$. Duty-cycled Medium Access Control (MAC) protocols are employed and nodes periodically alter transceiver operation between an energy efficient sleep state and energy costly listen state. Energy consumption of a node depends on the interference patterns. Developed a generic method for capturing interference characteristics and predicting a node's energy consumption. (energy consumption prediction based on interference measurement). WSN radios use nearly the same energy in all active modes of operation (send, receive, listen). Capture an interference pattern at a deployment site and use this pattern to estimate the energy consumption of a node deployed at this location in the future. \cite{alexlifetime}
 
-////citeSOFTWARE-BASED DUNKELS. implement an on-line energy estimation technique in Contiki. These approaches measure the state of components, such as radio, sensors and LEDS, to calculate consumption./////CHECK!
+%////citeSOFTWARE-BASED DUNKELS. implement an on-line energy estimation technique in Contiki. These approaches measure the state of components, such as radio, sensors and LEDS, to calculate consumption./////CHECK!
 
-ROUTING - Prolonging network lifetime and saving energy are two critical issues for WSNs. Routing protocols are needed in which data packets are transmitted via multi-hop manner to reach the sink or destination. Therefore, it is critical for a WSN to run effectively to design an energy-efficient routing algorithm in which battery energy is expended efficiently while the WSN has a longer lifetime. The best network lifetime could not be achieved by only considering the minimal remaining energy of all the nodes in the WSN. Combining the minimal remaining energy and total energy consumption plays a key role in prolonging network lifetime of a WSN \cite{erapl}.
+%ROUTING - Prolonging network lifetime and saving energy are two critical issues for WSNs. Routing protocols are needed in which data packets are transmitted via multi-hop manner to reach the sink or destination. Therefore, it is critical for a WSN to run effectively to design an energy-efficient routing algorithm in which battery energy is expended efficiently while the WSN has a longer lifetime. The best network lifetime could not be achieved by only considering the minimal remaining energy of all the nodes in the WSN. Combining the minimal remaining energy and total energy consumption plays a key role in prolonging network lifetime of a WSN \cite{erapl}.
 
-POWER CONTROL - Topology control techniques for extending the lifetime of battery powered WSNs. Energy consumption and network lifetime are two commonly used evaluation metrics for measuring the impact of topology control algorithms on energy efficiency. The idea of topology control is to grant sensor nodes a sense of control over certain parameters such that these parameters can be manipulated in a way that benefit the network. \cite{azrinasurvey}
+%POWER CONTROL - Topology control techniques for extending the lifetime of battery powered WSNs. Energy consumption and network lifetime are two commonly used evaluation metrics for measuring the impact of topology control algorithms on energy efficiency. The idea of topology control is to grant sensor nodes a sense of control over certain parameters such that these parameters can be manipulated in a way that benefit the network. \cite{azrinasurvey}
 
-1. MAC - multichannel
-2. Routing
-3. Transmit power control
+%1. MAC - multichannel
+%2. Routing
+%3. Transmit power control
 
 \subsection{MAC Protocols}
+-through routing protocol (clustering), adjust transmission range, MAC sleep awake 
+-energy harvesting?
+
+Evaluate performance for energy efficient using duty-cycle as an indicator of energy efficiency because accurately measuring the energy consumption of sensor nodes is difficult. \cite{y-mac}
+
+The dominant energy consumer in most WSN nodes is the radio transceiver, so naturally it is important to reduce radio transceiver usage as much as possible in order to conserve energy. A vast number of WSN communication protocols have been developed in recent years aiming at this goal through $duty cycling$. Duty-cycled Medium Access Control (MAC) protocols are employed and nodes periodically alter transceiver operation between an energy efficient sleep state and energy costly listen state. Energy consumption of a node depends on the interference patterns. Developed a generic method for capturing interference characteristics and predicting a node's energy consumption. (energy consumption prediction based on interference measurement). WSN radios use nearly the same energy in all active modes of operation (send, receive, listen). Capture an interference pattern at a deployment site and use this pattern to estimate the energy consumption of a node deployed at this location in the future. \cite{alexlifetime}
+
+
 Radio module is a major energy consumer in a sensor node, much research has been devoted to designing energy efficient MAC protocols.
 Main causes of energy consumption. Collisions - may happen when a node is within the transmission range of two or more nodes that are simultaneously transmitting so that it does not capture any frame. The energy drained in the transmission and reception of collided frames is just wasted. Overhearing - happens when a node drains energy receiving irrelevant packets or signals. Idle listening - when a node does not know when it will be the receiver of a frame; the node keeps its radio on while listening to the channel waiting for potential data frames. The amount of energy wasted whilst the radio is on is considerable even when it is neither receiving nor transmitting frames. Nodes waste considerable amounts of energy as they keep their radios on for large time intervals while listening to an idle channel. Energy-efficient MACs should make nodes sleep for long periods of time instead of enabling them to be permanently active. Put nodes to sleep as long as possible while avoiding deafness and reducing overhearing and overhead. In order to extend nodes lifetime, applications need to save more energy by lowering the duty cycle. Lowering the duty cycle implies putting nodes in sleep mode for larger periods, which means extending the check interval. \cite{macsurvey}
 
@@ -191,11 +212,15 @@ A major problem is deploying WSNs in their dependence on limited battery power. 
 Many energy-efficient MAC protocols have been proposed to improve the lifetime of sensor networks by reducing the energy consumed by idle listening and overhearing. The idle listening problem refers to a node listening to the channel even though there are no radio transmissions to receive. The overhearing problem refers to a node receiving a packet it is not intended to receive \cite{pwmac}. 
 
 \subsection{Routing Protocols}
+ROUTING - Prolonging network lifetime and saving energy are two critical issues for WSNs. Routing protocols are needed in which data packets are transmitted via multi-hop manner to reach the sink or destination. Therefore, it is critical for a WSN to run effectively to design an energy-efficient routing algorithm in which battery energy is expended efficiently while the WSN has a longer lifetime. The best network lifetime could not be achieved by only considering the minimal remaining energy of all the nodes in the WSN. Combining the minimal remaining energy and total energy consumption plays a key role in prolonging network lifetime of a WSN \cite{erapl}.
+
 Topology control can be implemented in three ways. Minimizing the power incurred during transmission by means of adjusting the transmission range of the wireless radio of sensor nodes is a common approach adopted. In addition, sensor nodes that are sitting idle, not participating in transmitting and receiving can turn-off their radios or they can transit to sleep mode. Finally, topology control can be performed through a clustering approach. \cite{azrinasurvey}
 
 A routing algorithm termed Energy-efficient Routing Algorithm to Prolong Lifetime (ERAPL) is proposed. A data gathering sequence (DGS) used to avoid and eliminate mutual transmission and loop transmission among nodes (node is only allowed to transmit to its neighboring node in forward direction only to avoid loop), is constructed and each node proportionally transmit traffic to the links confined in the DGS. The main task of the ERAPL is to determine the optimal outgoing traffic to maximize the network lifetime for a given WSN. In addition, a mathematical programming model, in which minimal remaining energy of nodes and total energy consumptions are included, is presented to optimized network lifetime. ERAPL is a centralised algorithm and runs at the sink; sink knows the topology of the WSN. Sink inform all the nodes in the WSN of a packet that contains the constructed DGS which guides all the nodes to transmit traffic to their respective neighbors so that mutual transmission among nodes and route loop is avoided and accordingly energy is saved. ERAPL can improve network lifetime while expending energy efficiently by constructing a DGS and finding the optimal outgoing traffic proportions for all the nodes to distribute packets to their respective neighbouring nodes \cite{erapl}. 
 
 \subsection{Transmit Power Control}
+POWER CONTROL - Topology control techniques for extending the lifetime of battery powered WSNs. Energy consumption and network lifetime are two commonly used evaluation metrics for measuring the impact of topology control algorithms on energy efficiency. The idea of topology control is to grant sensor nodes a sense of control over certain parameters such that these parameters can be manipulated in a way that benefit the network. \cite{azrinasurvey}
+
 Transmit power control - fix area coverage, thus fix the routing. The network might not be functional when node near the sink (which is heavily relied on many nodes) dysfunction. Cannot adapt unless the area coverage changes. However, it does not reduce power consumption as it is mostly dependant on the duty cycle. Transmit power control helps to reduce energy use by avoiding interference with other nodes.
 
 Power control to improve energy efficiency of the wireless sensor network. Whilst it is a useful tool to control traffic flows, congestion and interference levels, the power savings due reduced transmission powers are negligible since the radio's power consumption is in the range of the transmit power levels typically employed for embedded WSN nodes. \cite{macsurvey}
