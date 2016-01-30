@@ -97,59 +97,17 @@ The routes that are formed are based on the routing metric \cite{pantazis} that 
 
 %%%A routing algorithm termed Energy-efficient Routing Algorithm to Prolong Lifetime (ERAPL) is proposed. A data gathering sequence (DGS) used to avoid and eliminate mutual transmission and loop transmission among nodes (node is only allowed to transmit to its neighboring node in forward direction only to avoid loop), is constructed and each node proportionally transmit traffic to the links confined in the DGS. The main task of the ERAPL is to determine the optimal outgoing traffic to maximize the network lifetime for a given WSN. In addition, a mathematical programming model, in which minimal remaining energy of nodes and total energy consumptions are included, is presented to optimized network lifetime. ERAPL is a centralised algorithm and runs at the sink; sink knows the topology of the WSN. Sink inform all the nodes in the WSN of a packet that contains the constructed DGS which guides all the nodes to transmit traffic to their respective neighbors so that mutual transmission among nodes and route loop is avoided and accordingly energy is saved. ERAPL can improve network lifetime while expending energy efficiently by constructing a DGS and finding the optimal outgoing traffic proportions for all the nodes to distribute packets to their respective neighbouring nodes \cite{erapl}. 
 
-\subsection{Transmission Power Control}
-%Topology control can be implemented in three ways. 
+\subsection{Transmission Power Control} 
 Topology control term has been used to mean two different things in WSNs literature. Several authors define topology control as routing protocol techniques. Another definition of topology control is power control techniques which act on the nodes transmission power level \cite{santitopologycontrol}. Topology control term has been interchangeably used with power control. To avoid confusion, the term power control is used in this thesis.
 
 In power control, a node has control over the transmission range of the node's radio which can be manipulated to benefit the network. The power adjustment approach allows the node to vary the transmission power thus range to form a connected network that minimise the energy incurred in transmission. The nodes collaboratively adjust to find the appropriate transmission power which enables the nodes to transmit at a lower transmission power than at the maximum. However, a sparse network would require a higher transmission power than a dense network to be able to transmit to the nearest node. 
-
-%Power control was thought to be able to reduce the energy consumption as it
 
 The power control technique eliminates links that are wasting the energy resources by fixing the area of coverage thus routing. This reduces collisions as inefficient links of long distance nodes are discarded. However, the nodes need to change the transmission power to adapt to any area coverage changes in order to modify the routing. 
 
 As the transmission ranges are relatively short, the nodes can simultaneously transmit packet without interfering each other, thus reducing congestion from retransmissions. Although power control improves the network traffic flows, it does not reduce the nodes power consumption as it depends on the radio duty cycle. Power savings due to transmission powers are negligible \cite{macsurvey}.
 
-
-
-%avoid interference
-
-%Transmit power control - fix area coverage, thus fix the routing. The network might not be functional when node near the sink (which is heavily relied on many nodes) dysfunction. Cannot adapt unless the area coverage changes. 
-%However, it does not reduce power consumption as it is mostly dependant on the duty cycle. 
-%Transmit power control helps to reduce energy use by avoiding interference with other nodes.
-
-%Besides reducing energy consumption, topology control has the positive effect of reducing contention when accessing the wireless channel. In general, when the nodes transmitting ranges are relatively short, many nodes can transmit simultaneously without interfering with each other, and the network capacity is increased.
-
-%The second objective is to overcome collisions. Other than discarding inefficient links, the use of minimal transmission range successfully removes the long distance nodes, thus resulting in a sparce network. 
-%The effect of this includes a reduction in the packet retransmissions and interference and an improvement in the network capacity. \cite{azrinasurvey}
-
-%Power control to improve energy efficiency of the wireless sensor network. %Whilst it is a useful tool to control traffic flows, congestion and interference levels, 
-%the power savings due reduced transmission powers are negligible since the radio's power consumption is in the range of the transmit power levels typically employed for embedded WSN nodes. \cite{macsurvey}
-
-%Define topology control as a technique that uses any controlled network parameter to generate and maintain a topology for the benefits of reducing energy consumption and achieving a desired property for an entire network. 
-%The possible controlled parameters that can be modified to gain a desired topology are transmission power, modes of nodes and role of nodes.
-%Topology control - sensor nodes have the capacity to adjust the transmission range of their radio, switch to the various modes of operation or even decide on the eligibility of the nodes joining the network backbone. These features are the parameters that are exploited in enforcing a reduced topology to achieve energy saving and prolong network lifetime. Topology control offers a mechanism that allows sensor nodes to vary their transmission range which potentially reduces the energy consumption during transmission. 
-%As a result, the long distance communication links are dropped while the short distance communication links are chosen. From the perspective of energy consumption, a direct communication over short distance is more energy efficient that the long distance communication. Therefore, reducing the transmission power will eliminate the long distance links that can waste energy resources. \cite{azrinasurvey}
-
 %%Define topology control as a technique used in wireless ad hoc and sensor networks to reduce energy consumption (which is essential to extend the network operational time) and radio interference (with a positive effect on the network traffic carrying capacity). The goal of topology control is to dynamically change the nodes transmitting range in order to maintain some property of the communication graph (connectivity) while reducing the energy consumed by the node transceivers which is strictly related to the transmitting range. 
 
-%The power adjustment approach allows nodes to vary their transmission power to reduce energy incurred in transmission. 
-%Rather than transmitting at maximum transmission power, nodes work in a collaborative manner to adjust and find the appropriate transmission power to form a connected network. 
-%A lower transmission power is sufficient to enclose a dense network whereas a much higher transmission power is needed to enclose a sparse network.\cite{azrinasurvey}
-
-%The term topology control has been used with at least two different meanings in the ad hoc and sensor networks literature. Several authors consider as topology control techniques aimed at superimposing a hierarchy on an otherwise flat network organization in order to reduce, typically energy consumption. 
-%Another definition for topology control used is power control. Classify as power control those techniques that, by acting on the transmit power level of the nodes, aim at optimizing a single wireless transmission. Although this transmission might, in general, be multihop, the focus of power control is on the efficiency of a single (possibly multi-hop) wireless channel. \cite{santitopologycontrol}
-%///////(Describes power control as a technique in which nodes adjust the transmit power to achieve a nodewide perspective such as energy efficient algorithms of the wireless transceiver. It is the technique that aims to select the best transmit power level for a single wireless transmission, possibly involving several hops. In this case, it has a channel-wide perspective.)/// \cite{azrinasurvey} 
-
-%Topology control has been interchangeably used with power control.
-
-%The idea of topology control is to grant sensor nodes a sense of control over certain parameters such that these parameters can be manipulated in a way that benefit the network. \cite{azrinasurvey}
-
-%sMinimizing the power incurred during transmission by means of adjusting the transmission range of the wireless radio of sensor nodes is a common approach adopted. 
-
-%In addition, sensor nodes that are sitting idle, not participating in transmitting and receiving can turn-off their radios or they can transit to sleep mode. Finally, topology control can be performed through a clustering approach. \cite{azrinasurvey}
-
-%POWER CONTROL - Topology control techniques for extending the lifetime of battery powered WSNs. Energy consumption and network lifetime are two commonly used evaluation metrics for measuring the impact of topology control algorithms on energy efficiency. 
-  
 \subsection{Energy Harvesting}
 As mentioned previously, sensor nodes have limited energy capacities as they are battery powered. However, the number of deployed nodes within the specific area has an effect to the nodes energy usage. In a densely deployed nodes area, short range transmission between the nodes could reduce the energy consumption while a sparsely deployed nodes area have a longer range transmission which require higher energy usage. In the situation where the nodes are not densely deployed, energy harvesting may be an option to increase the nodes energy level.
 
