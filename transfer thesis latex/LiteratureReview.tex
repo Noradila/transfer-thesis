@@ -115,8 +115,13 @@ Energy harvesting is when a node tries to replenish its energy by using other en
 
 However, energy harvesting depends on various environment factors such as light, vibration and heat to be generated and converted to the usable electrical energy. There are also other different powering mechanisms that are available such as rechargeable battery with regular recharging from the sunlight \cite{macsurvey}. 
 
-\section{Multichannel Protocol (Data Link Layer)}
-In single-channel MAC protocols, all nodes are configured to use a single frequency all the time. Frequency-agile MAC protocols switch between multiple frequencies during run-time. Recent radio chips are able to switch between frequency channels fast (e.g. in less than 100$\mu$s). Multi-channel can be used to increase robustness against narrowband long-lasting and transient interference. \cite{macsurvey}
+\section{Multichannel MAC Protocol}
+%\section{Multichannel MAC Protocol (Data Link Layer)}
+In single channel MAC protocols, nodes are configured to use a single channel throughout the nodes lifetime. Frequency agile MAC protocols on the other hand, allow the nodes to switch to different channels during run time. This is possible as recent radio chips take less than 100$\mu$s to switch to a different channel. The channel switching delay is negligible which attracts multi channels to be used in WSNs. Multi channels have the advantage of an increase in robustness against external and between nodes interference which as a result, improves the network traffic flow.
+
+%channel switching using recent radio chips take less than 100$\mu$s to switch to a different channel
+
+%In single-channel MAC protocols, all nodes are configured to use a single frequency all the time. Frequency-agile MAC protocols switch between multiple frequencies during run-time. Recent radio chips are able to switch between frequency channels fast (e.g. in less than 100$\mu$s). Multi-channel can be used to increase robustness against narrowband long-lasting and transient interference. \cite{macsurvey}
 
 %Thus considering multi-channel. \cite{singh2010routing}
 
