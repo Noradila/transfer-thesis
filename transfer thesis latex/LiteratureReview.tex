@@ -177,11 +177,16 @@ The Timeslotted Channel Hopping (TSCH) \cite{tsch} is MAC protocol that uses tim
 
 It is designed for optimisation, customisation and it simplifies the process of merging TSCH with protocol stack based on IPv6, 6LoWPAN and RPL. TSCH defines the mechanism to set up the schedule and control the resources allocation to each link in the network topology for execution. It also defines the mechanism that signals when a node cannot accept an incoming packet. However, it does not define when the node should stop accepting packets.
 
-In TSCH, time is sliced up into time slots that are appropriate for the traffic flow size. The time slot is set to be long enough to enable the sender node to send a maximum size of MAC frame to the receiver node and for the receiver to send an acknowledgement (ACK) frame to notify the sender that the frame has been successfully received. 
+Figure \ref{fig_tsch} shows the TSCH schedule and terminologies used. In TSCH, time is sliced up into time slots that are appropriate for the traffic flow size. The time slot is set to be long enough to enable the sender node to send a maximum size of MAC frame to the receiver node and for the receiver to send an acknowledgement (ACK) frame to notify the sender that the frame has been successfully received.
 
-Figure //// shows the TSCH schedule and terminologies used.
+\begin{figure}
+\centering
+\includegraphics[trim=2cm 17cm 4cm 3cm, clip=true, totalheight=0.40\textheight]{tsch.pdf}
+\caption{TSCH schedule}
+\label{fig_tsch}
+\end{figure}
 
-Slotframes contains a group of time slots of equal length and priority where the slotframe repeats continuously over time. The size of the slotframe is not appointed by TSCH. Shorter slotframe has the advantage of more available bandwidth as the result of frequent repetition of the same time slot but at the cost of higher power consumption. 
+\textit{Slotframes} contain a group of time slots of equal length and priority where the slotframe repeats continuously over time. The size of the slotframe is not appointed by TSCH. Shorter slotframe has the advantage of more available bandwidth as the result of frequent repetition of the same time slot but at the cost of higher power consumption. 
 
 A single element in the TSCH schedule is called as a \textit{cell}. The cell can instruct the node to transmit, receive or sleep. It can also be marked as both transmitting and receiving. However, transmission takes precedence over reception. The TSCH schedule also indicates the channel and address of the node for communication. The channel in TSCH is referred as \textit{channelOffset}, which is the row in the TSCH slotframe. In a transmit cell, the outgoing buffer is checked for a packet that matches the scheduled neighbour for that time slot. Similarly, in a receive cell, the node listens during the reserve cell for possible incoming packets. Each scheduled cell is dedicated for the node. However, a cell can be shared where multiple nodes can transmit on the same frequency at the same time. TSCH defines a backoff algorithm to avoid transmissions from nodes in the shared cells from congesting the network.
 
