@@ -227,45 +227,9 @@ The senders and the intended receivers switch to the channel where the control m
 %!A common channel is used during CF period of each timeslot to inform receivers of the requests and channels of the transmission data and to collect information about the neighbours. 
 %!The sender's channel number is the index or CF slot number that the destination node receives to avoid (reduce) extra transmission. 
 
-%MC-LMAC is a multi channel protocol where nodes are able to transmit to the destination within the timeslot without contention.
-
-%MC-LMAC uses a common channel during the control period of each timeslot to let the receivers be informed about the requests and channels on which data will be sent.
-%In MC-LMAC communication on a common channel at the beginning of each timeslot lets the new node collect full information about its neighborhood before starting transmission. 
-%If a node are switching between channel dynamically - MC-LMAC, all the receivers of a broadcast are informed on the common channel at the beginning of each slot. %MC-LMAC does not require a dedicated broadcast channel. 
-%At the start of each timeslot, all nodes are required to listen on a common channel (different from the dedicated broadcast channel, this can be used for data exchanges as well) in order to exchange control information. 
-
-%MC-LMAC protocol we assume scheduled access, where each node is granted a timeslot and performs its transmissions within this timeslot without contention. 
-
-%In MC-LMAC the duration of the CF period increases with more channels and this causes the nodes to spend more energy on listening for the potential incoming packets. \cite{mc-lmac}
-
-%To access the medium and send messages,nodes select/control a timeslot together with a frequency on which the transmission do not conflict with the other concurrent transmissions. 
-
-%A time slot consists of a common frequency (CF) phase and a split phase. In the CF phase, all nodes switch to the common control channel to address their destinations and to be informed whether they are addressed in the current slot. In the split phase, senders and intended receivers switch to the channel on which the control message and data transmission will take place. 
-%During the CF phase, the intended destination id and node id are transmitted. This enables the sender to notify the destination node and invite it to switch its radio to the sender's channel. The sender's channel number is equal to the index or CF slot number where it notifies the destination node. Therefore, no extra information is needed to be transmitted. In the split phase, the sender first sends a control message which can be considered as a preamble packet, and then continues with the transmission of the data message. 
-
-%The receivers listen during the whole CF phase in order to be informed about the intended destinations. It switches its transceiver on the sender's associated frequency or to standby mode by entering into a passive state for the remainder of the time slot to conserve energy. Nodes can also send broadcast messages by transmitting a broadcast address during the CF slot. All the nodes receiving the broadcast request switch to the sender's frequency. 
-
-
-%In the initialization state, nodes sample the medium for an upcoming packet to synchronize with the network and enter the synchronization state. 
-%Every node synchronizes with its parents. Prior to data transmission, the nodes send control messages which include information about the current slot and frame numbers. Upon the reception of a message during initialization, a node records the current slot and frame numbers which are sent in the control message. 
-%The timing scheme is started by the sink node at network initialization. When the neighbors of the sink receive the transmission, they synchronize their clocks with the sink's clock. The synchronization continues hop-by-hop as each node synchronizes with its parent node. The nodes detect synchronization errors by comparing the received slot and frame numbers in the control message with their local slot and slot numbers. If a difference is detected, nodes transmit back to the initialization state. 
-
-%The nodes choose a time slot autonomously such that a node's transmissions in that slot does not conflict with the transmissions of other nodes in the same slot. If there is no conflict, a node uses the same time slot in the upcoming frames. Time slot selection process takes place either during network initialization or whenever a conflict occurs and a node is required to select a new time slot to eliminate conflict. If the time slots are selected during network initialization, the sink node starts the selection process by getting the control of a time slot. When a node joins a network, first it has to discover a free time slot to transmit its data. 
-%Potential receivers should transmit a list of the time slots during which they are already receiving. The scheme lets the new node determine the list of free slots that can be used without possible collisions. A node randomly selects its time slot from the set of free slots. All the nodes are given an opportunity to select an empty slot. This guarantees that every node can select a slot to carry out its transmissions without conflicts. 
-%All the nodes keep a bit vector called occupied slot vector. It is used for storing the information about the slots occupied by neighbors and is transmitted during the node's time slot to share this information with potential transmitters. 
-
-%In MC-LMAC time slots are selected with channels. A node can use the same time slot that is used by a 2-hop neighbor on a different frequency so that parallel transmissions are not disturbed at common neighbours. 
-%Consequently, more transmissions can take place with the same number of time slots. In MC-LMAC, a node occupies slot vectors per channel and selects a time slot to be used on a particular channel. 
-%Rules of MC-LMAC, a node does not select a time slot on any of the frequencies which is used by the neighbors. 
-
 %%Present a multi-channel MAC protocol, MC-LMAC, designed with the objective of maximizing the throughput of WSNs by coordinating transmissions over multiple frequency channels. MC-LMAC takes advantage of interference and contention-free parallel transmissions on different channels. It is based on scheduled access and dynamically switches their interfaces between channels. Time is slotted and each node is assigned the control over a time slot to transmit on a particular channel. 
 
 %%Multi-Channel Lightweight Medium Access Control (MC-LMAC) is a schedule-based multi-channel MAC protocol that takes advantage of contention and collision-free parallel transmissions on different channels. 
-%The main design is based on single-channel LMAC \cite{lmac}. 
-%LMAC protocol enables the communicating entities to access the wireless medium on a schedule basis in which each node periodically uses a timeslot for transmission.
-%Present a new multi-channel MAC protocol with a fully distributed scheduling mechanism that does not require a centralized scheduler to allocate timeslots.
-%Nodes discover and take control of their slots and channels in a localized way by only exchanging information within their local neighborhood in MC-LMAC. 
-%MC-LMAC not only support many-to-one communication toward the sink node but also broadcasts and local-gossip operations. 
 
 \subsubsection{YMAC}
 Y-MAC \cite{y-mac} proposed a multi channel MAC protocol that uses a light weight channel hopping mechanism. In Y-MAC, time is divided into several fixed-length frames. Each frame consists of a broadcast and unicast period. The broadcast traffic is separated from the unicast traffic for a more reliable broadcast where they do not share the same queue. Figure \ref{fig_ymac} shows the Y-MAC scheduling. At the start of the broadcast period, all nodes must wake up to exchange broadcast messages. The nodes switch to the base channel to transmit or receive the broadcast message. Broadcast messages are only exchanged during the broadcast period. The nodes turn the radio off if there is no incoming broadcast message. The nodes will wake up again during the unicast traffic time slot. Y-MAC exploits multi channel for unicast to reduce the packet delivery latency while using a single channel which is the base channel for broadcast messages.
@@ -283,72 +247,93 @@ The receiver initially starts the hopping sequence on the base channel to receiv
 
 In Y-MAC, the nodes exchange the time remaining to the start of the next frame period. This information is included in the control message that is sent periodically as a broadcast to minimise the control overhead for time synchronisation. The receiving node that receives the time synchronisation information adjusts the expiration time of its timer by averaging the time remaining to compensate any timing error so that the start time to the next frame period is shorter. Time synchronisation is an important aspect in ensuring the network connectivity for communications.
 
-%Y-MAC propose a light-weight channel hopping mechanism exploiting multiple channels to reduce the packet delivery latency in unicast. 
-
 %%A sender and a receiver have to agree on the communication channel as well as the transmission timing. This necessitates time synchronization algorithms. In Y-MAC, sensor nodes synchronize their upcoming timer events by exchanging the time remaining in the current superframe period. 
-%Implemented by adjusting the expiration times of timer events. 
-%Time synchronized nodes periodically broadcast the information required for time synchronization. This consists of the time remaining to the start of the next frame period. 
+ 
 %%Sink periodically broadcasts control messages to initiate the network. A node which is trying to join the network turns on its radio transceiver to receive this timing information. Once a node receives the first control message, it sets its time remaining to the next frame period to equal that of the sender.
-%When the receiving node receives the time synchronization information from the sending node, it averages the time remaining and adjusts the expiration time of its timer event for timing error compensation. As a result, the starting points for the next frame period of these two nodes get closer. 
-%To lessen the control overhead for time synchronization, the timing information is included in control messages the every node periodically broadcasts to maintain network connectivity. 
 
-%Proposes an energy efficient multi-channel MAC protocol Y-MAC. A light-weight channel hopping mechanism. 
 %%Y-MAC avoids redundant channel assignment by not allocating fixed channels to the nodes. 
-%Initially, messages are exchanged on the base channel. When a traffic burst occurs, a receiver and potential senders hop to one of other available channels, according to the hopping sequence. 
-%Each node is guaranteed to receive at least one message on the base channel. 
-
-%If a node receives a unicast message on the base channel, it hops to the next channel to receive the following message. The next channel is calculated by the hopping sequence generation algorithm. 
-%Any nodes that have pending messages destined to the same receiver also hop to the same channel and compete again. In this way, bursts of messages ripple across channels and only one node uses the base channel at any one time. (successive packets are sent each on a different frequency following a pre-determined hopping sequence. This hopping sequence starts at the base station.
-%%Use 5 channels in the experiment.) 
-%The sequence number generation algorithm must guarantee that there is only one node among one-hop neighbors on any particulate channel. 
-%The receiving node transmits a small and independent packet at the start of the time slot to notify the contention losers whether it will wait during the next time slot or not (unicast time slot - contention loser can retry in the next time slot on the next channel). 
-
-
-%The medium access design of Y-MAC is based on synchronous low power listening. %We define the time slot length to be long enough to receive one message.
-%Contention winner (contention between potential senders) can transmit a message to the destination node. If the channel is clear, a preamble is transmitted until the end of the contention window to suppress competing transmissions. 
-%The receiver wakes up at the end of the contention window to receive the data. \cite{y-mac}
-
-%Y-MAC is a TDMA-based multi-channel MAC protocol. In general, TDMA-based MAC protocols allocate a time slot to each node in the network. The allocated time slot is used for data transmission or data reception according to the protocol.
-
-%In Y-MAC, time is divided into several fixed-length frames and each frame is composed of a broadcast period and a unicast period. 
-%Every node must wake up at the start of the broadcast period to exchange broadcast messages. 
-%If there are no incoming broadcast messages, each node turns off its radio, until its own receive time slot to save energy. 
-%Y-MAC separates broadcast traffic from unicast traffic, this makes broadcasting more reliable (separate broadcast message queue and unicast message queue).
-%Broadcast messages are exchanged only within the broadcast period. 
-%At the beginning of the broadcast period, every node tunes to the base channel. 
 
 %%There's a tradeoff between the number of time slots and the delivery latency. The more time slots we have, the more nodes we can allocate exclusive time slots to, but delivery latency increases due to the prolonged length of the frame period. 
 
 \subsection{Asynchronous Systems}
 %-EM-MAC, MuChMAC, Chrysso, MiCMAC - ContikiMAC?
-Recent asynchronous multi channel MAC layers are Chrysso and MiCMAC. MiCMAC is built based on ContikiMAC, the default radio duty cycling in Contiki 2.7 that works in a single channel. The details of these are explained below.
+Recent asynchronous multi channel MAC protocols are Chrysso and MiCMAC. These protocols are using Contiki operating system. MiCMAC is built based on ContikiMAC, the default radio duty cycling in Contiki 2.7 that works in a single channel. The details of these are explained below. The single channel ContikiMAC is also explained as the duty cycling mechanism in ContikiMAC is important in MCRP, the protocol proposed in this thesis.
 
 \subsubsection{ContikiMAC}
-ContikiMAC radio duty cycling mechanism is the default radio duty cycling mechanism in Contiki 2.7. It uses a power efficient wake up mechanism with a set of timing constraints to allow device to keep their transceivers off. The wireless transceiver consumes as much power when passively listening for transmissions from other devices as it does when actively transmitting, so the transceiver must be completely turned off to save power. ContikiMAC keep their radios turned off for roughly 99\% of the time.  ContikiMAC uses only asynchronous mechanisms, no signalling messages, and no additional packet headers. ContikiMAC packets are ordinary link layer messages. ContikiMAC uses a fast sleep optimization, to allow receivers to quickly detect false positive wake-ups (fast sleep optimization to allow receivers to quickly go to sleep when faced with spurious radio interference), and a transmission phase-lock optimization. The idea of periodic wake-ups has been used by many protocols, such as B-MAC, X-MAC and BoX-MAC. The phase-lock optimization has been previously suggested by WiseMAC and has since been used by other protocols as well. 
+ContikiMAC \cite{contikimac} is the default radio duty cycling mechanism in Contiki 2.7. It is an asynchronous system where it does not need scheduling, signalling messages, and additional packet headers. It uses periodical wake ups to listen to incoming packets from the neighbours. Periodical wake ups has been used by many protocols such as B-MAC //REF!!!!, X-MAC and BoX-MAC. 
+ContikiMAC default wake up frequency is set to 8 Hz which results in a wake up interval of 125 ms. Frequent wake up would enable quicker packet detection in the case of frequent packet transmissions at the cost of higher network power consumption.
 
-ContikiMAC uses a fast sleep optimization, to allow receivers to quickly detect false-positive wake-up and a transmission phase-lock optimization, to allow run-time optimization of the energy-efficiency of transmissions. 
+The receiver is kept on when it detects a packet transmission during a wake up. ContikiMAC wake ups use an inexpensive \textit{Clear Channel Assessment} (CCA) that relies on the threshold of the \textit{Received Signal Strength Indicator} (RSSI) to signify the radio activity on the channel. A positive CCA represent a clear channel if the RSSI is below a threshold and the CCA returns a negative value if the channel is currently in use. The ContikiMAC CCAs do not detect packet transmission. They are used to detect the activities on the radio signal which could be that (i) a neighbour is transmitting to a receiver, (ii) a neighbour is transmitting to other receivers, or (iii) other devices that radiate radio energy. 
 
-ContikiMAC is a radio duty cycling protocol that uses periodical wake-ups to listen for packet transmissions from neighbors. If a packet transmission is detected during a wake-up, the receiver is kept on to be able to receive the packet. UNICAST - When the packet is successfully received, the receiver sends a link layer acknowledgement. To transmit a packet, a sender repeatedly sends its packet until it receives a link layer acknowledgement from the receiver. Acknowledgement transmission is done as part of the unicast packet reception. Packets that are sent as broadcasts do not result in link layer acknowledgements. Instead, the sender repeatedly sends the packet during the full wake-up interval to ensure that all neighbors have received it. Since a broadcast transmission does not expect any link layer acknowledgement, the transmitter can turn of its radio between each packet transmission to save power.
+ContikiMAC uses a fast sleep optimisation to enable the receivers to quickly go to sleep in the case of spurious radio interference that is a false positive wake ups. The receivers can go back to sleep if (i) the duration of the radio activity is longer than the maximum packet length, (ii) the silence period is longer than the interval between two successive transmissions or (iii) the start of packet is not detected.
 
-ContikiMAC wake-up frequency of 8Hz which results in a wake-up interval of 125 ms. Radio duty cycle increase with the wake-up frequency; more wake-ups, the total power consumption of the network increase (channel check rate higher than 8Hz).
+Another feature of ContikiMAC is the transmission phase-lock mechanism. This feature has been suggested by WiseMAC ///REF!!! previously and has been used by other protocols. In Contiki, the phase-lock optimisation is implemented as a separate module from ContikiMAC. It manages a list of neighbours and their wake up phases. 
 
-ContikiMAC wake-ups use an inexpensive Clear Channel Assessment (CCA) mechanism that uses the Received Signal Strength Indicator (RSSI) of the radio transceiver to give an indication of radio activity on the channel. If the RSSI is below a given threshold, the CCA returns positive, indicating that the channel is clear. If the RSSI is above the threshold, the CCA returns negative, indicating that the channel is in use.
+When a sender has a packet to send, the sender repeatedly sends the packet until it receives a link layer acknowledgement from the receiver to indicate that the packet has been successfully received. A sender can learn the receiver's wake up phase through the link layer acknowledgement. This reduces the number of transmissions required significantly as the sender can send the packet shortly before the receiver is expected to be awake which as a result, reduces the network congestion.
 
-\textbf{Detection - }
-ContikiMAC CCAs do not reliably detect packet transmission: they only detect that the radio signal strength is above a certain threshold. The detection of a radio signal may mean that a neighbor is transmitting a packet to the receiver, that a neighbor is transmitting to another receiver, or that some other device is radiating radio energy that is being detected by the CCA mechanism. ContikiMAC must be able to discern between these events and react properly.
+However, a broadcast packet does not result in a link layer acknowledgement. The packet is instead repeatedly sent in the full wake up interval to reach all neighbours. During broadcast, the sender can turn the radio off between each packet transmission to save power as it does not expect to receive any link layer acknowledgement.
 
-\textbf{Fast Sleep - }
-The fast sleep optimization lets potential receivers go to sleep earlier if the CCA woke up due to spurious radio noise. Specific pattern of ContikiMAC transmissions:
-	If CCA detects radio activity but the radio activity has a duration that is longer than the maximum packet length, the CCA has detected noise and can go back to sleep (if the activity period is not followed by a silence period).
-	If the radio activity is followed by a silence period that is longer than the interval between two successive transmissions, the receiver can go back to sleep.
-	If the activity period is followed by a silence period of the correct length, followed by activity but no start of packet could be detected, the receiver can go back to sleep.
+%%a transmission phase-lock optimization, to allow run-time optimization of the energy-efficiency of transmissions. 
+
+
+%UNICAST - When the packet is successfully received, the receiver sends a link layer acknowledgement. To transmit a packet, a sender repeatedly sends its packet until it receives a link layer acknowledgement from the receiver. Acknowledgement transmission is done as part of the unicast packet reception. 
+%Packets that are sent as broadcasts do not result in link layer acknowledgements. Instead, the sender repeatedly sends the packet during the full wake-up interval to ensure that all neighbors have received it. 
+%Since a broadcast transmission does not expect any link layer acknowledgement, the transmitter can turn of its radio between each packet transmission to save power.
+
+%A sender can learn of a receiver's wake-up phase by making note of the time at which it saw a link layer acknowledgement from the receiver. 
+%The sender can assume that the reception of a link layer acknowledgement means that the sender has successfully transmitted a packet within the receiver's wake-up window and thus the sender has found the receiver's wake-up phase. 
+%The sender can commence its successive transmissions to this receiver just before the receiver is expected to be awake. 
+%The transmission will be significantly shorter than a normal transmission, because it occurs just before the neighbor is expected to be awake. Reducing the length of the transmission thus reduces radio congestion.
+%	The phase-lock mechanism is implemented as a separate module from ContikiMAC.
+%	The phase-lock mechanism maintains a list of neighbors and their wake-up phases.
+
+
+%The phase-lock optimization has been previously suggested by WiseMAC and has since been used by other protocols as well. 
+
+%ContikiMAC wake-ups use an inexpensive Clear Channel Assessment (CCA) mechanism that uses the Received Signal Strength Indicator (RSSI) of the radio transceiver to give an indication of radio activity on the channel. 
+%If the RSSI is below a given threshold, the CCA returns positive, indicating that the channel is clear. If the RSSI is above the threshold, the CCA returns negative, indicating that the channel is in use.
+
+%ContikiMAC CCAs do not reliably detect packet transmission: they only detect that the radio signal strength is above a certain threshold. The detection of a radio signal may mean that a neighbor is transmitting a packet to the receiver, that a neighbor is transmitting to another receiver, or that some other device is radiating radio energy that is being detected by the CCA mechanism. 
+%%%ContikiMAC must be able to discern between these events and react properly.
+
+%ContikiMAC uses ordinary link layer messages. ContikiMAC uses a power efficient wake up mechanisms with a set of timing constraints to improve the duty cycle energy saving as listening and transmitting consumes nearly the same amount of energy. ContikiMAC manage to turn the radio off for roughly 99\% of the time.
+
+%ContikiMAC radio duty cycling mechanism is the default radio duty cycling mechanism in Contiki 2.7. 
+%It uses a power efficient wake up mechanism with a set of timing constraints to allow device to keep their transceivers off. 
+%The wireless transceiver consumes as much power when passively listening for transmissions from other devices as it does when actively transmitting, so the transceiver must be completely turned off to save power. 
+%ContikiMAC keep their radios turned off for roughly 99\% of the time.  
+%ContikiMAC uses only asynchronous mechanisms, no signalling messages, and no additional packet headers. 
+%ContikiMAC packets are ordinary link layer messages. 
+%ContikiMAC uses a fast sleep optimization, to allow receivers to quickly detect false positive wake-ups (fast sleep optimization to allow receivers to quickly go to sleep when faced with spurious radio interference), 
+%and a transmission phase-lock optimization. 
+%The idea of periodic wake-ups has been used by many protocols, such as B-MAC, X-MAC and BoX-MAC. 
+
+%ContikiMAC uses a fast sleep optimization, to allow receivers to quickly detect false-positive wake-up and 
+%a transmission phase-lock optimization, to allow run-time optimization of the energy-efficiency of transmissions. 
+
+%ContikiMAC is a radio duty cycling protocol that uses periodical wake-ups to listen for packet transmissions from neighbors. 
+%If a packet transmission is detected during a wake-up, the receiver is kept on to be able to receive the packet. 
+
+
+%ContikiMAC wake-up frequency of 8Hz which results in a wake-up interval of 125 ms. Radio duty cycle increase with the wake-up frequency; more wake-ups, the total power consumption of the network increase (channel check rate higher than 8Hz).
+
+%ContikiMAC wake-ups use an inexpensive Clear Channel Assessment (CCA) mechanism that uses the Received Signal Strength Indicator (RSSI) of the radio transceiver to give an indication of radio activity on the channel. If the RSSI is below a given threshold, the CCA returns positive, indicating that the channel is clear. If the RSSI is above the threshold, the CCA returns negative, indicating that the channel is in use.
+
+%\textbf{Detection - }
+%ContikiMAC CCAs do not reliably detect packet transmission: they only detect that the radio signal strength is above a certain threshold. The detection of a radio signal may mean that a neighbor is transmitting a packet to the receiver, that a neighbor is transmitting to another receiver, or that some other device is radiating radio energy that is being detected by the CCA mechanism. ContikiMAC must be able to discern between these events and react properly.
+
+%\textbf{Fast Sleep - }
+%The fast sleep optimization lets potential receivers go to sleep earlier if the CCA woke up due to spurious radio noise. Specific pattern of ContikiMAC transmissions:
+%	If CCA detects radio activity but the radio activity has a duration that is longer than the maximum packet length, the CCA has detected noise and can go back to sleep (if the activity period is not followed by a silence period).
+%	If the radio activity is followed by a silence period that is longer than the interval between two successive transmissions, the receiver can go back to sleep.
+%	If the activity period is followed by a silence period of the correct length, followed by activity but no start of packet could be detected, the receiver can go back to sleep.
 	
-\textbf{Transmission Phase-Lock - }
-A sender can learn of a receiver's wake-up phase by making note of the time at which it saw a link layer acknowledgement from the receiver. The sender can assume that the reception of a link layer acknowledgement means that the sender has successfully transmitted a packet within the receiver's wake-up window and thus the sender has found the receiver's wake-up phase. The sender can commence its successive transmissions to this receiver just before the receiver is expected to be awake. The transmission will be significantly shorter than a normal transmission, because it occurs just before the neighbor is expected to be awake. Reducing the length of the transmission thus reduces radio congestion.
-	The phase-lock mechanism is implemented as a separate module from ContikiMAC.
-	The phase-lock mechanism maintains a list of neighbors and their wake-up phases.
+%\textbf{Transmission Phase-Lock - }
+%A sender can learn of a receiver's wake-up phase by making note of the time at which it saw a link layer acknowledgement from the receiver. The sender can assume that the reception of a link layer acknowledgement means that the sender has successfully transmitted a packet within the receiver's wake-up window and thus the sender has found the receiver's wake-up phase. The sender can commence its successive transmissions to this receiver just before the receiver is expected to be awake. The transmission will be significantly shorter than a normal transmission, because it occurs just before the neighbor is expected to be awake. Reducing the length of the transmission thus reduces radio congestion.
+%	The phase-lock mechanism is implemented as a separate module from ContikiMAC.
+%	The phase-lock mechanism maintains a list of neighbors and their wake-up phases.
 	
-Fast sleep and phase-lock optimizations significantly reduce power consumption. This is because of a phase-locked transmission being shorter than non-phased-locked transmissions, leading both to less energy being spent on transmissions and to less radio congestion \cite{contikimac}.
+%Fast sleep and phase-lock optimizations significantly reduce power consumption. This is because of a phase-locked transmission being shorter than non-phased-locked transmissions, leading both to less energy being spent on transmissions and to less radio congestion \cite{contikimac}.
 
 \subsubsection{MiCMAC}
 Propose a practical extension of low-power listening, MiCMAC, that performs channel hopping, operates in a distributed way, and is independent of upper layers of the protocol stack. MiCMAC, a channel-hopping variant of ContikiMAC. MiCMAC is based on low-power listening and have nodes wakeup periodically on different channels. MiCMAC is practical and independent from other layers in the protocol stack. MiCMAC employs pseudo-random channel hopping sequences. MiCMAC inherits its basic design from ContikiMAC and extends it for efficient multi-channel support. Inherit its design and integrate channel hopping in it. Each time a node wakes up to listen, it hops (switches) channel according to a pseudo-random sequence. Sender schedules the packet for sending just before Receiver's expected wake-up, switches to Receiver's expected channel, samples it to ensure it is clear, sends the packet and waits for acknowledgement (ACK). If Sender receives the ACK, it knows that communication was successful thus it updates its information of Receiver's wake up time and channel and goes back to sleep. Otherwise, Sender assumes that its information of Receiver's wake-up time and channel is wrong and needs to be updated. Each node switches its channel periodically on every wakeup cycle following a pseudo-random sequence. We generate the pseudo-random channel numbers using a Linear Congruential Generator (LCG). The sequences they generate are uniformly distributed and they are computationally simple.///what is it? reference!///. The generated sequences appear random and contain each possible number in the range exactly once before repeating the whole sequence again. Advantage when we want to find a node's wakeup channel. Do blind channel hopping because of simplicity as local blacklisting would involve some overhead for synchronizing the blacklists among neighbours. "Previous work has shown that even random blind channel hopping improves network connectivity, efficiency and stability when compared to single-channel"///reference??//. To increase optimizations, MiCMAC uses of predefined hopping sequence. Instead of calculating the hopping sequences at runtime, we provide a static table of all sequences used on the network. Each node simply selects its sequence according to its MAC address. MiCMAC extends ContikiMAC's phase-lock with a $channel-lock$ to anticipate the wakeup channel.
