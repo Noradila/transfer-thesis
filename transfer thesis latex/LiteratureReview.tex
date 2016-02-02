@@ -269,7 +269,14 @@ ContikiMAC uses a fast sleep optimisation to enable the receivers to quickly go 
 
 Another feature of ContikiMAC is the transmission phase-lock mechanism. This feature has been suggested by WiseMAC ///REF!!! previously and has been used by other protocols. In Contiki, the phase-lock optimisation is implemented as a separate module from ContikiMAC. It manages a list of neighbours and their wake up phases. 
 
-When a sender has a packet to send, the sender repeatedly sends the packet until it receives a link layer acknowledgement from the receiver to indicate that the packet has been successfully received. A sender can learn the receiver's wake up phase through the link layer acknowledgement. This reduces the number of transmissions required significantly as the sender can send the packet shortly before the receiver is expected to be awake which as a result, reduces the network congestion.
+\begin{figure}
+\centering
+\includegraphics[trim=2cm 22cm 6cm 2cm, clip=true, totalheight=0.25\textheight]{contikimac.pdf}
+\caption{ContikiMAC unicast transmission}
+\label{fig_contikimac}
+\end{figure}
+
+When a sender has a packet to send, the sender repeatedly sends the packet until it receives a link layer acknowledgement from the receiver to indicate that the packet has been successfully received. Figure \ref{fig_contikimac} shows ContikiMAC unicast transmission. A sender can learn the receiver's wake up phase through the link layer acknowledgement. This reduces the number of transmissions required significantly as the sender can send the packet shortly before the receiver is expected to be awake which as a result, reduces the network congestion.
 
 However, a broadcast packet does not result in a link layer acknowledgement. The packet is instead repeatedly sent in the full wake up interval to reach all neighbours. During broadcast, the sender can turn the radio off between each packet transmission to save power as it does not expect to receive any link layer acknowledgement.
 
