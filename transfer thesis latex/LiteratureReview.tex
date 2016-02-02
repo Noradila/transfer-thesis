@@ -206,7 +206,14 @@ Multi-Channel Lightweight Medium Access Control (MC-LMAC) is a fully distributed
 In MC-LMAC, the timeslots are selected with channels. The node can use the same timeslot used by a two hop neighbour if it is on a different frequency. However the node cannot use the timeslots on any frequencies that is used by the neighbours. The timeslot is selected autonomously. The node uses the same timeslot in the next frames if it does not conflict with the other nodes transmission in that slot. Otherwise, a new time slot is selected. The timeslot list is called \textit{occupied slot vector} where it stores the information about the neighbours' occupied slots. The slot vector is per channel where the node can selects a timeslot for each channel given that the timeslot is free.
 The occupied slot vector is transmitted during the node's timeslot to the potential transmitters. All nodes are given the opportunity to select an empty slot for transmission.
 
-A timeslot consists of a \textit{common frequency phase} (CF) and a \textit{split phase}. All nodes listen on the common channel at the beginning of each timeslot in the CF phase to exchange control information with the neighbours. The common channel can be used for data transmission. The control information consists of the node's id and the intended destination id. The receivers listen during the whole CF phase. If it is the intended destination, the node switches to the sender's channel, otherwise it goes into the passive state. MC-LMAC uses the CF slot number as the senders channel number to avoid sending an extra transmission to the destination node.
+\begin{figure}
+\centering
+\includegraphics[trim=2cm 19cm 8cm 3cm, clip=true, totalheight=0.35\textheight]{mclmac.pdf}
+\caption{MC-LMAC scheduling}
+\label{fig_mclmac}
+\end{figure}
+
+A timeslot consists of a \textit{common frequency phase} (CF) and a \textit{split phase} as shown in Figure \ref{fig_mclmac}. All nodes listen on the common channel at the beginning of each timeslot in the CF phase to exchange control information with the neighbours. The common channel can be used for data transmission. The control information consists of the node's id and the intended destination id. The receivers listen during the whole CF phase. If it is the intended destination, the node switches to the sender's channel, otherwise it goes into the passive state. MC-LMAC uses the CF slot number as the senders channel number to avoid sending an extra transmission to the destination node.
 
 Nodes can send broadcast messages by transmitting a broadcast address during the CF slot where the receivers switch to the sender's channel. A dedicated broadcast channel is not required. However, the CF duration increases when more channels are used which resulted in longer listening period thus energy to wait for potential incoming packets.
 
