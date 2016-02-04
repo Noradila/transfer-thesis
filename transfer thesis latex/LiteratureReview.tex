@@ -364,13 +364,6 @@ Based on these reviews, the MAC protocols have many features that ease the multi
 \label{routingProtocols}
 Routing protocols are responsible in routing data from the sender to the intended receiver across the network. In WSNs, the sensor nodes are restricted to a transmission range of approximately 20-30 metres indoors and 75-100 metres outdoor \cite{telosb-datasheet}. The routing protocols are required to manage and maintain the routes to ensure reliable communications between the limited range nodes. The routing protocols in WSNs are different than the traditional routing protocols as sensor nodes have limited processing capabilities, limited storage and use different operating system.
 
-%In WSN, the sensor nodes have a limited transmission range.
-%The network layer is responsible in routing the data across the network from the source to the destination.
-%Routing protocols for WSNs are responsible for maintaining the routes in the network and ensure reliable multi-hop communication.
-%Routing protocols in WSNs differs from traditional routing protocols depending on the Operating System.
-%%Contiki provides IP communication in both IPv4 and IPv6. However, as sensors have a small amount of memory, uIP, which is a small RFC-compliant TCP/IP stack that makes it possible to communicate over the Internet \cite{contikiDoc, contikiUIP}. uIP () to reduce the resources it requires.
-%%uIP implementation is designed to have only the absolute minimal set of features needed for a full TCP/IP stack \cite{contikiDoc, contikiUIP}.
-
 \subsection{Introduction}
 Flooding and gossiping are two classical mechanism to relay data in sensor networks without the need for any routing algorithms and topology maintenance. In flooding, each sensor receiving a data packet broadcasts it to all of its neighbors and this process continues until the packet arrives at the destination or the maximum number of hops for the packet is reached. Gossiping is a slightly enhanced version of flooding where the receiving node sends the packet to a randomly selected neighbor, which picks another random neighbor to forward the packet to and so on. Easy to implements but have drawbacks include implosion caused by duplicated messages sent to the same node, overlap when two nodes sensing the same region send similar packets to the same neighbor and resource blindness by consuming large amount of energy without consideration for energy constraints. Gossiping cause delays in propagation of data through the nodes. \cite{akkaya2005survey} 
 
