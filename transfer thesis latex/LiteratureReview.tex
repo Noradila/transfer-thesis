@@ -304,33 +304,9 @@ MiCMAC supports broadcast and introduces two variants of MiCMAC; MiCMAC and MiCM
 
 In MiCMAC, the performance degraded when it considers all 16 channels as it includes the high interference channels for transmissions. It also increases the broadcast and channel-lock costs. MiCMAC showed an optimal performance with 4 channels. 
 
-
-%When using 16 channels, the performance degrades due to using all (including bad) channels and due to increased cost of broadcast and channel-lock operations. MiCMAC sees its performance degrade when using more than 4 channels. 
 %%The per-channel measurements are not strictly required for MiCMAC to operate but do them for the sake of fair comparison. Channel diversity which increases the number of usable links due to different signal propagation obtained when hopping to a new channel. Channel diversity also leads to a more stable topology, reduced number of parent switches. MiCMAC hides losses from the routing layer, resulting in a more stable topology. \cite{micmac}
 
-%MiCMAC supports broadcast by two variants of MiCMAC. i) MiCMAC basic support for broadcast is by strobing only one of the possible channels continuously for N times the wakeup period (sending strobes over one channel for exactly 4 wakeup periods when using 4 channels). Downside is the increased cost in energy and increased channel use. ii) MiCMAC-BC where nodes wake up on a dedicated broadcast channel at every period in addition to their baseline wakeup on the unicast pseudo-random channel. Broadcast transmissions are always done over this channel for a duration of only one wakeup period. Downsides are reduced robustness as all broadcast occur on the same channel and two wakeups are needed instead of one at every period (one wakeup for pseudo-random generated channel, one for broadcast channel).
-
-%Sender schedules the packet for sending just before Receiver's expected wake-up, switches to Receiver's expected channel, samples it to ensure it is clear, sends the packet and waits for acknowledgement (ACK). If Sender receives the ACK, it knows that communication was successful thus it updates its information of Receiver's wake up time and channel and goes back to sleep. Otherwise, Sender assumes that its information of Receiver's wake-up time and channel is wrong and needs to be updated. Each node switches its channel periodically on every wakeup cycle following a pseudo-random sequence. 
-
-%When communicating with a neighbour for the first time, the sender picks any channel and transmits strobes repeatedly for a maximum of number of channels wakeup (e.g over four wakeups for four channels). Doing so guarantees that an idle receiver will wake up exactly once on the channel where the strobing occurs. Upon successful unicast reception, the receiver sends an ACK frame that includes the pseudo-random generator parameters so that the sender can compute the next wakeup channels. 
-%Next time the same pair of nodes communicates, sender will calculate the next wakeup channel, by generating the receiver's next wakeup channel; taking into account the number of periods elapsed since the last successful unicast. 
-
-%We generate the pseudo-random channel numbers using a Linear Congruential Generator (LCG). The sequences they generate are uniformly distributed and they are computationally simple.///what is it? reference!///. The generated sequences appear random and contain each possible number in the range exactly once before repeating the whole sequence again. 
 %%Advantage when we want to find a node's wakeup channel. Do blind channel hopping because of simplicity as local blacklisting would involve some overhead for synchronizing the blacklists among neighbours. "Previous work has shown that even random blind channel hopping improves network connectivity, efficiency and stability when compared to single-channel"///reference??//. 
-%To increase optimizations, MiCMAC uses of predefined hopping sequence. Instead of calculating the hopping sequences at runtime, we provide a static table of all sequences used on the network. Each node simply selects its sequence according to its MAC address. 
-
-
-%MiCMAC did not require any change in RPL routing nor other layers. Run RPL with ETX as a metric and the MRHOF objective function. The link ETX between two nodes is updated at every transmission attempt, independent of the channel, resulting in an aggregated estimate over all channels in use.
-
-%MiCMAC extends ContikiMAC's phase-lock with a $channel-lock$ to anticipate the wakeup channel.
-
-%Propose a practical extension of low-power listening, MiCMAC, that performs channel hopping, operates in a distributed way, and is independent of upper layers of the protocol stack. 
-%MiCMAC, a channel-hopping variant of ContikiMAC. 
-%MiCMAC is based on low-power listening and have nodes wakeup periodically on different channels. 
-%MiCMAC is practical and independent from other layers in the protocol stack. MiCMAC employs pseudo-random channel hopping sequences. 
-%MiCMAC inherits its basic design from ContikiMAC and extends it for efficient multi-channel support. 
-%%Inherit its design and integrate channel hopping in it. 
-%Each time a node wakes up to listen, it hops (switches) channel according to a pseudo-random sequence. 
 
 \subsubsection{Chrysso}
 Chrysso \cite{chrysso} is a multi channel protocol extension that is specifically tailored for data collection applications. Chrysso is implemented in Contiki 2.4 using \textit{collect} routing protocol which is a data collection. Chrysso switches the channel of the nodes that are affected by the external interference to a new set of channels when the interference is detected to evade the interference source.
@@ -343,56 +319,14 @@ Chrysso uses the outer loop during severe interference that blocks any communica
 
 The watchdog initiates the \textit{scan mode} to find a new parent when the nodes have lost contact with the parent after the channel switches. The node scans through all available channels except the previously used outchannel to find a new parent as neighbours are now operating on different channels. The scan mode is triggered on demand as it uses additional overhead for processing and consumes energy. 
 
-%We also present a novel scanning procedure probing all channels that can be used either at bootstrap or when losing contact with the parent. 
-
-%For a child node, both channel switches and routing switches necessitate a reset of its collected channel quality statistics. The child node also clears its routing entries. The watchdog initiates the scan mode if the node does not find a parent available on the new channel.
-
-%Scan mode is invoked at network bootstrap or whenever a sensor node loses connectivity to its parent and has no other entry in its neighbor table (following a channel switch by the outer loop). During scan mode, a sensor node sweeps across the list of channels. The previously used outchannel is blacklisted for that period.
-
 %%***Fundamental problem of multi-channel protocols: channel deafness (not hearing a packet on a different channel). \cite{chrysso}
 
-%Neighbour discovery - Because neighboring nodes operate of different channels, topology information available at a child node is only partial, and also subject to change, as neighbours may switch channel during network operation. Chrysso employs a special neighborhood discovery phase, called $scan mode$ to find a new parent. 
-%Scan mode is only triggered on demand as it incurs additional overhead on processing and energy consumption. A node performing neighborhood discovery scans through the list of available channels to search for a new parent. 
-
-
-%Outer loop - The outer loop functions as a watchdog for case of severe interference that disrupt the operation of the inner loop. 
-%A node (in child and parent role) decides independently to switch channels based on the protocol-specific policies. The decisions involve no explicit coordination between nodes. 
-%For detecting severe interference, a child node monitors the number of failed transmissions (messages that were never sent) and switches its outchannel if the failure ratio exceeds a threshold. 
-%Autonomous channel switches should only be performed when the inner loop fails to trigger a channel switch for an extended duration. 
-%Likewise, the parent switches to the next inchannel when the ratio of received packets drops below a pre-set value.
-%Child node, if the number of failed transmissions exceeds a certain fraction of the total transmission attempts, then the child node switches its outchannel instantly and autonomously. 
-%Likewise, a parent node keeps a record of the number of packet received. If the fraction of received over expected packets falls below a threshold, the parent switches its inchannel instantly and autonomously.
-
-
-%The inner loop is responsible for coordinated channel switching between a parent and its children as soon as external interference is detected. When interference completely block any communication, a coordinated channel switch cannot be performed. For this case, Chrysso uses the outer loop, a watchdog mechanism that initiates an autonomous channel switch.
-
-%Inner loop - A child node periodically collects data from the channel quality monitor and piggybacks that onto the data packet. 
-%A child node responds to channel switching requests from its parent. 
-%Parent uses protocol-stack specific policies to determine whether or not the current measured channel quality indicates external interference. The parent computes an average over the backoff values (congestion backoffs as a measure of interference) and checks whether it exceeds a predetermined threshold. If this is the case, having notified all its children, the parent node switches to the next logical inchannel. 
-
 %%//inner, outer, scan
-%%Chrysso is a multi-channel protocol extension, that leverages the channel diversity of sensor node radio. 
-%Chrysso mitigates the effect of external interference by switching only the affected nodes to a new set of channels effectively evading the interference source on spot. 
-%It is specifically tailored to data collection applications ($Collect$ routing protocol), 
-%and allocates channels for individual parent-children groups with the parent coordinating a channel switch upon detecting interference. 
-%For efficiency nodes normally operate on two channels only, one for incoming and one for outgoing traffic. 
-%We also present a novel scanning procedure probing all channels that can be used either at bootstrap or when losing contact with the parent. 
-%Chrysso maintains a pre-defined logical list of available channels so that a parent and children are consistent with their view on the next channel. 
-%Chrysso implementation uses five 802.15.4 channels: 26, 14, 20, 11 and 22 in the specified order. 
-
-%The core of Chrysso is the set of control loops that manages whether a parent-children pair should stay on the same channel or switch to a new channel.
- 
+%%Chrysso is a multi-channel protocol extension, that leverages the channel diversity of sensor node radio.  
 
 \subsection{Comparison and Discussion}
-The main features of the presented MAC protocols are summarised in table \ref{table:macProtocol} Existing MAC protocols suffer from several issues:
-
-\begin{enumerate}
-\item Synchronous vs asynchronous design \\
-Both
-\item Sender vs receiver initiated design
-\item Channel hopping design
-\item Broadcast support
-\end{enumerate}
+The reviewed MAC protocols features are summarised in Table \ref{table:macProtocol}. Several issues that exist are in term of:
+%The main features of the presented MAC protocols are summarised in table \ref{table:macProtocol} Existing MAC protocols suffer from several issues:
 
 \begin{table}
 \centering
@@ -400,22 +334,32 @@ Both
 \hline
 Protocol & Medium Access & Channel Assignment & Channel Switching & Common Period & Broadcast \\
 \hline \hline
-MC-LMAC & TDMA & Senders & Once per time slot & CF & Yes \\
-\hline
-Y-MAC & TDMA + collision window & Dynamic & Once per time slot & CP + CFs & Yes
-\\
-\hline
-TSCH & TDMA + collision window & & & &
-\\
-\hline
+TSCH & TDMA + collision window & Dynamic & Once per cycle & No & Yes \\
+MC-LMAC & TDMA & Senders & Once per time slot & Yes & Yes \\
+Y-MAC & TDMA + collision window & Dynamic & Once per time slot & Yes & Yes \\
 MiCMAC & MiCMAC & Dynamic & One per wake up time & Yes & Yes\\
-\hline
-Chrysso & Operates over ContikiMAC & Dynamic & Change channel when bad & No & No\\
+Chrysso & ContikiMAC & Dynamic & When require & No & No\\
 \hline 
 \end{tabular}
 \caption{Comparison of studied MAC protocols}
 \label{table:macProtocol}
 \end{table}
+
+\begin{enumerate}
+\item \textbf{Synchronous versus asynchronous design} - 
+Both designs have their advantages and disadvantages. However, synchronous MAC protocols require the network topology to be known before it can schedule timeslots to avoid conflict between the nodes. Asynchronous MAC protocols depend on the channel condition and the nodes compete for the channel access.
+
+\item \textbf{Sender versus receiver initiated design} - 
+Most MAC protocols presented are both sender and receiver initiated where the channel decisions depended on both nodes.
+
+\item \textbf{Channel hopping design} - 
+The channel quality checking at run time costs a lot of energy. In most of the MAC protocols studied evaluation, the protocols are tested using a few selected channels instead of considering all available channels. This limits the spectrum usage of the frequencies.
+
+\item \textbf{Broadcast support} - 
+Most MAC protocols presented provide a broadcast support except for Chrysso. The protocols specified a broadcast period at every wake up on a fixed channel which reduces the robustness of the protocol as broadcast will occurs on the same channel each time. TSCH on the other hand treats broadcast message the same as a unicast message where it needs to select a slot before it can proceed but with a broadcast MAC address as the destination.
+\end{enumerate}
+
+Based on these reviews, the MAC protocols have many features that ease the multi channel processes. However, to further improve multi channel protocols, cross layers decisions are required. This could lighten the processing load at the MAC protocol and to allow switching decisions to be determined at run time on the upper layer which could compute better decisions.
 
 %MC-LMAC
 %Medium access TDMA
