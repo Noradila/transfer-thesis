@@ -333,25 +333,55 @@ In MiCMAC, the performance degraded when it considers all 16 channels as it incl
 %Each time a node wakes up to listen, it hops (switches) channel according to a pseudo-random sequence. 
 
 \subsubsection{Chrysso}
-//inner, outer, scan
-Chrysso is a multi-channel protocol extension, that leverages the channel diversity of sensor node radio. Chrysso mitigates the effect of external interference by switching only the affected nodes to a new set of channels effectively evading the interference source on spot. It is specifically tailored to data collection applications ($Collect$ routing protocol), and allocates channels for individual parent-children groups with the parent coordinating a channel switch upon detecting interference. For efficiency nodes normally operate on two channels only, one for incoming and one for outgoing traffic. We also present a novel scanning procedure probing all channels that can be used either at bootstrap or when losing contact with the parent. Chrysso maintains a pre-defined logical list of available channels so that a parent and children are consistent with their view on the next channel. Chrysso implementation uses five 802.15.4 channels: 26, 14, 20, 11 and 22 in the specified order. 
+Chrysso \cite{chrysso} is a multi channel protocol extension that is specifically tailored for data collection applications. Chrysso is implemented in Contiki 2.4 using \textit{collect} routing protocol which is a data collection. Chrysso switches the channel of the nodes that are affected by the external interference to a new set of channels when the interference is detected to evade the interference source.
 
-The core of Chrysso is the set of control loops that manages whether a parent-children pair should stay on the same channel or switch to a new channel.
+Chrysso allows the parent to coordinate the channel switch when interference is detected for each individual parent-children group. Chrysso operates on two channels; one for incoming (called as inchannel) and the other channel is for outgoing (outchannel) traffic. Chrysso maintains a pre-defined logical list of available channel. The parent and children use this list to ensure consistency when they are switching to the next channel. Chrysso implemented five channels which are channel 26, 14, 20, 11 and 22 and evaluated Chrysso's performance using these channels in this particular order.
 
-The inner loop is responsible for coordinated channel switching between a parent and its children as soon as external interference is detected. When interference completely block any communication, a coordinated channel switch cannot be performed. For this case, Chrysso uses the outer loop, a watchdog mechanism that initiates an autonomous channel switch.
+Chrysso consists of a set of control loops; the inner and outer loops, that decides to maintain or switch the parent-children's channel. The inner loop is responsible for the parent-children channel switching coordination when there is external interference. The child node collects data from the channel quality monitor periodically which is then included onto the data packet. The parent uses the average over congestion backoffs values to measure and determine if there is external interference in the current measured channel quality. If the computed value exceeds a predetermined threshold, the children are notified of the channel switching request before the parent switches to the next inchannel.
 
-Inner loop - A child node periodically collects data from the channel quality monitor and piggybacks that onto the data packet. A child node responds to channel switching requests from its parent. Parent uses protocol-stack specific policies to determine whether or not the current measured channel quality indicates external interference. The parent computes an average over the backoff values (congestion backoffs as a measure of interference) and checks whether it exceeds a predetermined threshold. If this is the case, having notified all its children, the parent node switches to the next logical inchannel. 
+Chrysso uses the outer loop during severe interference that blocks any communication where the parent-children channel switching coordination could not be invoked. The outer loop is a watchdog mechanism where autonomous channel switching is initiated when the inner loop could not be triggered. The nodes, both parent and children independently switch to the next channel in outer loop. The child node monitors the number of failed transmissions. If it exceeds a predefined threshold, the outchannel is switches as it indicates that the channel has severe interference. Likewise, the parent records the number of packets it received and switches to the next inchannel instantly and autonomously if the received packets are below a pre-set threshold value of the expected packets.
 
-Outer loop - The outer loop functions as a watchdog for case of severe interference that disrupt the operation of the inner loop. A node (in child and parent role) decides independently to switch channels based on the protocol-specific policies. The decisions involve no explicit coordination between nodes. For detecting severe interference, a child node monitors the number of failed transmissions (messages that were never sent) and switches its outchannel if the failure ratio exceeds a threshold. Autonomous channel switches should only be performed when the inner loop fails to trigger a channel switch for an extended duration. Likewise, the parent switches to the next inchannel when the ratio of received packets drops below a pre-set value.
-Child node, if the number of failed transmissions exceeds a certain fraction of the total transmission attempts, then the child node switches its outchannel instantly and autonomously. Likewise, a parent node keeps a record of the number of packet received. If the fraction of received over expected packets falls below a threshold, the parent switches its inchannel instantly and autonomously. 
+The watchdog initiates the \textit{scan mode} to find a new parent when the nodes have lost contact with the parent after the channel switches. The node scans through all available channels except the previously used outchannel to find a new parent as neighbours are now operating on different channels. The scan mode is triggered on demand as it uses additional overhead for processing and consumes energy. 
 
-For a child node, both channel switches and routing switches necessitate a reset of its collected channel quality statistics. The child node also clears its routing entries. The watchdog initiates the scan mode if the node does not find a parent available on the new channel.
+%We also present a novel scanning procedure probing all channels that can be used either at bootstrap or when losing contact with the parent. 
 
-Scan mode is invoked at network bootstrap or whenever a sensor node loses connectivity to its parent and has no other entry in its neighbor table (following a channel switch by the outer loop). During scan mode, a sensor node sweeps across the list of channels. The previously used outchannel is blacklisted for that period.
+%For a child node, both channel switches and routing switches necessitate a reset of its collected channel quality statistics. The child node also clears its routing entries. The watchdog initiates the scan mode if the node does not find a parent available on the new channel.
 
-***Fundamental problem of multi-channel protocols: channel deafness (not hearing a packet on a different channel). \cite{chrysso}
+%Scan mode is invoked at network bootstrap or whenever a sensor node loses connectivity to its parent and has no other entry in its neighbor table (following a channel switch by the outer loop). During scan mode, a sensor node sweeps across the list of channels. The previously used outchannel is blacklisted for that period.
 
-Neighbour discovery - Because neighboring nodes operate of different channels, topology information available at a child node is only partial, and also subject to change, as neighbours may switch channel during network operation. Chrysso employs a special neighborhood discovery phase, called $scan mode$ to find a new parent. Scan mode is only triggered on demand as it incurs additional overhead on processing and energy consumption. A node performing neighborhood discovery scans through the list of available channels to search for a new parent. 
+%%***Fundamental problem of multi-channel protocols: channel deafness (not hearing a packet on a different channel). \cite{chrysso}
+
+%Neighbour discovery - Because neighboring nodes operate of different channels, topology information available at a child node is only partial, and also subject to change, as neighbours may switch channel during network operation. Chrysso employs a special neighborhood discovery phase, called $scan mode$ to find a new parent. 
+%Scan mode is only triggered on demand as it incurs additional overhead on processing and energy consumption. A node performing neighborhood discovery scans through the list of available channels to search for a new parent. 
+
+
+%Outer loop - The outer loop functions as a watchdog for case of severe interference that disrupt the operation of the inner loop. 
+%A node (in child and parent role) decides independently to switch channels based on the protocol-specific policies. The decisions involve no explicit coordination between nodes. 
+%For detecting severe interference, a child node monitors the number of failed transmissions (messages that were never sent) and switches its outchannel if the failure ratio exceeds a threshold. 
+%Autonomous channel switches should only be performed when the inner loop fails to trigger a channel switch for an extended duration. 
+%Likewise, the parent switches to the next inchannel when the ratio of received packets drops below a pre-set value.
+%Child node, if the number of failed transmissions exceeds a certain fraction of the total transmission attempts, then the child node switches its outchannel instantly and autonomously. 
+%Likewise, a parent node keeps a record of the number of packet received. If the fraction of received over expected packets falls below a threshold, the parent switches its inchannel instantly and autonomously.
+
+
+%The inner loop is responsible for coordinated channel switching between a parent and its children as soon as external interference is detected. When interference completely block any communication, a coordinated channel switch cannot be performed. For this case, Chrysso uses the outer loop, a watchdog mechanism that initiates an autonomous channel switch.
+
+%Inner loop - A child node periodically collects data from the channel quality monitor and piggybacks that onto the data packet. 
+%A child node responds to channel switching requests from its parent. 
+%Parent uses protocol-stack specific policies to determine whether or not the current measured channel quality indicates external interference. The parent computes an average over the backoff values (congestion backoffs as a measure of interference) and checks whether it exceeds a predetermined threshold. If this is the case, having notified all its children, the parent node switches to the next logical inchannel. 
+
+%%//inner, outer, scan
+%%Chrysso is a multi-channel protocol extension, that leverages the channel diversity of sensor node radio. 
+%Chrysso mitigates the effect of external interference by switching only the affected nodes to a new set of channels effectively evading the interference source on spot. 
+%It is specifically tailored to data collection applications ($Collect$ routing protocol), 
+%and allocates channels for individual parent-children groups with the parent coordinating a channel switch upon detecting interference. 
+%For efficiency nodes normally operate on two channels only, one for incoming and one for outgoing traffic. 
+%We also present a novel scanning procedure probing all channels that can be used either at bootstrap or when losing contact with the parent. 
+%Chrysso maintains a pre-defined logical list of available channels so that a parent and children are consistent with their view on the next channel. 
+%Chrysso implementation uses five 802.15.4 channels: 26, 14, 20, 11 and 22 in the specified order. 
+
+%The core of Chrysso is the set of control loops that manages whether a parent-children pair should stay on the same channel or switch to a new channel.
+ 
 
 \subsection{Comparison and Discussion}
 The main features of the presented MAC protocols are summarised in table \ref{table:macProtocol} Existing MAC protocols suffer from several issues:
