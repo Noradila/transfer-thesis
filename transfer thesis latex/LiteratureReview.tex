@@ -372,13 +372,24 @@ In WSNs, flooding and gossiping are two classical approaches to relay data to th
 %Gossiping is a slightly enhanced version of flooding where the receiving node sends the packet to a randomly selected neighbor, which picks another random neighbor to forward the packet to and so on. 
 %Easy to implements but have drawbacks include implosion caused by duplicated messages sent to the same node, overlap when two nodes sensing the same region send similar packets to the same neighbor and resource blindness by consuming large amount of energy without consideration for energy constraints. Gossiping cause delays in propagation of data through the nodes. \cite{akkaya2005survey} 
 
-In order to maximize the use of multichannel in improving packet delivery, routing topology plays a big role in providing an optimized routing tree to the network that is scalable and energy efficient. 
-Network design objectives - scalability (densely deployed. since the number of sensor nodes are in the order of tens, hundreds or thousands, the network protocols designed should be scalable). Reliability - must provide error control and correction mechanism to ensure reliable data delivery over noisy, error-prone and time-varying wireless channels. Low power consumption - sensor nodes are battery powered, it is crucial to reduce the power consumption of sensor nodes so that the lifetime of the sensor nodes and the network is prolonged). Adaptability - nodes may fail, join or move; network protocols should be adaptive to such density and topology changes. Channel utilization - since sensor nodes have limited bandwidth resources, communication protocols designed for sensor network should efficiently make use of the bandwidth to improve channel utilization (MAC layer??).
-Routing protocol approaches can be classified into () types which are flat based and data centric, hierarchical, location based and network flow and quality of service (QoA) aware.
+Routing protocol is important in ensuring reliable packet delivery in WSNs. Several crucial criteria in the design of a routing protocol are in term of scalability, reliability, power consumption and adaptability. In WSNs, sensor nodes are typically densely deployed in the error prone wireless channels. This places the importance of scalability in the routing protocol to reduce conflict between the nodes and external interference from other devices while maintaining reachability between nodes. Sensor nodes are equipped with limited battery power. The routing protocol should consider the sensor nodes battery level before deciding on the routes. It can prolong the network lifetime by considering alternative routes in order to avoid draining lower energy nodes. Throughout the network lifetime, the nodes may fail, join or move to a different location than the nodes were initially. The routing protocol should be able to adapt to these changes and updates the routes accordingly.
+
+Routing protocols are aimed to provides an optimised, scalable and energy efficient routes in the network which as a result, could prolong the network lifetime.
+
+
+%%There have been many studies to improve the routing protocols. Routing protocols can be classified into flat and data centric based, location based, network flow and QoS aware, hierarchical based and hybrid based.
+
+%In order to maximize the use of multichannel in improving packet delivery, routing topology plays a big role in providing an optimized routing tree to the network that is scalable and energy efficient. 
+%Network design objectives - scalability (densely deployed. since the number of sensor nodes are in the order of tens, hundreds or thousands, the network protocols designed should be scalable). 
+%%Reliability - must provide error control and correction mechanism to ensure reliable data delivery over noisy, error-prone and time-varying wireless channels.
+%Low power consumption - sensor nodes are battery powered, it is crucial to reduce the power consumption of sensor nodes so that the lifetime of the sensor nodes and the network is prolonged). 
+%Adaptability - nodes may fail, join or move; network protocols should be adaptive to such density and topology changes. 
+%%Channel utilization - since sensor nodes have limited bandwidth resources, communication protocols designed for sensor network should efficiently make use of the bandwidth to improve channel utilization (MAC layer??).
+%%Routing protocol approaches can be classified into () types which are flat based and data centric, hierarchical, location based and network flow and quality of service (QoA) aware.
 
 %Nodes closer to the sink need to handle more traffic than nodes in the perimeters.
 
-At the network layer, the main aim is to find ways for energy-efficient route setup and reliable relaying of data from the sensor nodes to the sink so that the lifetime of the network is maximized.
+%At the network layer, the main aim is to find ways for energy-efficient route setup and reliable relaying of data from the sensor nodes to the sink so that the lifetime of the network is maximized.
 
 \subsection{Classification of Routing Protocols}
 Many routing algorithms (protocols) were developed for WSN. All major routing protocols proposed for WSNs can be divided into ///(). 
