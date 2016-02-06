@@ -448,13 +448,22 @@ Geographic Adaptive Fidelity (GAF) is another energy-aware location based routin
 %Increases the lifetime of the network by saving energy.
 
 \subsubsection{Network Flow and QoS-aware}
-Network flow - route setup is modeled and solved as a network flow problem. QoS-aware protocols consider end-to-end delay requirements while setting up paths un the sensor network. 
+In network flow and QoS aware routing, the routes setup take into account the network flow problems and the quality of service requirements such as the end to end delay, routes reliability and fault tolerance in routing. SAR \cite{sar} and maximum lifetime energy routing \cite{maxlifetimechang} are examples in network flow and QoS aware routing. These routing protocols try to find a balance between energy consumption and QoS requirements.
 
-\cite{maxlifetimechang} Maximum lifetime energy routing solution - the main objective of the approach is to maximize the network lifetime by carefully defining link cost as a function of node remaining energy and the required transmission energy using that link. Use Bellman-Ford shortest path algorithm to find the least cost paths to the destination (are found).
+%Network flow - route setup is modeled and solved as a network flow problem. QoS-aware protocols consider end-to-end delay requirements while setting up paths un the sensor network. 
 
-Sequential assignment routing (SAR) \cite{sar} - is the first protocol for sensor networks that includes the notion of QoS in its routing decisions. It is a table-driven multi-path approach. The SAR protocol creates tree rooted at one-hop neighbors of the sink by taking QoS metric, energy resource on each path and priority level of each packet into consideration. One of these paths is selected according to the energy resources and QoS on the path. 
-Advantages: less power consumption than the minimum-energy metric algorithm which only focuses the energy consumption of each packet without considering its priority. SAR maintains multiple paths from nodes to sink - ensure fault-tolerance and easy recovery.
-Disadvantages: the protocol suffers from the overhead of maintaining the tables and states at each sensor node especially when the number of nodes is huge.
+Maximum lifetime energy routing solution has the objective of maximising the network lifetime by considering the nodes remaining energy to define the link cost for transmission using the link. The protocol uses Bellman-Ford shortest path algorithm to compute the least cost paths to the destination. 
+
+%\cite{maxlifetimechang} Maximum lifetime energy routing solution - the main objective of the approach is to maximize the network lifetime by carefully defining link cost as a function of node remaining energy and the required transmission energy using that link. Use Bellman-Ford shortest path algorithm to find the least cost paths to the destination (are found).
+
+Sequential Assignment Routing (SAR) is the first protocol that considers the QoS in its routing decisions. The path is selected based on the energy resources, QoS on each path and the packet priority level. SAR proved to consume less energy when it considers the packet priority than other minimum-energy routing that only focuses on the energy consumption. SAR tries to minimise the average weighted QoS metric throughout the network lifetime. SAR maintains multiple path form nodes to the sink to ensure fault tolerance and easy recovery. However, this resulted in high overhead to maintain the paths in a large network. 
+
+%Sequential assignment routing (SAR) \cite{sar} - is the first protocol for sensor networks that includes the notion of QoS in its routing decisions. 
+%%It is a table-driven multi-path approach. 
+%%The SAR protocol creates tree rooted at one-hop neighbors of the sink by taking QoS metric, energy resource on each path and priority level of each packet into consideration. 
+%One of these paths is selected according to the energy resources and QoS on the path. 
+%Advantages: less power consumption than the minimum-energy metric algorithm which only focuses the energy consumption of each packet without considering its priority. SAR maintains multiple paths from nodes to sink - ensure fault-tolerance and easy recovery.
+%Disadvantages: the protocol suffers from the overhead of maintaining the tables and states at each sensor node especially when the number of nodes is huge.
 
 \subsubsection{Hierarchical}
 Scalability is one of the major design attributes to sensor networks. A single-tier network can cause the gateway to overload with the increase in sensor density. The single-gateway architecture is not scalable for a larger set on sensors covering wider area of interest. The aim of hierarchical routing is to efficiently maintain the energy consumption of sensor nodes by involving them in multi-hop communication within a particular cluster and by performing data aggregation and fusion in order to decrease the number of transmitted messages to the sink. 
