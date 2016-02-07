@@ -402,7 +402,7 @@ However, SPIN does not guarantee the delivery of data to the interested node. Th
 
 Directed Diffusion is a query-driven data delivery model. It is an important milestone in data centric routing. Directed Diffusion aims at diffusing data using attribute-value schemes. The data on the sensor is queried in an on demand basis using the attribute-value pairs. An interest or task is defined using a list of attribute-value pairs to create a query. The sink broadcasts the interest through its neighbours. The interest is cached at the receiving nodes for later use. Caching helps to increase the routing energy efficiency and minimise delay. It is used to compare the received data with the values in the interests. The reply link to the neighbour from which the interest was received is called a gradient. The paths are established between the sink and sources based on the interest and gradient utilisation where one of the paths is selected as reinforcement. The interest is then resent by the sink using the selected path with a smaller interval. Directed Diffusion selects a new or alternative path that sends data in lower rates when the current path fails.
 
-In Direction Diffusion, the sink queries the sensor nodes for the specific data. SPIN however, advertise the available data to allow interested nodes to query the data. There are many other protocols that have been proposed either based on Directed Diffusion such as Rumor Routing \cite{rumorrouting}, GBR \cite{schurgers2001energy}, CADR \cite{cadr}) or following a similar concept such as TEEN \cite{teen} which is also a hierarchical-based, and ACQUIRE \cite{acquire}.
+In Directed Diffusion, the sink queries the sensor nodes for the specific data. SPIN however, advertise the available data to allow interested nodes to query the data. There are many other protocols that have been proposed either based on Directed Diffusion such as Rumor Routing \cite{rumorrouting}, GBR \cite{schurgers2001energy}, CADR \cite{cadr}) or following a similar concept such as TEEN \cite{teen} which is also a hierarchical-based, and ACQUIRE \cite{acquire}.
 
 %Difference: In Directed Diffusion, the sink queries the sensor nodes if a specific data is available by flooding some tasks. (sink to nodes)
 %Advantages: Caching is a big advantage in term of energy efficiency and delay. Energy efficient since it is on demand and there is no need for maintaining global network topology.
@@ -501,110 +501,64 @@ RPL uses \textit{Trickle} algorithm \cite{trickle}. Trickle is used to control t
 %Disadvantages: dynamic clustering brings extra overhead (head changes, advertisements). 
 %Cluster heads consumes a larger amount of energy (do data aggregation and fusion tasks to reduce the number of data transmissions) when they are located further away from the sink.
 
-%RPL/////
 
-%\subsubsection{Hybrid Based}
-%\subsubsection*{CTP}
-%2 principles for wireless routing protocols; datapath validation - data traffic quickly discovers and fixes routing inconsistencies; adaptive beaconing - extending the Trickle algorithm to routing control traffic reduces route repair latency and sends fewer beacons. CTP Neo - an implementation of CTP.
-%Datapath validation actively uses data packets to validate the routing topology and detect loops. Each data packet contains the link-layer transmitter’s estimate of its distance. A node detects a possible routing loop when it receives a packet to forward from a node with a smaller or equal distance to the destination.
-%CTP is a routing protocol that computes anycast routes to a single or a small number of designated sinks in a wireless sensor network. CTP may appear very simple. They provide best-effort, unreliable, anycast packet delivery to one of the data sinks in the network. 
-%4 goals; reliability - a protocol should deliver at least 90% of end-to-end packets when a route exists. Robustness - should be able to operate without tuning or configuration in a wide range of network conditions, topologies, workloads and environments. Efficiency - should deliver packets with the minimum amount of transmissions. Hardware independence - without assuming specific radio chip features.
-%Rapid topology changes necessitate distance-vector rather than link-state algorithms. Simple distance-vector protocols however suffer from routing loops and other problems that harm reliability and efficiency. Link topology changes may result in transient loops which causes packet drops. A collection protocol builds and maintains minimum cost trees to nodes that advertise themselves as tree roots. Collection is address-free; when there are multiple base stations, it sends to the one with the minimum cost without knowing its address.
-%Every node maintains an estimate of the cost of its route to a collection point. ETX as the cost metric (any similar gradient metric can work just well). ETX does not effectively capture throughput. A node’s cost is the cost of its next hop plus the cost of its link to the next hop. The cost of a route is the sum of the costs of its links. Collection points advertise a cost of zero. Each data packet contains the transmitter’s local cost estimates. When a node receives a packet to forward, it compares the transmitter’s cost to its own. Cost must always decrease. 
-%When a timer interval expires, Trickle doubles it, up to a maximum value. When Trickle hears a newer version number, it shrinks the timer interval to a small value. Trickle enables quick discovery of new nodes and recovery from failures, while at the same time enabling long beacon intervals when the network is stable \cite{ctp}. 
-
-%CTP provides best effort anycast datagram communication to one of the collection roots in a network. A collection protocol delivers data to one of possibly several data sinks, providing many-to-one network layer. CTP uses routing frames to update and build collection tree in the network. CTP uses data frames to deliver application payload to the sink and to probe topology inconsistencies. 
-%	CTP is a tree-based collection protocol. Some nodes advertise as tree roots. Nodes form a set of routing trees to these roots. CTP is address free in that a node does not send a packet to a particular root, instead, it implicitly chooses a root by choosing a next hop. Nodes generate routes to roots using a routing gradient. CTP assumes that it has link quality estimates of some number of nearby neighbors (ETX). These provides an estimate of the number of transmissions it takes for the node to send a unicast packet whose acknowledgement is successfully received. 
-%CTP uses expected transmission (ETX) as its routing gradient. A root has an ETX of 0. ETX of a node is the ETX of its parent plus the ETX of its link to its parent. CTP should choose the one with the lowest ETX value. 
-%Problem is routing loops; occur when a node choose a new route that has a significantly higher ETX than its old one. CTP tries to resolve the inconsistency by broadcasting a beacon frame. Packet duplication - when a node receives a data frame successfully and transmit an ACK but ACK is not received. Thus CTP keeps a small cache of packet signature for the packets it has seen to detect packet duplicates.CTP data frames has additional time has lived (THL) field which the routing layer increments on each hop. Link-layer retransmission has the same THL.
-%If node’s ETX value changes significantly, CTP should transmit a broadcast frame to notify other nodes which might change their routes. A parent can detect when a child’s ETX is significantly below its own. When a parent hears a child advertise an ETX below its own, it must schedule a routing frame for transmission in the near future \cite{ctptep}.
-
-
-
-
-%**
-%Contiki Collect protocol and CTP are state-of-the-art address-free data collection protocols that provide a way for nodes to send data packets towards a data sink. Nodes do not need to know the address of the sink. Use ETX finding paths that minimize the number of packet transmissions to reach the root. Neither CTP nor Contiki Collect are IPv6-based. Contiki Collect uses the Contiki Rime stack \cite{beyondInteroperability}.
-
-%The data collection is an address-free protocol that sends messages towards a sink node somewhere in the network. The protocol is address-free in the sense that the originating nodes do not send their messages to a specific addressed node.
-%Instead, the nodes send their messages towards the nearest sink in the network. The protocol does two things. It first builds a tree that originates at the sink nodes. The nodes build the tree by sending periodic announcements containing the number of hops away from the sink. After having built the tree, the nodes start sending messages towards the root of the tree. The protocol sends the messages using hop-by-hop reliable unicast \cite{rime}. 
-
-%\subsection{RPL Routing Protocol}
-%\label{rpl}
-
-%\subsubsection{Graph Building Process}
-%\subsubsection{Types of RPL Messages}
-%\subsubsection{Objective Function}
-%\subsubsection{Trickle Timer}
-
-%RPL is designed largely based on CTP. RPL is a distance vector routing protocol that uses IPv6. It is a Destination Oriented Directed Acyclic Graph (DODAG) that is routed at a single destination, that is the root. RPL supports any-to-any routing where the traffic is routed upwards until a common ancestor of the destination and source is found, then downwards to the destination. RPL uses a simple rooted topology instead of a full mesh. It maintains reliable paths to a single destination which allows RPL to scale to large networks while keeping the routing overhead to a minimum at the cost of increase hop count where the nodes traffics are routed upwards until a common ancestor is found. 
-
-%RPL is constructed using an Objective Function (OF) that specifies the routing metric, routing constrains and other functions to construct the topology. The OF is application dependant as RPL does not define any specific OF. There are two OF that are provided by RPL which are a simple hop count \cite{of0}, where it selects the path that has the shorter path, and ETX \cite{mrhof}, that depends on the path that requires less transmissions \cite{routingmetrics, tsiftes_framework_2010, tsvetkov2011rpl}.
-
-%The distance from the node relative to the other nodes with respect to the root is called \textit{rank}. The rank increases away from the root and decreases when it is nearer to the root. Rank is used to avoid routing loop in the topology as the node's position relative to the other nodes are known. RPL has rank hysteresis mechanism to avoid frequent parent switching in the case of little rank improvements.
-%%RPL requires sharing routing tables among siblings. Nodes propagate their routing entries through DAO unicast to their parents.
-
-%RPL has four types of ICMPv6 control messages that are used for topology maintenance and information exchange which are DODAG Information Object (DIO), Destination Advertisement Object (DAO), DODAG Information Solicitation (DIS) and an optional DAO-ACK message \cite{winter2012rpl}. DIO is the main routing control information that includes the node current rank, configuration parameters and the root IPv6 address. DIS is used to enable a node to enquires DIO messages from a reachable neighbour. DAO is used to propagate destination information upwards along the DODAG. It also enabled down traffic to be supported. DAO-ACK is used as a DAO message response to acknowledge the DAO message by the DAO recipient.  
-
-%The topology is constructed from the root node. It sends DIO messages to the reachable nodes. The nodes that receive the message run an algorithm specified by the OF to select a parent. The nodes compute their rank and send an update in the DIO message to the neighbours. RPL uses \textit{Trickle} algorithm \cite{trickle}. Trickle is used to control the message sending rate. In RPL, Trickle reduces the control messages rate by exponential increase to avoid the control messages from congesting the network. DIOs are sent periodically where the duration is doubled each time a DIO is sent until it reaches Trickle maximum possible value. 
-
-
-%A protocol uses Trickle to periodically advertise the most recent data it has received, typically through a version number. Routing control traffic - a protocol uses Trickle to control when it sends beacons that contain routing state.
-%Once the RPL network is established, it reduces the rate of control messages, exponential increase. To avoid control message explosion, nodes suppress transmissions if it hears too many messages from other - called the Trickle algorithm. 
 
 %%Dynamically adjusting transmission windows allows Trickle to spread new information on the scale of link-layer transmission times while sending only a few messages per hour when information does not change.
 
-%To save energy the DIOs are sent periodically controlled by the trickle timer whose duration is doubled each time it is fired. The value of trickle timer starts from the lowest possible value lmin and is doubled each time it is transmitted until it reaches its maximum possible value of lmax \cite{trickle}.
-
-%	The construction of the topology starts at a root node that begins to send DIO messages. Each node that receives the message run an algorithm to choose an appropriate parent. The choice is based on the used metric and constraints defined by the OF.
-% Afterwards, each of them computes its own Rank and in case a node is a router, it updates the Rank in the DIO message and sends it to all neighboring peers. *In most sensor node deployments several data collection points (root nodes) are needed.
 %%	Whenever the sending timer expired, RPL doubles it up to the maximum value. Whenever RPL detects an event which indicates that the topology needs active maintenance, it resets the timer to minimum value. 
-	
-%		RPL adapts the sending rate of DIO message by extending the Trickle algorithm.
+
 %%	Upward routing is a standard procedure which enables network devices to send data to a common data sink, also called sometimes a gateway or root node. (BORDER ROUTER??!!)
 
-%The protocol makes use of IPv6 and supports not only traffic in the upwards direction, but also traffic flowing from a gateway node to all other network participants.
-	%RPL is a distance vector routing protocol that makes use of IPv6. A Destination Oriented Directed Acyclic Graph (DODAG) which is routed at a single destination is built. 
-%	The graph is constructed by the use of an Objective Function (OF) which defines how the routing metric is computed. OF specifies how routing constraints and other functions are taken into account during topology construction. 
-%	The protocol tries to avoid routing loops by computing a node’s position relative to other nodes with respect to the DODAG root, called Rank and increases if nodes move away from the root and decreases when nodes move in the other direction. 
-%	RPL specification defines 4 types of control messages for topology maintenance and information exchange. DODAG Information Object (DIO) is the main source of routing control information. It may store information like the current Rank of a node, the current RPL Instance, the IPv6 address of the root, etc. Destination Advertisement Object (DAO) enables the support of down traffic and is used to propagate destination information upwards along the DODAG. DODAG Information Solicitation (DIS) makes it possible for a node to require DIO messages from a reachable neighbor. DAO-ACK (optional) is sent by a DAO recipient in response to a DAO message. RPL specification defines all 4 types of control messages as ICMPv6 information messages with a requested type of 155.
 %%	RPL adapts the sending rate of DIO message by extending the Trickle algorithm.
 %%	Upward routing is a standard procedure which enables network devices to send data to a common data sink, also called sometimes a gateway or root node. (BORDER ROUTER??!!)
 %%	The Mode of Operation (MOP) field is set by the DODAG root 
 %%	A DIO message may be extended by the use of options. DODAG Configuration option plays a crucial role for parameter exchange. MaxRankIncrease field defines an upper limit for the Rank. MinHopIncrease field stores the minimum increase of the Rank between a node and any of its parent nodes.
 %%	3 types of nodes in a RPL network. 1. Root nodes which are commonly referred in literature as gateway nodes that provide connectivity to another network. 2. Routers which may advertise topology information to their neighbors. 3. Leafs that do not send any DIO messages and only have the ability to join an existing DODAG. 
-%	The construction of the topology starts at a root node that begins to send DIO messages. Each node that receives the message run an algorithm to choose an appropriate parent. The choice is based on the used metric and constraints defined by the OF. Afterwards, each of them computes its own Rank and in case a node is a router, it updates the Rank in the DIO message and sends it to all neighboring peers. *In most sensor node deployments several data collection points (root nodes) are needed.
+
 %%	Whenever the sending timer expired, RPL doubles it up to the maximum value. Whenever RPL detects an event which indicates that the topology needs active maintenance, it resets the timer to minimum value. 
 %%%	Router nodes forward DIO control messages for topology maintenance - such messages are sent in a multicast manner to the neighboring nodes. RPL node does not process DIO messages from nodes deeper (higher Rank) than itself. 
 %%	RPL metric - status includes typical resources such as CPU usage, available memory and left energy. Node energy consumption - node should consider the energy level of its neighbors before picking them as possible parents. RPL metric specification defines 3 possible states for the first information field: powered, on batteries and scavenger **** This may be a rough estimation of how much load a node experiences for a given period of time. ETX - is an approximation of the expected number of transmissions until a data packet reaches the gateway node*. A node that is one hop away from the root with perfect signal strength and very little interference may have ETX of 1. ETX is bidirectional single-hop link quality computation between 2 neighbor nodes.* A metric called Packet Reception Rate (PRR) is calculated at the receiver node for each window of received packets.
 %%	Downward routing - by supporting P2MP traffic it is possible for a network administrator to control nodes that are even not in range. RPL specification defines 2 modes of operation for supporting P2MP. 1. Non-storing mode which makes use of source routing. In this mode each node has to propagate its parent list up to the root. After receiving such topology information, the root computes the path to the destinations. Each node has to extend the DAO message. After collecting the needed information, the root pieces the downward route together. If it needs to send a data packet to a given destination the IPv6 Source Routing header is used.  2. Storing mode which is fully stateful. Each non-root and non-leaf network participant has to maintain a routing table for possible destinations. DAO messages are used by RPL nodes to propagate routing information in order to enable P2MP traffic. DAO is no longer propagated to the DODAG root. Instead, it is sent as unicast to all parent nodes which maintain additional downward routing tables \cite{tsvetkov2011rpl}.
 	
-%Routing protocol called RPL. RPL does not define any specific routing metrics, path costs or forwarding policies. RPL leaves this open so that different networks can apply different mechanisms to meet different objectives such as minimizing latency or minimizing energy consumption.
-%	ContikiRPL implementation of the RPL protocol which allows replaceable routing objective functions. ContikiRPL is the main IPv6 routing protocol in Contiki. RPL is a distance-vector protocol for IPv6 networks comprising low-power devices connected by lossy links. The protocol maintains Directed Acyclic Graph (DAG) topologies toward root nodes. The topologies are built proactively according to an objective function. It is flexible regarding the rules to form topologies and to select next-hops for individual packets. Routing decisions are taken by the objective function, which essentially specifies the constraints and metrics used in a network. 
-%	One objective function uses a simple hop count and one uses expected transmissions (ETX) to do the forwarding decision. The simple hop-count objective function results in a shorter path length at the expense of higher power consumption \cite{tsiftes_framework_2010}.
-	
-%DIS - may be used to solicit a DIO from a RPL node. A node may use DIS to probe its neighborhood for nearby DODAGs.
-%DIO - carries information that allows a node to discover a RPL Instance, learn its configuration parameters, select a DODAG parent set and maintain the DODAG.
-%DAO - used to propagate destination information Upward along the DODAG. In Storing mode, the DAO message is unicast by the child to the selected parent(s). In Non-Storing mode, the DAO message is unicast to the DODAG root. The DAO message may optionally be acknowledged by its destination with a Destination Advertisement Acknowledgement (DAO-ACK) message back to the sender of the DAO. DAO-ACK message is sent as a unicast message packet by a DAO recipient (a parent or DODAG root) in response to a unicast DAO message \cite{winter2012rpl}.
 
-%RPL is a routing protocol that provides any-to-any routing in low-power Ipv6 networks, standardized by the IETF in March 2012. Its design is largely based on CTP, the reference data collection protocol for sensor networks. 
-%The RPL topology is a DODAG (Destination Oriented Directed Acyclic Graph) built in direction of the root, typically an access point to the Internet. 
+ 
 %%Any-to-any traffic is routed first upwards, i.e. towards the root until a common ancestor of destination and source is found, and then downwards, following the nodes routing table. 
-%RPL uses a simple rooted topology instead of a full mesh; it is devoted to the maintenance of reliable paths to a single destination. 
-%The purpose of this strategy is to scale to large networks while containing the routing overhead, at the price of increased hop count (routing via a common ancestor). 
-%RPL terminology, the distance from a node to the root according to the routing metric is called rank. RPL requires sharing routing tables among siblings. 
-%In RPL, nodes propagate their routing entries through unicast (so-called DAO messages) to their parents. RPL’s rank hysteresis mechanism prevents nodes from switching parent for too little rank improvements. 
+
 %%ContikiMAC – has wakeup consists of two clear channel assessments and has a phase-lock mechanism where senders record their neighbor’s wake-up phase and use it to make the next transmissions cheaper. *Experience an outage during which they cannot receive or send any data. This reflects for example scenarios where battery maintenance requires to disconnect a part of the network, or where external interference (e.g. WiFi or Bluetooth) affects communication. 
 %%RPL experiences a sharp drop in the reliability during the first outage, consequence of failed MAC transmissions. 
 %%%%!!Nodes react by switching parent, which heals the topology and slowly improves reliability. The next outages result in less churn (less agitate) \cite{orpl}.
 
-%////OBJECTIVE FUNCTION
-
-%////TRICKLE TIMER
-%A protocol uses Trickle to periodically advertise the most recent data it has received, typically through a version number. Routing control traffic - a protocol uses Trickle to control when it sends beacons that contain routing state.
-%Once the RPL network is established, it reduces the rate of control messages, exponential increase. To avoid control message explosion, nodes suppress transmissions if it hears too many messages from other - called the Trickle algorithm. 
-
 %%Dynamically adjusting transmission windows allows Trickle to spread new information on the scale of link-layer transmission times while sending only a few messages per hour when information does not change.
 
-%To save energy the DIOs are sent periodically controlled by the trickle timer whose duration is doubled each time it is fired. The value of trickle timer starts from the lowest possible value lmin and is doubled each time it is transmitted until it reaches its maximum possible value of lmax \cite{trickle}.
 
 \subsection{Comparison and Discussion}
+The routing protocols reviewed are summarised in Table \ref{table:routingProtocols}. Based on these, the important factors \cite{pantazis} that influence the routing protocols are:
+
+\begin{table}
+\centering
+\begin{tabular}{|C{1.8cm}|C{2cm}|C{3.6cm}|C{3cm}|C{1.5cm}|}
+\hline
+Protocol & Scalability & Route Metric & Periodic Message Type & Robust \\
+\hline \hline
+SPIN & Good & Single hop neighbour & Advertise to all neighbours & Robust \\
+Directed Diffusion & Good & Best path & Query messages & Low \\
+GEAR & Limited & Best route & Hello messages & Good \\
+GAF & Limited & Shortest path & Discovery messages &  Good \\
+%Maximum Lifetime Energy Routing & & & & \\
+SAR & Limited & Path with minimum average weighted QoS metric & Hello messages & Low \\
+LEACH & Good & Shortest path & None & Good \\
+CTP & Good & ETX & Beacons & Good \\
+RPL & Good & ETX & DIO messages & Good \\
+\hline 
+\end{tabular}
+\caption{Comparison of studied routing protocols}
+\label{table:routingProtocols}
+\end{table}
+
+\begin{enumerate}
+\item \textbf{Node deployment} - Sensor nodes are scattered randomly and require scalable protocol to allow routes to be formed. In a large region, the nodes require multi hop to reach to the root node.
+
+\item \textbf{Data delivery models} - Depending on the application, the data can be continuous, event-driven, query-driven or hybrid. The nodes send periodic data in continuous-driven and in event and query-driven, it depends on when the data is triggered and query is generated.
+
+\item \textbf{Energy} - The distance from the node to the sink influence the energy consumption of the path. In many routing protocol, the shortest path is used as an indicator to represent energy efficiency.
+\end{enumerate}
