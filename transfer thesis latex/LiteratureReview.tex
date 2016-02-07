@@ -376,7 +376,7 @@ Routing protocols are aimed to provides an optimised, scalable and energy effici
 %%Routing protocol approaches can be classified into () types which are flat based and data centric, hierarchical, location based and network flow and quality of service (QoA) aware.
 
 \subsection{Classification of Routing Protocols}
-There have been many routing protocols that were developed for WSNs. The routing protocols can be classified into 5 types \cite{akkaya2005survey}; (i) flat based and data centric, (ii) location based, (iii) network flow and quality of service (QoS) aware, (iv) hierarchical based, and (v) hybrid based. These classifications are explained below with examples of the existing routing protocols for each type.
+There have been many routing protocols that were developed for WSNs. The routing protocols can be classified into 4 types \cite{akkaya2005survey}; (i) flat based and data centric, (ii) location based, (iii) network flow and quality of service (QoS) aware, and (iv) hierarchical based. These classifications are explained below with examples of the existing routing protocols for each type.
 
 %%%There have been many routing protocols that were developed for WSNs. The routing protocols can be classified into 5 types \cite{akkaya2005survey}; (i) flat based and data centric where the protocols are query based and use meta data or data identification, (ii) location based where the node positions are used to reduce the area considered to relay the data, (iii) network flow and quality of service (QoS) aware where the QoS requirements are required to be fulfilled for routing, (iv) hierarchical based where the nodes are clustered and the data are aggregated at the cluster head to reduce the number or data and energy for the transmission, and (v) hybrid based where it combines several of the other techniques mentioned for a stable and energy efficient routing.
 
@@ -475,6 +475,11 @@ Hierarchical based routing aims to scale a large set of sensor nodes that cover 
 
 Low-energy Adaptive Clustering Hierarchy (LEACH) is one of the most popular hierarchical routing protocols in WSNs. LEACH forms dynamic clustering of nodes based on the received signal strength and selects a node as the local cluster head. The cluster head is used for data processing such as data aggregation and fusion of the nodes within the cluster and to route the processed data to the sink. It consumes a larger amount of energy for data processing. The cluster head changes periodically where the node is selected by random to become the cluster head. This is done in order to balance the energy dissipation of nodes which increases the network lifetime. The random selection ensures that the nodes die randomly to avoid the network from not functioning. However, it brings extra overhead when the cluster head changes as it has to advertise to the nearby nodes of the changes. LEACH is a distributed routing and does not require global knowledge of the network. It uses a single hop routing where the node transmits directly to the cluster head, and the cluster head to the sink. LEACH is not applicable to large network that requires multi hop.
 
+Contiki provides support for two hierarchical based routing protocols, Contiki Collect protocol which is the Contiki implementation of Collection Tree Protocol (CTP) \cite{ctp} and RPL \cite{winter2012rpl}. Chrysso uses Contiki Collect protocol as the routing protocol and RPL is compatible with MiCMAC and it is the main routing protocol in MCRP.
+
+Contiki Collect protocol and CTP are data collection protocols that are address free. The nodes send the data usually towards the sink without specifying the node's address. The routing protocol builds a tree originating from the tree and the nodes send periodic announcements which contain the number of hops away from the sink. Both protocols use the expected number of transmissions (ETX) as the metric to find the paths that requires the minimum number of transmission to reach to the root. The nodes start sending messages towards to root once the tree is built. The messages are sent using hop-by-hop reliable unicast.
+Contiki Collect protocol and CTP are not IPv6-based. Contiki Collect protocol uses Contiki Rime stack which is Contiki's lightweight communication stack explained in Section \ref{commstack}. 
+
 %Low-energy adaptive clustering hierarchy (LEACH) is one of the most popular hierarchical routing algorithms for sensor networks. The idea is to form clusters of the sensor nodes based on the received signal strength and use local cluster heads as routers to the sink. 
 %All the data processing such as data fusion and aggregation are local to the cluster. 
 %LEACH uses a load balancing mechanism that periodically rotates the role of cluterhead nodes. Cluster heads change randomly over time in order to balance the energy dissipation of nodes. 
@@ -482,14 +487,10 @@ Low-energy Adaptive Clustering Hierarchy (LEACH) is one of the most popular hier
 %Disadvantages: dynamic clustering brings extra overhead (head changes, advertisements). 
 %Cluster heads consumes a larger amount of energy (do data aggregation and fusion tasks to reduce the number of data transmissions) when they are located further away from the sink.
 
-Contiki provides support for two hierarchical based routing protocols, Contiki Collect protocol which is the Contiki implementation of Collection Tree Protocol and RPL. Chrysso uses Contiki Collect protocol as the routing protocol and RPL is compatible with MiCMAC and it is the main routing protocol in MCRP.
+%RPL/////
 
-CTP
-
-RPL/////
-
-\subsubsection{Hybrid Based}
-\subsubsection*{CTP}
+%\subsubsection{Hybrid Based}
+%\subsubsection*{CTP}
 %2 principles for wireless routing protocols; datapath validation - data traffic quickly discovers and fixes routing inconsistencies; adaptive beaconing - extending the Trickle algorithm to routing control traffic reduces route repair latency and sends fewer beacons. CTP Neo - an implementation of CTP.
 %Datapath validation actively uses data packets to validate the routing topology and detect loops. Each data packet contains the link-layer transmitter’s estimate of its distance. A node detects a possible routing loop when it receives a packet to forward from a node with a smaller or equal distance to the destination.
 %CTP is a routing protocol that computes anycast routes to a single or a small number of designated sinks in a wireless sensor network. CTP may appear very simple. They provide best-effort, unreliable, anycast packet delivery to one of the data sinks in the network. 
@@ -504,10 +505,14 @@ RPL/////
 %Problem is routing loops; occur when a node choose a new route that has a significantly higher ETX than its old one. CTP tries to resolve the inconsistency by broadcasting a beacon frame. Packet duplication - when a node receives a data frame successfully and transmit an ACK but ACK is not received. Thus CTP keeps a small cache of packet signature for the packets it has seen to detect packet duplicates.CTP data frames has additional time has lived (THL) field which the routing layer increments on each hop. Link-layer retransmission has the same THL.
 %If node’s ETX value changes significantly, CTP should transmit a broadcast frame to notify other nodes which might change their routes. A parent can detect when a child’s ETX is significantly below its own. When a parent hears a child advertise an ETX below its own, it must schedule a routing frame for transmission in the near future \cite{ctptep}.
 
-**
-Contiki Collect protocol and CTP are state-of-the-art address-free data collection protocols that provide a way for nodes to send data packets towards a data sink. Nodes do not need to know the address of the sink. Use ETX finding paths that minimize the number of packet transmissions to reach the root. Neither CTP nor Contiki Collect are IPv6-based. Contiki Collect uses the Contiki Rime stack \cite{beyondInteroperability}.
 
-The data collection is an address-free protocol that sends messages towards a sink node somewhere in the network. The protocol is address-free in the sense that the originating nodes do not send their messages to a specific addressed node. Instead, the nodes send their messages towards the nearest sink in the network. The protocol does two things. It first builds a tree that originates at the sink nodes. The nodes build the tree by sending periodic announcements containing the number of hops away from the sink. After having built the tree, the nodes start sending messages towards the root of the tree. The protocol sends the messages using hop-by-hop reliable unicast \cite{rime}. 
+
+
+%**
+%Contiki Collect protocol and CTP are state-of-the-art address-free data collection protocols that provide a way for nodes to send data packets towards a data sink. Nodes do not need to know the address of the sink. Use ETX finding paths that minimize the number of packet transmissions to reach the root. Neither CTP nor Contiki Collect are IPv6-based. Contiki Collect uses the Contiki Rime stack \cite{beyondInteroperability}.
+
+%The data collection is an address-free protocol that sends messages towards a sink node somewhere in the network. The protocol is address-free in the sense that the originating nodes do not send their messages to a specific addressed node.
+%Instead, the nodes send their messages towards the nearest sink in the network. The protocol does two things. It first builds a tree that originates at the sink nodes. The nodes build the tree by sending periodic announcements containing the number of hops away from the sink. After having built the tree, the nodes start sending messages towards the root of the tree. The protocol sends the messages using hop-by-hop reliable unicast \cite{rime}. 
 
 \subsection{RPL Routing Protocol}
 \label{rpl}
