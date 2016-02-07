@@ -1,7 +1,35 @@
 \chapter{Energy vs Loss Tradeoff}
 \label{energyLoss}
 
+RPL is a routing protocol that builds the topology based on the routing metrics and constraints for path calculation that are defined separately from the topology. This separation allows new metrics and constraints to be defined to fulfil the specific application and network optimisation criteria. A routing metric is used to evaluate the path cost. The routing metrics can be categorised into link and node metrics \cite{routingmetrics}. In node metrics, it can be the node state which provides information about the node characteristics, energy such as selecting nodes with higher residual energy or hop count. In link metrics, it includes the link throughput, latency or link reliability such as ETX. RPL lists the metrics that could be used. However, the implementation is left to the application. 
 
+%RFC6551: Routing Metrics Used for Path Calculation in Low-Power and Lossy Networks
+%	RPL can make use of no metric. RPL is a distance vector routing protocol variant that builds Directed Acyclic Graphs (DAGs) based on routing metrics and constraints. 
+%	Routing metrics may be categorized according to the following characteristics:
+%Link versus node metrics
+%Qualitative versus quantitative
+%Dynamic versus static
+%Links in LLN commonly have rapidly changing node and link characteristics; thus routing metrics must be dynamic and techniques must be used to smooth out the dynamicity to avoid routing oscillations. Nodes resources such as residual energy are changing continuously and may have to be taken into account during the path computation. 
+%Low-pass filtering and/or hysteresis (depend on current and past) should be used to avoid rapid fluctuations of these values.
+
+%	The set of routing metrics and constraints used by a RPL deployment is signalled along the DAG that is built according to the Objective Function (rules governing how to build a DAG) and the routing metrics and constraints are advertised in the DODAG Information Object (DIO) message. 
+%	A generic Objective Function could specify the rules to select the best parents in the DAG, the number of backup parents etc. and it could be used with any routing metrics and/or constraints.
+%	Some metrics are either aggregated or recorded. An aggregated metric is adjusted as the DIO message travels along the DAG. For a recorded metric, each node adds a sub-object reflecting the local valuation of the metric. 
+%	The order relation to select the best path is implicitly derived from the metric type. For example, lower is better for Hop Count, Link Latency, and ETX. For Node Energy or Throughput, higher is better.
+
+%Node metric (1. Node State and Attribute Objects, 2. Node Energy Objects, 3. Hop Count Object)
+%	Node State and Attribute (NSA) object is used to provide information on node characteristics. Has aggregation attribute - to minimize the amount of traffic on the network, thus potentially increasing its lifetime in battery operated environments. 
+%%	Node Energy Object - It may sometimes be desirable to avoid selecting a node with low residual energy as a router. The routing protocol engine may compute a longer path for some traffic in order to increase the network life duration. It is not uncommon for self-supporting nodes to have a combination of primary storage, energy scavenging and secondary storage, leading to three different values for acceptable average current depending on the time frame being considered. Raw power and energy values are meaningless without the knowledge of the energy cost of sending and receiving packets, and lifetime estimates have no value without some higher-level constraint on the lifetime required of a device. For battery-powered devices, E_E is the current expected lifetime divided by the desired minimum lifetime, in units of percent. Node Energy (NE) object is used to provide information related to node energy and may be used as a metric or as constraint. 
+%	Hop Count (HP) object is used to report the number of traversed nodes along the path. When used as a constraint, the DAG root indicates the maximum number of hops that a path may traverse. When that number is reached, no other node can join that path. When used as a metric, each visited node simply increments the Hop Count field. 
+
+%Link metric (1. Throughput, 2. Latency, 3. Link Reliability (LQL, ETX), 4. Link Color Object)
+%	Throughput - variability comes as a result of trading power consumption for bit rate. For efficient operation, it may be desirable for nodes to report the range of throughput that their links can handle in addition to the current available throughput. 
+%	Latency - can be constraint or metric; aggregated additive metric where the value is updated along the path to reflect the path latency. 
+%	Link Reliability - link reliability could be degraded for a number of reasons, signal attenuation, interferences of various forms etc. Packet error rates can generally be measured directly, and other metrics (bit error rate, mean time between failures) are typically derived from that. A change in link quality can affect network connectivity; thus link quality may be taken into account as a critical routing metric. 2 link reliability metrics are Link Quality Level (LQL) and ETX metric:
+%Link Quality Level (LQL) object is used to quantify the link reliability using a discrete value, from 0 to 7 where 0 indicates that the link quality level is unknown and 1 reports the highest link quality level. 
+%ETX reliability object is the number of transmissions a node expects to make to a destination in order to successfully deliver a packet. In contrast with LQL routing metric, the ETX provides a discrete value (which may not be an integer) computed according to a specific formula; example: ETX = 1/(Df * Dr) where Df is the measured probability that a packet is received by the neighbor and Dr is the measured probability that the acknowledgement packet is successfully received.
+%	Link Color (LC) object - may be either static or dynamically adjusted used to avoid or attract specific links for specific traffic types. 
+%When used as constraint, insert in the DAG Metric Container. If recorded as metric, each node along the path may insert in the DAG Metric Container.
 
 
 ////citeSOFTWARE-BASED DUNKELS. implement an on-line energy estimation technique in Contiki. These approaches measure the state of components, such as radio, sensors and LEDS, to calculate consumption./////CHECK!
@@ -12,8 +40,6 @@
 
 Three are three main ways that have been exploited for an energy-efficient WSNs which are through MAC protocols, transmission range and routing protocols.
 
-
-\cite{routingmetrics}
 
 Energy consumption of a node depends on the interference patterns. Developed a generic method for capturing interference characteristics and predicting a node's energy consumption. (energy consumption prediction based on interference measurement). WSN radios use nearly the same energy in all active modes of operation (send, receive, listen). Capture an interference pattern at a deployment site and use this pattern to estimate the energy consumption of a node deployed at this location in the future. \cite{alexlifetime}
 
