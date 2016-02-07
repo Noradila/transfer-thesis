@@ -286,7 +286,7 @@ Figure \ref{fig_mac} shows an example of a multi hop packet transmission in MCRP
 \subsection{Network Layer}
 %///net/rpl/rpl-icmp6.c and rpl-timers.c - the changes done!!
 
-RPL is explained in Section \ref{rpl}. RPL control messages are tailored to accommodate MCRP proposal. Two main changes to RPL control messages are the DIS (which is sent by a new node to make it possible for a node to require DIO messages from a reachable neighbour) and DIO (the main source of routing control information) control messages. DIS and DIO control messages are usually sent using broadcast. However, DIS and DIO support unicast. MCRP sends RPL DIS control message in broadcast and DIO in both broadcast and unicast. 
+RPL is explained in Section \ref{routingProtocols}. RPL control messages are tailored to accommodate MCRP proposal. Two main changes to RPL control messages are the DIS (which is sent by a new node to make it possible for a node to require DIO messages from a reachable neighbour) and DIO (the main source of routing control information) control messages. DIS and DIO control messages are usually sent using broadcast. However, DIS and DIO support unicast. MCRP sends RPL DIS control message in broadcast and DIO in both broadcast and unicast. 
 
 In MCRP, a new node that would like to join an existing tree needs to send the DIS control message to the reachable neighbours. However, as the reachable neighbours could be on different channel than it were initially during start up, the new node needs to send the DIS message on all channels available to be able to find the neighbours. 
 
