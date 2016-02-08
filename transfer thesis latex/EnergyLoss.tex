@@ -3,6 +3,16 @@
 
 RPL is a routing protocol that builds the topology based on the routing metrics and constraints for path calculation that are defined separately from the topology. This separation allows new metrics and constraints to be defined to fulfil the specific application and network optimisation criteria. A routing metric is used to evaluate the path cost. The routing metrics can be categorised into link and node metrics \cite{routingmetrics}. In node metrics, it can be the node state which provides information about the node characteristics, energy such as selecting nodes with higher residual energy or hop count. In link metrics, it includes the link throughput, latency or link reliability such as ETX. RPL lists the metrics that could be used. However, the implementation is left to the application. 
 
+\cite{energyrpl} designed an OF for RPL that uses the node remaining energy as the metric during the parent selection of the topology. It aims to select nodes with higher remaining power level as the path for transmissions. The implementation uses a battery theoretical model \cite{sensornets13} to estimate the node's battery lifetime at runtime. The OF concentrates on the node battery level estimation, path cost and node rank computation in selecting a parent. The node that advertises the maximum greatest path cost is selected as the parent. The maximum path cost from the node to the sink is computed as the minimum node energy level. 
+
+Powertrace system \cite{dunkels2011powertrace} is able to profile the power behaviour at the network layer for WSNs. It computes the energy estimation of sensors at run time that depends on the software based on-line energy estimation mechanism \cite{dunkels2007software} and able to show per-activity power cost such as the different states for wake ups, transmissions and receptions of a node.
+The software based on-line energy estimation mechanism is used to estimate the node's current energy consumption in real time. The on-line energy estimation is implemented in Contiki OS. The energy estimation module uses time measurements that can be directly obtained from the microprocessor on-chip timer. When the component is switched on to produce a time stamp. The time difference from when the component was on and when it later is switched off is computed. The current draw of the component is used to compute the total energy consumption estimation.
+
+Energy estimate is often used for comparison between different nodes thus the voltage is not required to be computed. It is possible to measure the battery level for battery-powered sensors, however, it cannot be directly translated for energy estimation because of the non-linearity of batteries.
+
+
+Energy consumption of a node depends on the interference patterns. Developed a generic method for capturing interference characteristics and predicting a node's energy consumption. (energy consumption prediction based on interference measurement). WSN radios use nearly the same energy in all active modes of operation (send, receive, listen). Capture an interference pattern at a deployment site and use this pattern to estimate the energy consumption of a node deployed at this location in the future. \cite{alexlifetime}
+
 %RFC6551: Routing Metrics Used for Path Calculation in Low-Power and Lossy Networks
 %	RPL can make use of no metric. RPL is a distance vector routing protocol variant that builds Directed Acyclic Graphs (DAGs) based on routing metrics and constraints. 
 %	Routing metrics may be categorized according to the following characteristics:
@@ -31,8 +41,11 @@ RPL is a routing protocol that builds the topology based on the routing metrics 
 %	Link Color (LC) object - may be either static or dynamically adjusted used to avoid or attract specific links for specific traffic types. 
 %When used as constraint, insert in the DAG Metric Container. If recorded as metric, each node along the path may insert in the DAG Metric Container.
 
+ 
 
-////citeSOFTWARE-BASED DUNKELS. implement an on-line energy estimation technique in Contiki. These approaches measure the state of components, such as radio, sensors and LEDS, to calculate consumption./////CHECK!
+
+
+%////citeSOFTWARE-BASED DUNKELS. implement an on-line energy estimation technique in Contiki. These approaches measure the state of components, such as radio, sensors and LEDS, to calculate consumption./////CHECK!
 
 -requires more energy (to do MCRP) but reduce retransmissions in the long term
 -how much energy than usual?
@@ -41,6 +54,10 @@ RPL is a routing protocol that builds the topology based on the routing metrics 
 Three are three main ways that have been exploited for an energy-efficient WSNs which are through MAC protocols, transmission range and routing protocols.
 
 
-Energy consumption of a node depends on the interference patterns. Developed a generic method for capturing interference characteristics and predicting a node's energy consumption. (energy consumption prediction based on interference measurement). WSN radios use nearly the same energy in all active modes of operation (send, receive, listen). Capture an interference pattern at a deployment site and use this pattern to estimate the energy consumption of a node deployed at this location in the future. \cite{alexlifetime}
-
-\cite{energyrpl} is an objective function for RPL that used node remaining energy as metric in the parent selection process. Energy-based OF characteristics in terms of node battery level estimation, path cost and node rank computation. A node selects the neighbor that advertises the greatest path cost value as parent. Compute the path cost (from node i to the sink) as the minimum node energy level (between parent path cost and its own energy). Uses the node's remaining energy as the main routing metric. The implementation makes use of a well-known battery theoretical model which they estimate at runtime the node battery lifetime for routing. Energy aware routing aims to use nodes with higher remaining power level. The network should be reorganized to find more interesting nodes for routing thereby a balancing on all nodes battery level should occur. Use the rank notion to avoid routing loops. Rank, record its relative position to other nodes with regard to DODAG root. 
+%\cite{energyrpl} is an objective function for RPL that used node remaining energy as metric in the parent selection process. 
+%Energy-based OF characteristics in terms of node battery level estimation, path cost and node rank computation. 
+%A node selects the neighbor that advertises the greatest path cost value as parent. 
+%Compute the path cost (from node i to the sink) as the minimum node energy level (between parent path cost and its own energy). 
+%Uses the node's remaining energy as the main routing metric. 
+%The implementation makes use of a well-known battery theoretical model which they estimate at runtime the node battery lifetime for routing. 
+%%Energy aware routing aims to use nodes with higher remaining power level. The network should be reorganized to find more interesting nodes for routing thereby a balancing on all nodes battery level should occur. Use the rank notion to avoid routing loops. Rank, record its relative position to other nodes with regard to DODAG root. 
