@@ -23,14 +23,15 @@ These energy consumption estimation solutions can be used to improve the network
 
 \section{Energy Efficient MCRP}
 An ongoing work in MCRP is in deciding a routing protocol that considers the energy consumption of the nodes in the network.
-MCRP is a centralised channel switching process at the LPBR. As LPBR is fully powered and has unlimited memory, LPBR has the ability to compute all the nodes energy level. The topology tree is routed at LPBR, thus LPBR is in charge to reconfigure the tree depending on the energy level that it computed. By using the energy estimation model, the nodes can send the measurements to LPBR. This moves the computation load from the nodes to LPBR. Based on this information, the LPBR can compute the energy level and it will know all nodes energy level.
+MCRP is a centralised channel switching process at the LPBR. As LPBR is fully powered and has unlimited memory, LPBR has the ability to compute all the nodes energy level. The topology tree is routed at LPBR, thus LPBR is in charge to reconfigure the tree depending on the energy level that it computed. By using the energy estimation model, the nodes can send the measurements to LPBR. This moves the computation load from the nodes to LPBR. Based on this information, the LPBR can compute the energy level and knows all nodes energy level.
 
 
 \begin{equation}
 \sum_{l \in links} = (c_{l} + c'_{l})d_{l}
+\label{energyEq}
 \end{equation}
 
-Consider the energy as the sum of all links used by a node; where it depends on the cost per message of the link, $c_{l}$  and the total descendent that can be reached by the link, $d_{l}$ where it is assumed that the number of sent and received packets are the same for each descendent. However, the cost of the links upwards (towards LPBR) is different from the cost of the links downwards as upwards and downwards links use different channels. 
+Equation \ref{energyEq} shows a simple links cost. It considers the energy consumption as the sum of all links used by a node; where it depends on the cost per message of the link, $c_{l}$  and the total descendent that can be reached by the link, $d_{l}$. It is assumed that the number of sent and received packets are the same for each descendent. However, the cost of the links upwards (towards LPBR) is different from the cost of the links downwards as upwards and downwards links use different channels. 
 
 Based on the energy level of each node and cost of the link (link is weighted based on the transmissions rate on the link channel) LPBR can sends a reconfiguration message so that the nodes will route using the nodes and paths that are more energy efficient.
 
