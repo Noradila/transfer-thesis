@@ -2,12 +2,20 @@
 \label{futureWork}
 
 \section{Conclusions}
-We presented MCRP, a decentralised cross-layer protocol with a centralised controller. Our protocol mitigates the effect of interference by avoiding affected channels. It allows better spectrum usage by trying to move nearby nodes to listen on different channel using two-hop colouring algorithm. Our protocol provides feedback when a channel is subject to interference using a probing phase.
-The results from the simulation showed that our protocol avoids channels with interference hence greatly reduced loss rates with negligible overhead. By reducing packet loss (hence retransmissions) and increasing the efficiency of spectrum usage, the multichannel system will be more energy efficient than single channel ContikiMAC with RPL over the lifetime of the system's deployment.
+WSNs are widely used in many crucial applications such as in remote environmental monitoring and target tracking as sensors can easily be deployed in difficult locations. However, WSNs suffer from sensors limited hardware and energy capabilities, and the unreliable network environment which impact the sensors performance, thus the efficiency of the network.  
 
-Future work is ongoing to develop the protocol. Deployment is underway on the Flocklab testbed \cite{flocklab}. Next we plan to improve the interference model we used to better replicate the real world environment. 
-%The protocol will be tested against competing multi-channel protocols such as MiCMAC. We also plan to test our implementation on real hardware.  Finally we will allow nodes to update the LPBR on ongoing packet loss so that the network can continually respond to changes in congestion.
+In this work, MCRP is presented. MCRP is a decentralised cross-layer protocol with a centralised controller. The protocol mitigates the effect of interference by avoiding the affected channels through channel switching processes. It allows better spectrum usage by moving nearby nodes to listen on different channel using two-hop colouring algorithm. MCRP provides feedback when a channel is subject to interference using the probing phase. The results from the simulation showed that MCRP avoids channels with interference hence greatly reduced loss rate with negligible overhead. By reducing packet loss (hence retransmissions) and increasing the efficiency of spectrum usage, the multichannel system will be more energy efficient than single channel ContikiMAC with RPL over the lifetime of the system's deployment. 
 
-
+%We presented MCRP, a decentralised cross-layer protocol with a centralised controller. Our protocol mitigates the effect of interference by avoiding affected channels. It allows better spectrum usage by trying to move nearby nodes to listen on different channel using two-hop colouring algorithm. Our protocol provides feedback when a channel is subject to interference using a probing phase.
+%The results from the simulation showed that our protocol avoids channels with interference hence greatly reduced loss rates with negligible overhead. By reducing packet loss (hence retransmissions) and increasing the efficiency of spectrum usage, the multichannel system will be more energy efficient than single channel ContikiMAC with RPL over the lifetime of the system's deployment.
 
 \section{Future Works}
+Future work is ongoing to develop the protocol. 
+Deployment is underway on the Flocklab testbed as adjustments are required to enable MCRP to provide similar result as the simulation. This is due to unseen problems that do not occur in the simulation environment such as frequent nodes disconnection, buffer overload, change of paths and link conditions that vary throughout the day. The protocol is also planned to be tested on real hardware locally where the environment condition can be controlled where a better interference model can be used to closely replicate the real world environment in the case of extreme interference such as at a busy train station area to ensure that the protocol is fool proof.
+
+The protocol will be tested against competing multichannel protocols to prove that channel selection at run time have better result, efficiency and reception rate than blind channel hopping.
+
+The protocol is further developed to consider the nodes energy level and the paths reliabilities in order to prolong the network lifetime without compromising the network efficiency.
+
+%Next we plan to improve the interference model we used to better replicate the real world environment. 
+%The protocol will be tested against competing multi-channel protocols such as MiCMAC. We also plan to test our implementation on real hardware.  Finally we will allow nodes to update the LPBR on ongoing packet loss so that the network can continually respond to changes in congestion.
