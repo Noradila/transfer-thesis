@@ -9,7 +9,7 @@ In this work, MCRP is presented. MCRP is a decentralised cross-layer protocol wi
 %We presented MCRP, a decentralised cross-layer protocol with a centralised controller. Our protocol mitigates the effect of interference by avoiding affected channels. It allows better spectrum usage by trying to move nearby nodes to listen on different channel using two-hop colouring algorithm. Our protocol provides feedback when a channel is subject to interference using a probing phase.
 %The results from the simulation showed that our protocol avoids channels with interference hence greatly reduced loss rates with negligible overhead. By reducing packet loss (hence retransmissions) and increasing the efficiency of spectrum usage, the multichannel system will be more energy efficient than single channel ContikiMAC with RPL over the lifetime of the system's deployment.
 
-\section{Future Works}
+\section{Future Work}
 Future work is ongoing to develop the protocol. 
 Deployment is underway on the Flocklab testbed as adjustments are required to enable MCRP to provide similar result as the simulation. This is due to unseen problems that do not occur in the simulation environment such as frequent nodes disconnection, buffer overload, change of paths and link conditions that vary throughout the day. The protocol is also planned to be tested on real hardware locally where the environment condition can be controlled where a better interference model can be used to closely replicate the real world environment in the case of extreme interference such as at a busy train station area.
 
@@ -17,7 +17,30 @@ The protocol will be tested against competing multichannel protocols to prove th
 
 The protocol will be further developed to update the LPBR on ongoing packet loss so that the network can continually respond in changes in congestion. This will also enable certain channels characteristics and patterns to be learned over time for the specific location for better channel selection processes. 
 
-The protocol is currently looking into the network energy consumption. MCRP will consider the nodes energy level and the paths reliabilities in order to prolong the network lifetime without compromising the network efficiency.
+The protocol is currently looking into the network energy consumption. MCRP will consider the nodes energy level and the paths reliabilities in order to prolong the network lifetime without compromising the network efficiency. Figure \ref{workplan} summarises the planned work in this PhD.
 
 %Next we plan to improve the interference model we used to better replicate the real world environment. 
 %The protocol will be tested against competing multi-channel protocols such as MiCMAC. We also plan to test our implementation on real hardware.  Finally we will allow nodes to update the LPBR on ongoing packet loss so that the network can continually respond to changes in congestion.
+
+\begin{figure}[!h]
+\begin{center}
+\begin{ganttchart}[
+hgrid,
+vgrid,
+x unit=0.6cm,
+bar/.append style={fill=red},
+time slot format=isodate-yearmonth,
+compress calendar
+]{2015-11}{2017-2}
+\gantttitlecalendar{year, month} \\
+\ganttbar{Compare MCRP}{2016-01}{2016-04} \\
+\ganttbar{Derive energy model}{2015-11}{2016-06} \\
+\ganttbar{Implement energy model}{2016-04}{2016-10} \\
+\ganttbar{Improve MCRP}{2016-06}{2016-12} \\
+\ganttbar{Test on hardware}{2016-03}{2017-02}
+
+\end{ganttchart}
+\end{center}
+\caption{Work plan}
+\end{figure}
+\label{workplan}
