@@ -82,7 +82,7 @@ If, on the other hand, all channel quality checks succeed, the change to channel
 Probing is essential to make the channel change decision. It gives a quick overview of the channel condition based on the number of probing messages received. It is worth noting that probing is only done between the node and the tree neighbours. Neighbours that are not tree neighbours will not use the node as a route during their transmission thus, there is no need for probing to take place with those neighbours. However, the neighbours still need to know the channel value given that RPL control messages are sent to neighbours directly without using the routes.
 
 \section{Reconnection Strategy}
-RPL topology stability (using routing metric) remains the same in multi channel \cite{routingmetrics, winter2012rpl}.
+RPL topology stability (using routing metric) remains the same in multichannel \cite{routingmetrics, winter2012rpl}.
 %RPL topology could change according to the routing metric \cite{routingmetrics} the way the usual RPL would work \cite{winter2012rpl}. 
 The nodes can still change the parents as usual as all neighbours know each other new channels. The neighbours that are not part of the route do not probe the parent when making the channel decision. However, the neighbours are informed of any channel changes.
 

@@ -101,7 +101,7 @@ In the mild interference case, all probing messages are received even though the
 \begin{figure}
 \centering
 \includegraphics[width=0.78\textwidth]{multi_channel.pdf}
-\caption{Level of packet loss for scenario 1 and scenario 2 using multi channel}
+\caption{Level of packet loss for scenario 1 and scenario 2 using multichannel}
 \label{fig:multi_interference}
 \end{figure}
 
@@ -131,7 +131,7 @@ In scenario 1 half the channels (including the original channel) have no
 interference at all and half the channels have extreme interference.
 In scenario 2, four channels (including the original channel) have no
 interference, four have mild, four moderate and four extreme interference.
-Figure \ref{fig:multi_interference} shows multi channel results for these
+Figure \ref{fig:multi_interference} shows multichannel results for these
 two scenarios. In scenario 1 the protocol performs extremely well, the packet loss is near zero and the protocol successfully detects channels with interference.
 Scenario 2 has similar results as in scenario 1. The protocol does well at reducing the effects of interference and could detect moderate and mild interference.
 
@@ -153,11 +153,11 @@ In the testbed case, the conditions for all channels are looked into to have a b
 \begin{figure}
 \centering
 \includegraphics[width=0.78\textwidth]{experiments/mct.pdf}
-\caption{Level of packet loss on testbed using multi channel}
+\caption{Level of packet loss on testbed using multichannel}
 \label{fig:mcrp_testbed}
 \end{figure}
 
-Figure \ref{fig:mcrp_testbed} shows the results from ten runs and the average that were done on different days. It can be observed that the results vary and multi channel give unstable results. On average, 50\%-60\% of packets are received at the LPBR. There are a few reasons for this low receiving packet values. As explained in Section \ref{bufmgmt}, the incoming and outgoing packets are kept in the same buffer. When the channel is busy the outgoing and incoming packets will fill up the buffer which results in new packet to be dropped. The dropped packets might be the important packets that decide or confirm the new channel. This results in sending in incorrect channel. The node will tries to send until it receives the link layer acknowledgement or time out which as a result, blocks the channel during its sending period by making the channel busy to be used by other node of the same channel. Another option to overcome this problem is by enabling RPL DIO on all channel so that the lost nodes can be recovered and updated with the correct channel each time the control message is sent. RPL DIO control message is sent to the neighbouring nodes according to the Trickle timer as explained in Section \ref{routingProtocols}.
+Figure \ref{fig:mcrp_testbed} shows the results from ten runs and the average that were done on different days. It can be observed that the results vary and multichannel give unstable results. On average, 50\%-60\% of packets are received at the LPBR. There are a few reasons for this low receiving packet values. As explained in Section \ref{bufmgmt}, the incoming and outgoing packets are kept in the same buffer. When the channel is busy the outgoing and incoming packets will fill up the buffer which results in new packet to be dropped. The dropped packets might be the important packets that decide or confirm the new channel. This results in sending in incorrect channel. The node will tries to send until it receives the link layer acknowledgement or time out which as a result, blocks the channel during its sending period by making the channel busy to be used by other node of the same channel. Another option to overcome this problem is by enabling RPL DIO on all channel so that the lost nodes can be recovered and updated with the correct channel each time the control message is sent. RPL DIO control message is sent to the neighbouring nodes according to the Trickle timer as explained in Section \ref{routingProtocols}.
 
 %-buffer overflow (don't know the correct neighbour channel)
 %-change channel from LPBR not receive - still in the default channel
