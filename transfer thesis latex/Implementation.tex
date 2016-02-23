@@ -38,7 +38,8 @@ MCRP is implemented on the TelosB mote platform. It uses Contiki, a lightweight 
 
 Contiki is defined by four layers network stack: the network layer, the MAC layer, the radio duty cycling (RDC) layer and the radio layers. The network layer includes support for TCP, UDP, IPv6, IPv4, RPL routing protocol and 6LoWPAN. IPv6 over Low Power Wireless Personal Area Networks (6LoWPAN) is a header compression and fragmentation format for IPv6 packets delivery over IEEE 802.15.4 networks \cite{6lowpan}. Contiki implements the minimal set of IPv6 protocol required, 6LoWPAN adaptation layer for IPv6 header compression and fragmentation which is routed over the low power and lossy networks (LLN) in RPL.
 
-Contiki's configuration options for communications, buffer management and network interface are explained before looking into MCRP implementation for ease of reading.
+Contiki's configuration options for communications, buffer management and network interface are explained below.
+%before looking into MCRP implementation for ease of reading.
 
 %6LoWPAN working group specified header compression and fragmentation for IPv6 over IEEE 802.15.4 (///REFERENCE!!!) and the IETF RoLL working group designed the RPL protocol as a proposed standard for IPv6 routing in low-power and lossy networks (LLNs). Contiki implement the necessary parts of the IPv6 protocol, IPv6 header compression and fragmentation with the 6LoWPAN adaptation layer, routing over LLNs with the RPL protocol, as well as a set of protocols from the TCP/IP protocol suite \cite{beyondInteroperability}.
 
@@ -47,11 +48,11 @@ Contiki's configuration options for communications, buffer management and networ
 \subsection{Communication Stacks}
 \label{commstack}
 Contiki contains two communication stacks, uIP and Rime.
-uIP \cite{uip} is a small RFC-compliant TCP/IP stack that is designed to contain only the essential (required/necessary) features to provide Contiki with TCP/IP networking support to allow Contiki to communicate over the Internet compared to the traditional TCP/IP that requires (high) resources to fit in a limited RAM capabilities of a sensor. The minimal set of features includes IP, ICMP, UDP and TCP protocols compared to the traditional TCP/IP that requires (high) resources that could not be supported in the limited RAM capabilities sensor. The uIP is mostly concerned with the TCP and IP protocols and upper layer protocols \cite{contikiDoc, contikiUIP}. 
+uIP \cite{uip} is a small RFC-compliant TCP/IP stack that is designed to contain only the essential features to provide Contiki with TCP/IP networking support to allow Contiki to communicate over the Internet compared to the traditional TCP/IP that requires (high) resources to fit in a limited RAM capabilities of a sensor. The minimal set of features includes IP, ICMP, UDP and TCP protocols compared to the traditional TCP/IP that requires resources that could not be supported in the limited RAM capabilities sensor. The uIP deals with the TCP and IP protocols \cite{contikiDoc, contikiUIP}. 
 
 Rime is Contiki's lightweight communication stack that aims to simplify the sensor network protocols implementation by reusing code in a layered manner \cite{rimeposter}. Rime combines layers of simple communication abstractions to form a powerful high-level abstraction ranging from best-effort anonymous broadcast to reliable network flooding. Parts of the Rime stack can be used by the underlying MAC or link layer. Additional protocols that are not in Rime can be implemented on top of the stack.
 
-Applications in Contiki can decide to use one of the communication stacks available, both or none at all. uIP can run over Rime and similarly, Rime can run over uIP \cite{contikitutorial}. 
+Applications in Contiki can decide to use one of the communication stacks available, both or none at all. uIP can run over Rime and similarly, Rime can run over uIP \cite{contikitutorial}. This allows protocols or applications that are not in Rime or uIP to be implemented directly on top of the communication stack such as running TCP/IP on Rime.
 
 %Rime communication stack provides a set of lightweight communication primitives ranging from best-effort anonymous local area broadcast to reliable network flooding. Protocols or applications running on top of Rime stack can implement additional protocols that are not in the Rime stack such as TCP/IP.
 
@@ -80,7 +81,9 @@ Chameleon \cite{rime} is a communication architecture in Contiki that consists o
 
 In buffer management module of Chameleon architecture, all incoming and outgoing packets from the applications and packet attributes are stored in a single buffer called the Rime buffer \cite{uip, rime, rimeposter, contiki}. All layers of Contiki's network stack including uIP, Rime and the underlying link layer operate on the same packet buffer for the buffer management. The Rime buffer has no locking mechanisms as it is a single priority level buffer. The buffer only holds the current packet.
 
-Protocols that need to queue packets allocate the queue buffer dynamically. Queue buffer is used to hold the queued packets such as for MAC protocols that have high rate of incoming and outgoing messages before it can send or process the receiving packets; or when the radio is busy and the MAC protocol has to wait for the radio medium to be free before proceeding with transmissions. Queue buffer is used to avoid the risk of the packet overwritten by the newer packet. The Rime buffer contents are copied into the queue buffer when there is a queue buffer allocated.
+Protocols that need to queue packets allocate the queue buffer dynamically. Queue buffer is used to hold the queued packets such as for MAC protocols that have high rate of incoming and outgoing messages before it can send or process the receiving packets; or when the radio is busy and the MAC protocol has to wait for the radio medium to be free before proceeding with transmissions. 
+%Queue buffer is used to avoid the risk of the packet overwritten by the newer packet. 
+The Rime buffer contents are copied into the queue buffer when there is a queue buffer allocated.
 
 %Protocols that need to queue packets, such as MAC protocols that wait for the radio medium to be free, can allocate so-called queue buffers to hold the queued packet. Queue buffers are dynamically allocated from a pool of queue buffers. The contents of the Rime buffer, including the packet attributes, are copied into the queue buffer when it is allocated.
 
@@ -129,7 +132,7 @@ Contiki provides support to communicate with devices using SLIP through its tuns
 
 
 \section{MCRP Implementation}
-MCRP is implemented in Contiki and uses ContikiMAC as the MAC protocol, RPL as the routing protocol. ContikiMAC is modified to allow multichannel where the channel selection processes take place on the upper layers and the channels are kept in the network neighbour table to ensure the correct channel.
+MCRP is implemented in Contiki and uses ContikiMAC as the MAC protocol and RPL as the routing protocol. ContikiMAC is modified to allow multichannel where the channel selection processes take place on the upper layers and the channels are kept in the network neighbour table to ensure the correct channel.
 
 The protocol implementation is separated into two types of nodes: i) the centralised LPBR where the bridging takes place between the border router on a PC to the nodes, and ii) the decentralised transmission nodes referred as other nodes. The implementations for both types are described below.
 
@@ -149,7 +152,7 @@ The protocol implementation is separated into two types of nodes: i) the central
 \label{fig_lpbr}
 \end{figure}
 
-As sensors have limited memory, most processing decisions at LPBR are transferred to a PC as it has more RAM and better processing capabilities. This enables MCRP to have more thorough processes and to run in real time without draining the memory and battery on a sensor. LPBR is divided into two main parts as shown in Figure \ref{fig_lpbr} where the PC is responsible as the application, transport, network and routing layers while a sensor (labelled slip radio) is set as the wireless interface to enable the PC to communicate with the other nodes via Contiki tunslip tool. 
+As sensors have limited memory, most processing decisions at LPBR are transferred to a PC as it has more RAM and better processing capabilities. This enables MCRP to perform more complex processing and to run in real time without draining the memory and battery on a sensor. The LPBR is divided into two main parts as shown in Figure \ref{fig_lpbr} where the PC is responsible as the application, transport, network and routing layers while a sensor (labelled slip radio) is set as the wireless interface to enable the PC to communicate with the other nodes via the Contiki tunslip tool. 
 
 The LPBR acts as the tree root in RPL where it will initiate the creation of the RPL routing tree. LPBR is a special case as channel changes at LPBR is not as direct as other sensor nodes due to these two parts. However, it works similar ways to the other nodes.
 
@@ -159,7 +162,7 @@ The LPBR acts as the tree root in RPL where it will initiate the creation of the
 
 %trim top left
 
-LPBR main responsibility is to decide on the new channel selection. LPBR has no knowledge of all the channels condition at this point, thus, a channel is selected at random. LPBR keeps the results from the channel changes processes and based on it when selecting a new channel for the next node to ensure the new channel is at least two-hop away from another node using the same channel. This is done to ensure that the nearby nodes do not communicate of the same channel and risk interfering with each other.
+The LPBR main responsibility is to decide on the new channel selection. The LPBR has no knowledge of all the channels condition at this point, thus, a channel is selected at random. The LPBR keeps the results from the channel changes processes and based on it when selecting a new channel for the next node to ensure the new channel is at least two-hop away from another node using the same channel. This is done to ensure that the nearby nodes do not communicate on the same channel and risk interfering with each other.
 
 \begin{algorithm}
 \caption{Pseudo-code for two-hop colouring algorithm}
@@ -173,6 +176,8 @@ LPBR main responsibility is to decide on the new channel selection. LPBR has no 
 \\$newCh$ is the new channel the node will change to
 %\\$rnCh$ is the route's neighbour channel
 \\\textbf{Pseudo-code}
+\\Check if there are nodes which need a new channel
+\\Generate a $newCh$ by random
 %\If{$R$ $=$ $R$ in $LPBR$ $nodesTable$}
 %	\State check $R$ $currentCh$
 	\If{$R$ $currentCh$ $\neq$ $newCh$}
@@ -185,7 +190,9 @@ LPBR main responsibility is to decide on the new channel selection. LPBR has no 
 	\Else
 		\State generate a new $newCh$
 		\State update the number of $newCh$ generated for $R$
-		\State use default channel 26 is all tries fail
+			\If{number of $newCh$ generated $>$ 3}
+			\State use default channel 26 is all tries fail
+			\EndIf
 	\EndIf
 %\EndIf
 \end{algorithmic}
@@ -199,17 +206,17 @@ The pseudo-code of the implemented two-hops colouring algorithm for new channel 
 %Border router is used to bridge the wireless IPv6 network to a PC via serial link which enables the IPv6 network traffic to reach outside network and the Internet.
 %A node is used as a wireless interface (IEEE 802.15.4 to enable the serial socket server), a host machine as border router to bridge the wireless IPv6 network to outside network and the Internet./////
 
-\begin{figure}
-\centering
-\includegraphics[trim=2cm 1cm 2cm 4cm, clip=true, totalheight=0.55\textheight, angle=270]{lpbrProcess.pdf}
-\caption{LPBR processes}
-\label{lpbrProcess}
-\end{figure}
+%\begin{figure}
+%\centering
+%\includegraphics[trim=2cm 1cm 2cm 4cm, clip=true, totalheight=0.55\textheight, angle=270]{lpbrProcess.pdf}
+%\caption{LPBR processes}
+%\label{lpbrProcess}
+%\end{figure}
 %top, left, bottom, right
 
 The new channel is stored in the buffer before the data is sent over SLIP to the radio-chip (slip-radio). As the slip radio is unable to access the neighbour table where the next hop node channel is stored, the channel value is passed through the buffer. LPBR keeps the updated value of all its neighbours channels in the neighbour channel. Slip radio that receives the packet buffer can access the channel value and kept the value is a simplified version of the neighbour table. This is done in order to ensure that the packet that is being queued or retransmitted is sent on the correct channel. The packets destination, which in this case, the next hop node is first check before the packet is transmitted each time. The MAC layer sets the channel accordingly before sending. ContikiMAC can access the simplified neighbour table as it is on the slip radio. The simplified neighbour table only keeps the information of the node neighbours and neighbours channels which are the critical information in order to transmit packets correctly. The other information that is related to the neighbours' conditions is monitored at the PC. 
 
-LPBR processes are shown in Figure \ref{lpbrProcess}.
+%LPBR processes are shown in Figure \ref{lpbrProcess}.
 The slip-radio resets to its listening channel after the packet is transmitted. LPBR will wait and listen to any incoming packets. In the channel probing phase, LPBR does not take part in probing. However, LPBR is informed of the results of probing and kept a table of the probing results and channels to be able to use the information when deciding on a channel change based on the previous results of probing on the known channels.
 
 %Before passing to slip-radio, the header from $uip\_buf$ is compress to $packetbuf$. From $packetbuf$ to $uip\_buf$ is it decompress to access the data from the upper layers.  
@@ -220,15 +227,16 @@ The slip-radio resets to its listening channel after the packet is transmitted. 
 
 \subsection{Other Nodes}
 
-\begin{figure}
-\centering
-\includegraphics[trim=2cm 2cm 2.5cm 2cm, clip=true, totalheight=0.58\textheight, angle=270]{otherNodes.pdf}
-\caption{Nodes channel change processes}
-\label{fig_otherNodes}
-\end{figure}
+%\begin{figure}
+%\centering
+%\includegraphics[trim=2cm 2cm 2.5cm 2cm, clip=true, totalheight=0.58\textheight, angle=270]{otherNodes.pdf}
+%\caption{Nodes channel change processes}
+%\label{fig_otherNodes}
+%\end{figure}
 
 The new channel from LPBR that is received by the destination node is saved. 
-Figure \ref{fig_otherNodes} shows the processes that the node takes in the channel change. When LPBR sends a \textit{Channel Change} message to the destination node, the destination node will send a packet back to LPBR to acknowledge the channel change message. If LPBR does not receive the message, the channel change message is retransmitted. LPBR will then wait and listens for any incoming packets. At this point, channel changes processes will take place between the node and its neighbours. To clarify, \textit{node} refers to the node that would like to change its listening channel and \textit{neighbour node} is the neighbour of the node (including route node) that takes part in the channel change decision through probe message.
+%Figure \ref{fig_otherNodes} shows the processes that the node takes in the channel change. 
+When LPBR sends a \textit{Channel Change} message to the destination node, the destination node will send a packet back to LPBR to acknowledge the channel change message. If LPBR does not receive the message, the channel change message is retransmitted. LPBR will then wait and listens for any incoming packets. At this point, channel changes processes will take place between the node and its neighbours. To clarify, \textit{node} refers to the node that would like to change its listening channel and \textit{neighbour node} is the neighbour of the node (including route node) that takes part in the channel change decision through probe message.
 
 %All nodes keep the neighbours channel in the \textit{neighbour table}. An entry is added in the neighbour table to hold the channel value called \textit{nbrCh}. 
 Unlike LPBR, other nodes have all the layers within the nodes themselves. This makes channel changes less complicated, however, the nodes are being limited by the number of RAM they have which resulted in probing values to be stored in the centralised LPBR. The nodes however, keep the probing results temporarily before the final decision of the channel is made. 
@@ -264,14 +272,34 @@ In order for the packet transmission or retransmission to be on the correct chan
 %\label{fig_mac}
 %\end{figure}
 
-\begin{figure}
-\centering
-\includegraphics[trim=2cm 17cm 1cm 2cm, clip=true, totalheight=0.35\textheight]{mcrp2.pdf}
-\caption{Multichannel ContikiMAC multi hop packet transmission}
-\label{fig_mac}
-\end{figure}
+%\begin{figure}
+%\centering
+%\includegraphics[trim=2cm 17cm 1cm 2cm, clip=true, totalheight=0.35\textheight]{mcrp2.pdf}
+%\caption{Multichannel ContikiMAC multi hop packet transmission}
+%\label{fig_mac}
+%\end{figure}
 
-Figure \ref{fig_mac} shows an example of a multi hop packet transmission in MCRP. The different colours represent different channels. Node 4's channel is represented by green, node 3 is blue, node 2 is yellow and node 1 is red. At each hop, the node changes to the next hop listening channel before forwarding the packet. In the example, node 4 is sending a packet to node 1, the LPBR through node 3 and node 2. Node 4 wakes up and checks for incoming packets on its channel. As it has a packet to be sent to node 1, it checks the next hop channel which is node 3 and changes the channel to node 3 listening channel. It checks if the channel is clear for transmission and proceed to send the packet to node 3. Node 3 detects the packet when it wakes up and receives the packet. Node 3 sends the link layer acknowledgement to node 4 so that node 4 stops sending the packet. Node 3 forwards the packet to node 2 on node 2 channel and node 2 to node 1, the LPBR which is the destination node. All nodes reset their channel after the transmission and wake up on their own listening channel. 
+Figure \ref{mcrptx} shows an example of a multi hop packet transmission in MCRP. The different colours represent different channels. Node 4's channel is represented by green, node 3 is blue, node 2 is yellow and node 1 is red. At each hop, the node changes to the next hop listening channel as shown in Figure \ref{fig_mcrpTopology} before forwarding the packet. Figure \ref{fig_mac} shows the transmission processes which includes the wake ups and transmission (forwarding) channel change that happens from node 4 (the sender) to node 1 which is the LPBR. \textit{R} represents receiving packet, \textit{F} is forwarding packet and \textit{S} is sending packet. 
+
+The example is Figure \ref{mcrptx} shows node 4 is sending a packet to node 1, the LPBR through node 3 and node 2. Node 4 wakes up and checks for incoming packets on its channel. As it has a packet to be sent to node 1, it checks the next hop channel which is node 3 and changes the channel to node 3 listening channel (blue). It checks if the channel is clear for transmission using the CCA that relies on the RSSI threshold to detect the radio activity on the channel. The CCA returns a positive value to indicate that the channel is clear and proceed to send the packet to node 3 on node 3 channel. Node 3 detects the packet when it wakes up and receives the packet. Node 3 sends the link layer acknowledgement to node 4 so that node 4 stops sending the packet. Node 4 goes back to sleep and wake ups at the next cycle on its channel (green). As node 3 is not the destination, it forwards the packet to node 2 on node 2 channel and node 2 to node 1, the LPBR which is the destination node. All nodes reset their channel after the transmission and wake up on their own listening channel.
+
+\begin{figure}[H]
+\centering
+
+\subfigure[Topology diagram]{
+\label{fig_mcrpTopology}
+\includegraphics[trim=2cm 2cm 13cm 2cm, angle=270, clip=true, totalheight=0.07\textheight]{mcrpTopology2.pdf}
+%\caption{Multichannel ContikiMAC multi hop packet transmission}
+ }
+
+\subfigure[Transmission channels]{
+\label{fig_mac}
+\includegraphics[trim=2cm 17cm 1cm 2cm, clip=true, totalheight=0.35\textheight]{mcrp2.pdf}
+%\caption{Multichannel ContikiMAC multi hop packet transmission}
+ }
+\caption{MCRP multi hop packet transmission}
+\label{mcrptx}
+\end{figure}
 
 %If the node has a packet to send, it needs to access the neighbour channel to be able to transmit a packet on the correct channel. 
 
